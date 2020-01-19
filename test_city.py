@@ -41,8 +41,8 @@ else:
 if not os.path.exists(out_path):
     os.makedirs(out_path)
 files = sorted(os.listdir(w_path))
-min_epoch = 51
-max_epoch = 136
+min_epoch = 41
+max_epoch = 151
 for w_ind in range(min_epoch, max_epoch):
     for f in files:
         if f.split('_')[0] == 'net' and int(f.split('_')[1][1:]) == w_ind:
