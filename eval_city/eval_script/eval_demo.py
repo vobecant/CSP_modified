@@ -1,7 +1,7 @@
+from __future__ import print_function
 import os
 from coco import COCO
 from eval_MR_multisetup import COCOeval
-from __future__ import print_function
 
 annType = 'bbox'  # specify type here
 
