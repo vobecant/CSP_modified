@@ -278,25 +278,25 @@ def get_data_wider(ped_data, C, batchsize=8):
             random.shuffle(ped_data)
             current_ped = 0
         for img_data in ped_data[current_ped:current_ped + batchsize]:
-            try:
-                img_data, x_img = data_augment.augment_wider(img_data, C)
-                if C.offset:
-                    y_seman, y_height, y_offset = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=True)
-                else:
-                    y_seman, y_height = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=False)
+            #try:
+            img_data, x_img = data_augment.augment_wider(img_data, C)
+            if C.offset:
+                y_seman, y_height, y_offset = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=True)
+            else:
+                y_seman, y_height = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=False)
 
-                x_img = x_img.astype(np.float32)
-                x_img[:, :, 0] -= C.img_channel_mean[0]
-                x_img[:, :, 1] -= C.img_channel_mean[1]
-                x_img[:, :, 2] -= C.img_channel_mean[2]
+            x_img = x_img.astype(np.float32)
+            x_img[:, :, 0] -= C.img_channel_mean[0]
+            x_img[:, :, 1] -= C.img_channel_mean[1]
+            x_img[:, :, 2] -= C.img_channel_mean[2]
 
-                x_img_batch.append(np.expand_dims(x_img, axis=0))
-                y_seman_batch.append(np.expand_dims(y_seman, axis=0))
-                y_height_batch.append(np.expand_dims(y_height, axis=0))
-                if C.offset:
-                    y_offset_batch.append(np.expand_dims(y_offset, axis=0))
-            except Exception as e:
-                print('get_batch_gt:', e)
+            x_img_batch.append(np.expand_dims(x_img, axis=0))
+            y_seman_batch.append(np.expand_dims(y_seman, axis=0))
+            y_height_batch.append(np.expand_dims(y_height, axis=0))
+            if C.offset:
+                y_offset_batch.append(np.expand_dims(y_offset, axis=0))
+            #except Exception as e:
+            #    print('get_batch_gt:', e)
         x_img_batch = np.concatenate(x_img_batch, axis=0)
         y_seman_batch = np.concatenate(y_seman_batch, axis=0)
         y_height_batch = np.concatenate(y_height_batch, axis=0)
