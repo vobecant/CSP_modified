@@ -30,5 +30,6 @@ for f in sorted(os.listdir(main_path)):
         cocoEval.evaluate(id_setup)
         cocoEval.accumulate()
         cocoEval.summarize(id_setup, res_file)
+    print('')
 
     res_file.close()
