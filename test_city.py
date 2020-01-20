@@ -1,11 +1,17 @@
 from __future__ import division, print_function
-import os
+import os, sys
 import time
 import cPickle
 from keras.layers import Input
 from keras.models import Model
 from keras_csp import config, bbox_process
 from keras_csp.utilsfunc import *
+
+# parse experiment name
+if len(sys.argv) == 1:
+    exp_name = ''
+else:
+    exp_name = '_{}'.format(sys.argv[1])
 
 os.environ["CUDA_VISIBLE_DEVICES"] = '1'
 C = config.Config()
@@ -33,15 +39,15 @@ preds = nn.nn_p3p4p5(img_input, offset=C.offset, num_scale=C.num_scale, trainabl
 model = Model(img_input, preds)
 
 if C.offset:
-    w_path = 'output/valmodels/city/%s/off' % (C.scale)
-    out_path = 'output/valresults/city/%s/off' % (C.scale)
+    w_path = 'output/valmodels/city/{}/off{}'.format(C.scale,exp_name)
+    out_path = 'output/valresults/city/{}/off{}'.format(C.scale,exp_name)
 else:
-    w_path = 'output/valmodels/city/%s/nooff' % (C.scale)
-    out_path = 'output/valresults/city/%s/nooff' % (C.scale)
+    w_path = 'output/valmodels/city/{}/nooff{}'.format(C.scale,exp_name)
+    out_path = 'output/valresults/city/{}/nooff{}'.format(C.scale,exp_name)
 if not os.path.exists(out_path):
     os.makedirs(out_path)
 files = sorted(os.listdir(w_path))
-min_epoch = 41
+min_epoch = 51
 max_epoch = 151
 for w_ind in range(min_epoch, max_epoch):
     for f in files:

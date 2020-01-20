@@ -11,6 +11,14 @@ from keras.models import Model
 from keras_csp import config, data_generators
 from keras_csp import losses as losses
 
+# parse experiment name
+if len(sys.argv) == 1:
+    exp_name = ''
+    print('No experiment name given. Run with default parameters.')
+else:
+    exp_name = '_{}'.format(sys.argv[1])
+    print("Given experiment name: '{}'.".format(sys.argv[1]))
+
 # get the config parameters
 C = config.Config()
 C.gpu_ids = '0,1,2,3'
@@ -25,9 +33,10 @@ batchsize = C.onegpu * num_gpu
 os.environ["CUDA_VISIBLE_DEVICES"] = C.gpu_ids
 
 # get the training data
-cache_path = 'data/cache/cityperson/train_h50'
+cache_path = 'data/cache/cityperson/train_h50{}'.format(exp_name)
 with open(cache_path, 'rb') as fid:
     train_data = cPickle.load(fid)
+print('Loaded cache from {}'.format(cache_path))
 num_imgs_train = len(train_data)
 random.shuffle(train_data)
 print('num of training samples: {}'.format(num_imgs_train))
@@ -58,9 +67,9 @@ model_tea.load_weights(weight_path, by_name=True)
 print('load weights from {}'.format(weight_path))
 
 if C.offset:
-    out_path = 'output/valmodels/city_ext/%s/off' % (C.scale)
+    out_path = 'output/valmodels/city/{}/off{}'.format(C.scale, exp_name)
 else:
-    out_path = 'output/valmodels/city_ext/%s/nooff' % (C.scale)
+    out_path = 'output/valmodels/city/{}/nooff{}'.format(C.scale, exp_name)
 if not os.path.exists(out_path):
     os.makedirs(out_path)
 res_file = os.path.join(out_path, 'records.txt')
