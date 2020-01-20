@@ -154,7 +154,7 @@ def get_data(ped_data, C, batchsize=8, exp_name=''):
                 images_dir_name = 'images{}/'.format(exp_name)
                 img_data['filepath'] = img_data['filepath'].replace('images/', images_dir_name)
                 if 'blurred' in images_dir_name:
-                    img_data['filepath'] = img_data['filepath'].replace('.png', '.jpg')
+                    img_data['filepath'] = img_data['filepath'].replace('.png', '_blurred.jpg')
                 print(img_data['filepath'])
                 img_data, x_img = data_augment.augment(img_data, C)
                 if C.offset:
