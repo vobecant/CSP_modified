@@ -152,6 +152,9 @@ def get_data(ped_data, C, batchsize=8, exp_name=''):
         for img_data in ped_data[current_ped:current_ped + batchsize]:
             try:
                 images_dir_name = 'images{}/'.format(exp_name)
+                print('images_dir_name: {}'.format(images_dir_name))
+                print(img_data['filepath'])
+                print(img_data['filepath'].replace('images/', images_dir_name))
                 img_data['filepath'] = img_data['filepath'].replace('images/', images_dir_name)
                 img_data, x_img = data_augment.augment(img_data, C)
                 if C.offset:
