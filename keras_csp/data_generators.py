@@ -152,7 +152,7 @@ def get_data(ped_data, C, batchsize=8, exp_name=''):
         for img_data in ped_data[current_ped:current_ped + batchsize]:
             try:
                 images_dir_name = 'images{}/'.format(exp_name)
-                img_data = img_data.replace('images/', images_dir_name)
+                img_data['filepath'] = img_data['filepath'].replace('images/', images_dir_name)
                 img_data, x_img = data_augment.augment(img_data, C)
                 if C.offset:
                     y_seman, y_height, y_offset = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=True)
