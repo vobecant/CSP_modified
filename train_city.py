@@ -40,7 +40,7 @@ print('Loaded cache from {}'.format(cache_path))
 num_imgs_train = len(train_data)
 random.shuffle(train_data)
 print('num of training samples: {}'.format(num_imgs_train))
-data_gen_train = data_generators.get_data(train_data, C, batchsize=batchsize)
+data_gen_train = data_generators.get_data(train_data, C, batchsize=batchsize, exp_name=exp_name)
 
 # define the base network (resnet here, can be MobileNet, etc)
 if C.network == 'resnet50':
