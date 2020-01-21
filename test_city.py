@@ -76,7 +76,7 @@ for w_ind in range(min_epoch, max_epoch):
         filepath = val_data[f]['filepath']
         images_dir_name = 'images{}/'.format(exp_name)
         filepath = filepath.replace('images/', images_dir_name)
-        if 'blurred' in images_dir_name:
+        if 'blurred' in filepath:
             filepath = filepath.replace('.png', '_blurred.jpg')
         img = cv2.imread(filepath)
         x_rcnn = format_img(img, C)
