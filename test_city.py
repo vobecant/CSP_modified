@@ -39,11 +39,11 @@ preds = nn.nn_p3p4p5(img_input, offset=C.offset, num_scale=C.num_scale, trainabl
 model = Model(img_input, preds)
 
 if C.offset:
-    w_path = 'output/valmodels/city/{}/off{}'.format(C.scale,exp_name)
-    out_path = 'output/valresults/city/{}/off{}'.format(C.scale,exp_name)
+    w_path = 'output/valmodels/city/{}/off{}'.format(C.scale, exp_name)
+    out_path = 'output/valresults/city/{}/off{}'.format(C.scale, exp_name)
 else:
-    w_path = 'output/valmodels/city/{}/nooff{}'.format(C.scale,exp_name)
-    out_path = 'output/valresults/city/{}/nooff{}'.format(C.scale,exp_name)
+    w_path = 'output/valmodels/city/{}/nooff{}'.format(C.scale, exp_name)
+    out_path = 'output/valresults/city/{}/nooff{}'.format(C.scale, exp_name)
 if not os.path.exists(out_path):
     os.makedirs(out_path)
 files = sorted(os.listdir(w_path))
@@ -69,6 +69,10 @@ for w_ind in range(min_epoch, max_epoch):
     start_time = time.time()
     for f in range(num_imgs):
         filepath = val_data[f]['filepath']
+        images_dir_name = 'images{}/'.format(exp_name)
+        filepath = filepath.replace('images/', images_dir_name)
+        if 'blurred' in images_dir_name:
+            filepath = filepath.replace('.png', '_blurred.jpg')
         img = cv2.imread(filepath)
         x_rcnn = format_img(img, C)
         Y = model.predict(x_rcnn)
