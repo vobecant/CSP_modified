@@ -9,7 +9,7 @@ def txt2jsonFile(res):
     for det in res:
         det = det.rstrip("\n\r").split(' ')
         print('det {}'.format(det))
-        img_id = int(det[0])
+        img_id = int(float(det[0]))
         bbox = [float(f) for f in det[1:5]]
         score = float(det[5])
         det_dict = {'image_id': img_id,
