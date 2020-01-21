@@ -57,7 +57,7 @@ for w_ind in range(min_epoch, max_epoch):
             net_found = True
             break
     if not net_found:
-        print('Did not find the network from epoch {}. End testing.')
+        print('Did not find the network from epoch {}. End testing.'.format(w_ind))
         break
     res_path = os.path.join(out_path, '%03d' % int(str(w_ind)))
     if not os.path.exists(res_path):
