@@ -21,8 +21,8 @@ for f in sorted(os.listdir(main_path)):
     print('file: {}'.format(f))
     # initialize COCO detections api
     dt_path = os.path.join(main_path, f)
-    resFile = os.path.join(dt_path, 'val_dt_py.json')
-    respath = os.path.join(dt_path, 'results_py.txt')
+    resFile = os.path.join(dt_path, 'val_dt.json')
+    respath = os.path.join(dt_path, 'results.txt')
     # if os.path.exists(respath):
     #     continue
     ## running evaluation
