@@ -28,7 +28,7 @@ if __name__ == '__main__':
 
     start_t = time.time()
 
-    dirs = [os.path.join(main_path, d) for d in os.listdir(main_path) if os.path.isdir(d)]
+    dirs = [os.path.join(main_path, d) for d in os.listdir(main_path)]
     print('Found {} directories with detections.\n'.format(len(dirs)))
 
     for d in dirs:
