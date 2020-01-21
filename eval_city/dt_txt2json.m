@@ -1,6 +1,6 @@
 clear
 addpath('./cocoapi/MatlabAPI')
-main_path = '../output/valresults/city/h/off';
+main_path = '../output/valresults/city/h/off_1P';
 subdir = dir(main_path);
 for j = 3 : length(subdir)
     ndt=0;
