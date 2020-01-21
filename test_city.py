@@ -50,10 +50,15 @@ files = sorted(os.listdir(w_path))
 min_epoch = 51
 max_epoch = 151
 for w_ind in range(min_epoch, max_epoch):
+    net_found = False
     for f in files:
         if f.split('_')[0] == 'net' and int(f.split('_')[1][1:]) == w_ind:
             cur_file = f
+            net_found = True
             break
+    if not net_found:
+        print('Did not find the network from epoch {}. End testing.')
+        break
     res_path = os.path.join(out_path, '%03d' % int(str(w_ind)))
     if not os.path.exists(res_path):
         os.makedirs(res_path)
