@@ -144,6 +144,7 @@ def calc_gt_bottom(C, img_data, r=2):
 
 def get_data(ped_data, C, batchsize=8, exp_name=''):
     current_ped = 0
+    sample_filepath_printed = False
     while True:
         x_img_batch, y_seman_batch, y_height_batch, y_offset_batch = [], [], [], []
         if current_ped > len(ped_data) - batchsize:
@@ -155,7 +156,9 @@ def get_data(ped_data, C, batchsize=8, exp_name=''):
                 img_data['filepath'] = img_data['filepath'].replace('images/', images_dir_name)
                 if ('blurred' in images_dir_name) or ('anonymized' in images_dir_name):
                     img_data['filepath'] = img_data['filepath'].replace('.png', '_blurred.jpg')
-                print('Loading image {}'.format(img_data['filepath']))
+                if not sample_filepath_printed:
+                    print('Sample filepath: {}'.format(img_data['filepath']))
+                    sample_filepath_printed = True
                 img_data, x_img = data_augment.augment(img_data, C)
                 if C.offset:
                     y_seman, y_height, y_offset = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=True)
