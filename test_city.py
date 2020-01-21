@@ -73,7 +73,6 @@ for w_ind in range(min_epoch, max_epoch):
         filepath = filepath.replace('images/', images_dir_name)
         if 'blurred' in images_dir_name:
             filepath = filepath.replace('.png', '_blurred.jpg')
-        print('file path: {}'.format(filepath))
         img = cv2.imread(filepath)
         x_rcnn = format_img(img, C)
         Y = model.predict(x_rcnn)
