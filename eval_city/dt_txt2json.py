@@ -41,7 +41,7 @@ if __name__ == '__main__':
             continue
         with open(dt_path, 'r') as f:
             res = f.readlines()
-        out_path = os.path.join(d, 'val_dt.json')
+        out_path = os.path.join(d, 'val_dt_py.json')
         if os.path.exists(out_path):
             print('File was already processed. Skipping...')
             continue
