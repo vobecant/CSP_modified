@@ -152,7 +152,7 @@ def get_data(ped_data, C, batchsize=8, exp_name=''):
             current_ped = 0
         for img_data in ped_data[current_ped:current_ped + batchsize]:
             try:
-                images_dir_name = 'images{}/'.format(exp_name)
+                images_dir_name = 'images{}/'.format(exp_name if 'base' not in exp_name else '')
                 img_data['filepath'] = img_data['filepath'].replace('images/', images_dir_name)
                 if ('blurred' in images_dir_name) or ('anonymized' in images_dir_name):
                     img_data['filepath'] = img_data['filepath'].replace('.png', '_blurred.jpg')
