@@ -1,5 +1,6 @@
 from __future__ import print_function
-import os, sys
+import os
+import cPickle
 from coco import COCO
 from eval_MR_multisetup import COCOeval
 import matplotlib
@@ -21,9 +22,9 @@ def merge_results(exp_name):
         with open(respath, 'r') as f:
             results = f.readlines()
             results = [float(n) for n in results]
-        for i, key in enumerate(exp_results.keys()):
-            print('{}: {}'.format(key, results[i]))
-            exp_results[key][epoch] = results[i]
+        for i, split in enumerate(exp_results.keys()):
+            print('{}: {}'.format(split, results[i]))
+            exp_results[split][epoch] = results[i]
         print('')
 
     return exp_results
@@ -43,11 +44,15 @@ def plot_results(all_results):
 
 if __name__ == '__main__':
     experiments = ['', '1P', 'halfP']
+    fname = 'results.pkl'
 
     all_results = {}
     for exp_name in experiments:
         key = exp_name if len(exp_name) else 'baseline'
         exp_results = merge_results(exp_name)
         all_results[key] = exp_results
+
+    with open(fname, 'wb') as f:
+        cPickle.dump(all_results, f)
 
     plot_results(all_results)
