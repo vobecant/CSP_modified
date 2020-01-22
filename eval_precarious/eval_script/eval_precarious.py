@@ -18,6 +18,11 @@ else:
 annFile = '../../data/precarious_dataset/test_annotations.json'
 main_path = '../../output/valresults/precarious/h/off{}'.format(exp_name)
 
+cocoGt = COCO(annFile)
+resFile = 'C:\\Users\\Antonin-PC\\school\\PhD\\projects\\CSP_modified\\val_dt.json'  # os.path.join(dt_path, 'val_dt.json')
+cocoDt = cocoGt.loadRes(resFile)
+imgIds = sorted(cocoGt.getImgIds())
+
 for f in sorted(os.listdir(main_path)):
     print('file: {}'.format(f))
     # initialize COCO detections api
@@ -34,7 +39,9 @@ for f in sorted(os.listdir(main_path)):
     res_file = open(respath, "w")
     for iou_thr in ious:
         for id_setup in range(1):
+            print('Load annFile {}'.format(annFile))
             cocoGt = COCO(annFile)
+            print('Load resFile {}'.format(resFile))
             cocoDt = cocoGt.loadRes(resFile)
             imgIds = sorted(cocoGt.getImgIds())
             cocoEval = COCOeval(cocoGt, cocoDt, annType)
