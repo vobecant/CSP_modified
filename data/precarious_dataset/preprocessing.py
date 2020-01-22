@@ -1,3 +1,4 @@
+import json
 import os, sys
 from PIL import Image
 import numpy as np
@@ -69,6 +70,8 @@ def convert2cityscapes(split_path, tgt_w, tgt_h, tgt_dir, img_ext='.jpg', anno_e
     anns_fname = os.path.join(tgt_dir, '{}_annotations'.format(split))
     with open(anns_fname, 'wb') as f:
         pickle.dump(converted_anns, f, protocol=2)
+    with open('{}.json'.format(anns_fname), 'w') as f:
+        json.dump(anns_fname, f)
     print('Annotations saved to {}'.format(anns_fname))
     print('Split "{}" completed!\n'.format(split))
 
