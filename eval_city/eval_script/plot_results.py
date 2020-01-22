@@ -55,7 +55,6 @@ def plot_results(all_results):
 if __name__ == '__main__':
     experiments = ['baseline', '1P', 'halfP', 'ganonymized', 'blurred']
     fname = 'results.pkl'
-    print([s for s in SPLITS])
 
     all_results = {}
     for exp_name in experiments:
@@ -66,4 +65,5 @@ if __name__ == '__main__':
     with open(fname, 'wb') as f:
         cPickle.dump(all_results, f)
 
+    print([s for s in SPLITS])
     plot_results(all_results)
