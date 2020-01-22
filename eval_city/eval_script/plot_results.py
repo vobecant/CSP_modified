@@ -30,7 +30,7 @@ def merge_results(exp_name):
         with open(respath, 'r') as f:
             results = f.readlines()
             results = [float(n) for n in results]
-        for i, split in enumerate(exp_results.keys()):
+        for i, split in enumerate(SPLITS):
             print('{}: {}'.format(split, results[i]))
             exp_results[split][epoch] = results[i]
         print('')
