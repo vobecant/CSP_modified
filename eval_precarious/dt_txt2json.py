@@ -36,7 +36,7 @@ if __name__ == '__main__':
         main_path = sys.argv[1]
         print('Look for models in "{}"'.format(main_path))
     else:
-        main_path = '../output/valresults/city/h/off'
+        main_path = '../output/valresults/precarious/h/off'
         print('Use default path "{}"'.format(main_path))
 
     start_t = time.time()
