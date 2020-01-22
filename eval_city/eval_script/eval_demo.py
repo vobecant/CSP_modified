@@ -27,7 +27,7 @@ for f in sorted(os.listdir(main_path)):
     #     continue
     ## running evaluation
     if not os.path.exists(resFile):
-        print("Skipping {} ... Doesn't exist yet.")
+        print("Skipping {} ... Doesn't exist yet.".format(resFile))
         continue
     res_file = open(respath, "w")
     for id_setup in range(6):
