@@ -20,7 +20,6 @@ def txt2jsonFile(res):
     out_arr = []
     for det in res:
         det = det.rstrip("\n\r").split(' ')
-        print('det {}'.format(det))
         img_id = int(float(det[0]))
         bbox = [float(f) for f in det[1:5]]
         score = float(det[5])
