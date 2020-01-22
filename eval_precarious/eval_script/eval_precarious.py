@@ -18,10 +18,10 @@ else:
 annFile = '../../data/precarious_dataset/test_annotations.json'
 main_path = '../../output/valresults/precarious/h/off{}'.format(exp_name)
 
-cocoGt = COCO(annFile)
-resFile = 'C:\\Users\\Antonin-PC\\school\\PhD\\projects\\CSP_modified\\val_dt.json'  # os.path.join(dt_path, 'val_dt.json')
-cocoDt = cocoGt.loadRes(resFile)
-imgIds = sorted(cocoGt.getImgIds())
+#cocoGt = COCO(annFile)
+#resFile = 'C:\\Users\\Antonin-PC\\school\\PhD\\projects\\CSP_modified\\val_dt.json'  # os.path.join(dt_path, 'val_dt.json')
+#cocoDt = cocoGt.loadRes(resFile)
+#imgIds = sorted(cocoGt.getImgIds())
 
 for f in sorted(os.listdir(main_path)):
     print('file: {}'.format(f))
