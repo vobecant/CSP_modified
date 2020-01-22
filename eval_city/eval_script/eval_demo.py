@@ -30,7 +30,7 @@ for f in sorted(os.listdir(main_path)):
         print("Skipping {} ... Doesn't exist yet.")
         continue
     res_file = open(respath, "w")
-    for id_setup in range(len(cocoEval.params.SetupLbl)):
+    for id_setup in range(6):
         cocoGt = COCO(annFile)
         cocoDt = cocoGt.loadRes(resFile)
         imgIds = sorted(cocoGt.getImgIds())
