@@ -23,6 +23,7 @@ for f in sorted(os.listdir(main_path)):
     # initialize COCO detections api
     dt_path = os.path.join(main_path, f)
     resFile = os.path.join(dt_path, 'val_dt.json')
+    print('Load results from {}'.format(resFile))
     respath = os.path.join(dt_path, 'results.txt')
     # if os.path.exists(respath):
     #     continue
