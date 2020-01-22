@@ -16,7 +16,7 @@ else:
 
 # initialize COCO ground truth api
 annFile = '../test_annotations.json'
-main_path = '../../output/valresults/city/h/off{}'.format(exp_name)
+main_path = '../../output/valresults/precarious/h/off{}'.format(exp_name)
 
 for f in sorted(os.listdir(main_path)):
     print('file: {}'.format(f))

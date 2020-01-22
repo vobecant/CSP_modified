@@ -71,7 +71,8 @@ def convert2cityscapes(split_path, tgt_w, tgt_h, tgt_dir, img_ext='.jpg', anno_e
     images = []
     order_id = 0
 
-    for image_id, im_fname in enumerate(images_fnames, 1):
+    for i, im_fname in enumerate(images_fnames, 1):
+        image_id = int(im_fname.split('.')[0])
         images.append({"id": image_id, "im_name": im_fname, "height": 1024, "width": 2048})
         img = Image.open(os.path.join(images_folder, im_fname))
         img_w, img_h = img.size
@@ -86,7 +87,7 @@ def convert2cityscapes(split_path, tgt_w, tgt_h, tgt_dir, img_ext='.jpg', anno_e
                                                                  shift_y)
         converted_anns.append(anno_converted)
         test_anns.extend(test_anns_image)
-        print('{}/{} images done'.format(image_id, len(images_fnames)))
+        print('{}/{} images done'.format(i, len(images_fnames)))
 
     anns_fname = os.path.join(tgt_dir, '{}_annotations'.format(split))
     with open(anns_fname, 'wb') as f:
