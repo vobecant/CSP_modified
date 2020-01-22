@@ -8,9 +8,11 @@ import matplotlib
 matplotlib.use('tkagg')
 import matplotlib.pyplot as plt
 
+SPLITS = ['Reasonable', 'Reasonable_small', 'bare', 'partial', 'heavy', 'All']
+
 
 def merge_results(exp_name):
-    exp_results = {'Reasonable': {}, 'bare': {}, 'partial': {}, 'heavy': {}}
+    exp_results = {split: {} for split in SPLITS}
 
     epoch_offset = 0 if exp_name != '' else 27
     main_path = '../../output/valresults/city/h/off{}'.format(exp_name)
@@ -31,8 +33,7 @@ def merge_results(exp_name):
 
 
 def plot_results(all_results):
-    splits = ['Reasonable', 'bare', 'partial', 'heavy']
-    for split in splits:
+    for split in SPLITS:
         for exp_name, exp_results in all_results.items():
             split_result = exp_results[split]
             x, y = list(split_result.keys()), list(split_result.values())
