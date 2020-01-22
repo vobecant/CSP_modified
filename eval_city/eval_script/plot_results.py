@@ -37,13 +37,14 @@ def plot_results(all_results):
             split_result = exp_results[split]
             x, y = list(split_result.keys()), list(split_result.values())
             plt.plot(x, y, label=exp_name)
+        plt.legend()
         plt.title(split)
         plt.savefig(split)
         plt.close()
 
 
 if __name__ == '__main__':
-    experiments = ['', '1P', 'halfP']
+    experiments = ['baseline', '1P', 'halfP', 'ganonymized', 'blurred']
     fname = 'results.pkl'
 
     all_results = {}
