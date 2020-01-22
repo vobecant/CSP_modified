@@ -15,7 +15,7 @@ else:
     print("Given experiment name: '{}'.".format(sys.argv[1]))
 
 # initialize COCO ground truth api
-annFile = '../test_annotations.json'
+annFile = '../../data/precarious_dataset/test_annotations.json'
 main_path = '../../output/valresults/precarious/h/off{}'.format(exp_name)
 
 for f in sorted(os.listdir(main_path)):
