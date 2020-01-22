@@ -5,7 +5,7 @@ from coco import COCO
 from eval_MR_multisetup import COCOeval
 import matplotlib
 
-matplotlib.use('tkagg')
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 SPLITS = ['Reasonable', 'Reasonable_small', 'bare', 'partial', 'heavy', 'All']
