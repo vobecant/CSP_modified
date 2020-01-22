@@ -24,6 +24,8 @@ def merge_results(exp_name):
         dt_path = os.path.join(main_path, epoch)
         epoch = int(epoch) + epoch_offset
         respath = os.path.join(dt_path, 'results.txt')
+        if not os.path.exists(respath):
+            print('{} does not exist yet = not yet evaluated.')
         with open(respath, 'r') as f:
             results = f.readlines()
             results = [float(n) for n in results]
