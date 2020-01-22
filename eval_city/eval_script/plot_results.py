@@ -17,7 +17,8 @@ def merge_results(exp_name):
     epoch_offset = 0 if exp_name != '' else 27
     main_path = '../../output/valresults/city/h/off_{}'.format(exp_name)
     if not os.path.exists(main_path):
-        print('{} does not exist. Skipping...')
+        print('{} does not exist. Skipping...'.format(main_path))
+        return None
     for epoch in sorted(os.listdir(main_path)):
         print('file: {}'.format(epoch))
         dt_path = os.path.join(main_path, epoch)
@@ -37,6 +38,8 @@ def merge_results(exp_name):
 def plot_results(all_results):
     for split in SPLITS:
         for exp_name, exp_results in all_results.items():
+            if exp_results is None:
+                continue
             split_result = exp_results[split]
             x, y = list(split_result.keys()), list(split_result.values())
             plt.plot(x, y, label=exp_name)
