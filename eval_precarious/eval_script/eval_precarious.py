@@ -39,10 +39,7 @@ for f in sorted(os.listdir(main_path)):
     res_file = open(respath, "w")
     for iou_thr in ious:
         for id_setup in range(1):
-            print('Load annFile {}'.format(annFile))
             cocoGt = COCO(annFile)
-            print('cocoGt.getImgIds() {}'.format(cocoGt.getImgIds()))
-            print('Load resFile {}'.format(resFile))
             cocoDt = cocoGt.loadRes(resFile)
             imgIds = sorted(cocoGt.getImgIds())
             cocoEval = COCOeval(cocoGt, cocoDt, annType)
