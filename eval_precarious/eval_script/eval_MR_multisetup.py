@@ -444,6 +444,7 @@ class COCOeval:
             if len(mrs[mrs < 2]) == 0:
                 mean_s = -1
             else:
+                print('MRs: []'.format({fppi: mr for fppi, mr in zip(self.params.fppiThrs, mrs)}))
                 mean_s = np.log(mrs[mrs < 2])
                 mean_s = np.mean(mean_s)
                 mean_s = np.exp(mean_s)
