@@ -74,7 +74,7 @@ for w_ind in range(min_epoch, max_epoch):
     res_all = []
     start_time = time.time()
     for f in range(num_imgs):
-        image_name = val_data[f]['filepath']
+        image_name = os.path.split(val_data[f]['filepath'])[1]
         image_id = int(image_name.split('.')[0])
         filepath = os.path.join(images_folder, image_name)
         img = cv2.imread(filepath)
