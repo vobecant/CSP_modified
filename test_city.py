@@ -65,7 +65,7 @@ for w_ind in range(min_epoch, max_epoch):
     print(res_path)
     res_file = os.path.join(res_path, 'val_det.txt')
     if os.path.exists(res_file):
-        print('{} already exists... Skipping...')
+        print('{} already exists... Skipping...'.format(res_file))
         continue
     weight1 = os.path.join(w_path, cur_file)
     print('load weights from {}'.format(weight1))
@@ -75,10 +75,10 @@ for w_ind in range(min_epoch, max_epoch):
     for f in range(num_imgs):
         filepath = val_data[f]['filepath']
         images_dir_name = 'images{}/'.format(exp_name if 'base' not in exp_name else '')
-        #print('filepath: {}, images_dir_name: {}'.format(filepath, images_dir_name))
+        # print('filepath: {}, images_dir_name: {}'.format(filepath, images_dir_name))
         filepath = filepath.replace('images/', images_dir_name)
-        #print('filepath after replace: {}'.format(filepath))
-        #if 'blurred' in filepath:
+        # print('filepath after replace: {}'.format(filepath))
+        # if 'blurred' in filepath:
         #    filepath = filepath.replace('.png', '_blurred.jpg')
         img = cv2.imread(filepath)
         x_rcnn = format_img(img, C)
