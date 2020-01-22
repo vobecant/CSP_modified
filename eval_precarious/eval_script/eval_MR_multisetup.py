@@ -414,7 +414,7 @@ class COCOeval:
         toc = time.time()
         # print('DONE (t={:0.2f}s).'.format( toc-tic))
 
-    def summarize(self, id_setup, res_file):
+    def summarize(self, id_setup, res_file, iou_thr=0.5):
         '''
         Compute and display summary metrics for evaluation results.
         Note this functin can *only* be applied on the default parameter setting
@@ -455,7 +455,7 @@ class COCOeval:
 
         if not self.eval:
             raise Exception('Please run accumulate() first')
-        _summarize(iouThr=.5, maxDets=1000)
+        _summarize(iouThr=iou_thr, maxDets=1000)
 
     def __str__(self):
         self.summarize()
@@ -487,9 +487,9 @@ class Params:
         # self.VisRng = [[0.65, 1e5 ** 2], [0.65, 1e5 ** 2], [0.65, 1e5 ** 2], [0.65, 1e5 ** 2]]
         # self.SetupLbl = ['Reasonable', 'small', 'middle', 'large']
 
-        self.HtRng = [[50, 1e5 ** 2], [50, 75], [50, 1e5 ** 2], [50, 1e5 ** 2], [50, 1e5 ** 2], [20, 1e5 ** 2]]
-        self.VisRng = [[0.65, 1e5 ** 2], [0.65, 1e5 ** 2], [0.9, 1e5 ** 2], [0.65, 0.9], [0, 0.65], [0.2, 1e5 ** 2]]
-        self.SetupLbl = ['Reasonable', 'Reasonable_small', 'bare', 'partial', 'heavy', 'All']
+        self.HtRng = [[0, 1e5 ** 2]]
+        self.VisRng = [[0.0, 1e5 ** 2]]
+        self.SetupLbl = ['all']
 
     def __init__(self, iouType='segm'):
         if iouType == 'segm' or iouType == 'bbox':
