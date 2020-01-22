@@ -74,7 +74,7 @@ for w_ind in range(min_epoch, max_epoch):
     start_time = time.time()
     for f in range(num_imgs):
         filepath = val_data[f]['filepath']
-        images_dir_name = 'images{}/'.format(exp_name)
+        images_dir_name = 'images{}/'.format(exp_name if 'base' not in exp_name else '')
         #print('filepath: {}, images_dir_name: {}'.format(filepath, images_dir_name))
         filepath = filepath.replace('images/', images_dir_name)
         #print('filepath after replace: {}'.format(filepath))
