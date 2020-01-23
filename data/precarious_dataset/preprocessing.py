@@ -53,7 +53,7 @@ def convert_anno(anno_fname, split, order_id, shift_x, shift_y):
     converted_ann = {'filepath': img_fname,
                      'vis_bboxes': boxes,
                      'bboxes': np.asarray(boxes, dtype=np.int64),
-                     'ignore_areas': np.asarray([])}
+                     'ignoreareas': np.asarray([])}
 
     return converted_ann, test_anns, order_id
 
