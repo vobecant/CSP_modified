@@ -8,14 +8,14 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-SPLITS = ['Reasonable', 'Reasonable_small', 'bare', 'partial', 'heavy', 'All']
+SPLITS = ['All']
 
 
 def merge_results(exp_name):
     exp_results = {split: {} for split in SPLITS}
 
     epoch_offset = 0 if exp_name != '' else 27
-    main_path = '../../output/valresults/city/h/off_{}'.format(exp_name)
+    main_path = '../../output/valresults/precarious/h/off_{}'.format(exp_name)
     if not os.path.exists(main_path):
         print('{} does not exist. Skipping...'.format(main_path))
         return None
@@ -40,6 +40,7 @@ def merge_results(exp_name):
 
 def plot_results(all_results):
     for split in SPLITS:
+        fig, ax = plt.subplots()
         for exp_name, exp_results in all_results.items():
             if exp_results is None:
                 continue
@@ -48,12 +49,14 @@ def plot_results(all_results):
             plt.plot(x, y, label=exp_name)
         plt.legend()
         plt.title(split)
+        ax.yaxis.grid()
+        ax.set(xlabel='Epoch', ylabel=r'$MR^{-2}$ [%]')
         plt.savefig(split)
         plt.close()
 
 
 if __name__ == '__main__':
-    experiments = ['baseline', '1P', 'halfP', 'ganonymized', 'blurred']
+    experiments = ['baseline', '1P', 'halfP', 'blurred']
     fname = 'results.pkl'
 
     all_results = {}
@@ -65,5 +68,4 @@ if __name__ == '__main__':
     with open(fname, 'wb') as f:
         cPickle.dump(all_results, f)
 
-    print([s for s in SPLITS])
     plot_results(all_results)
