@@ -50,7 +50,7 @@ def plot_results(all_results):
         plt.legend()
         plt.title(split)
         ax.yaxis.grid()
-        ax.set(xlabel='Epoch', ylabel=r'MR^{-2} [%]')
+        ax.set(xlabel='Epoch', ylabel=r'$MR^{-2}$ [%]')
         plt.savefig(split)
         plt.close()
 
