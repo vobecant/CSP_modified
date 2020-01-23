@@ -40,7 +40,7 @@ def merge_results(exp_name):
         all_losses = [l.split(' ') for l in f.readlines()]
         losses = {i: float(l[0]) for i, l in enumerate(all_losses, 1) if i >= 50}
 
-    exp_results['loss'] = losses
+    exp_results['training loss'] = losses
 
     return exp_results
 
@@ -62,7 +62,7 @@ def plot_results(all_results):
         plt.close()
 
     # plot losses
-    split = 'loss'
+    split = 'training loss'
     fig, ax = plt.subplots()
     for exp_name, exp_results in all_results.items():
         if exp_results is None:
