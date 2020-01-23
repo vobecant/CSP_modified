@@ -21,7 +21,7 @@ else:
 
 # get the config parameters
 C = config.Config()
-C.gpu_ids = '0,1,2,3'
+C.gpu_ids = '0,1,2'  # '0,1,2,3'
 C.onegpu = 2
 C.size_train = (640, 1280)
 C.init_lr = 1e-5
