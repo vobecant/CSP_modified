@@ -1,0 +1,32 @@
+# 1) Create symlinks
+# a) extended blurred CS by 1 person
+EXP_NAME=1P_blurred
+FOLDER=/home/vobecant/PhD/CSP/data/cityperson/images_${EXP_NAME}
+mkdir ${FOLDER}
+cd ${FOLDER}
+ln -s /home/vobecant/datasets/GAN/cs_aug_onePerImg_15visible_nonoverlapping_blurred/cs/images/train train
+ln -s /home/vobecant/datasets/cityscapes/leftImg8bit/val val
+
+# b) extended blurred CS by half of the current persons
+EXP_NAME=halfP_blurred
+FOLDER=/home/vobecant/PhD/CSP/data/cityperson/images_${EXP_NAME}
+mkdir ${FOLDER}
+cd ${FOLDER}
+ln -s /home/vobecant/datasets/GAN/cs_aug_halfPerImg_15visible_nonoverlapping_blurred/cs/images/train train
+ln -s /home/vobecant/datasets/cityscapes/leftImg8bit/val val
+
+# 2) Create run files
+# a) extended blurred CS by 1 person
+python train_city.py 1P_blurred
+
+# b) extended blurred CS by half of the current persons
+python train_city.py halfP_blurred
+
+# 3) Run training on the new data
+
+# 4) Finish evaluation of the networks with completed training.
+# a) Run test_city.py with all of them.
+# b) for each experiment EXP_NAME:
+#   b1) convert the detections to json format with eval_city/dt_txt2json.py ${EXP_NAME}
+#   b1) Evaluate them with eval_city/eval_script/eval_demo.py #{EXP_NAME}
+# c) Plot the comparison of the results with eval_city/eval_script/plot_results.py
