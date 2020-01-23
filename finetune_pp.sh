@@ -1,13 +1,13 @@
 #!/bin/bash
 
-EXP_NAMES=( baseline 1P halfP blurred)
+EXP_NAMES=( baseline 1P halfP)
 
 
 for EXP_NAME in "${EXP_NAMES[@]}"
 do
     NET_NAMES=( exp2-${EXP_ORDINAL}_b1.0_equalize_gan exp2-${EXP_ORDINAL}_b1.0_equalize_pix2pixhd exp2-${EXP_ORDINAL}_b1.0_equalize_cpl)
 
-    EXPNAME="test_finetune_pp_${EXP_NAME}"
+    EXPNAME="fine_pp_${EXP_NAME}"
     echo "Test experiment ${EXP_NAME}"
 
 
@@ -25,6 +25,7 @@ do
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=a.vobecky@gmail.com
 
+python -u train_precarious.py ${EXP_NAME}"
 python -u test_precarious_finetuned.py "${EXP_NAME}"
 
 cd /home/vobecant/PhD/CSP/eval_precarious

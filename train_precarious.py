@@ -24,8 +24,8 @@ C = config.Config()
 C.gpu_ids = '0,1,2'  # '0,1,2,3'
 C.onegpu = 2
 C.size_train = (640, 1280)
-C.init_lr = 1e-5
-C.num_epochs = 10
+C.init_lr = 2e-4
+C.num_epochs = 30
 C.offset = True
 
 num_gpu = len(C.gpu_ids.split(','))
