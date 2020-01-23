@@ -33,7 +33,7 @@ batchsize = C.onegpu * num_gpu
 os.environ["CUDA_VISIBLE_DEVICES"] = C.gpu_ids
 
 # get the training data
-cache_path = 'data/precarious_dataset/train_annotations'
+cache_path = '/home/vobecant/datasets/precarious_dataset/train_annotations'
 with open(cache_path, 'rb') as fid:
     train_data = cPickle.load(fid)
 print('Loaded cache from {}'.format(cache_path))
