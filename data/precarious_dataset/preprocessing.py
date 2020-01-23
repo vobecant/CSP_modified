@@ -35,7 +35,7 @@ def convert_anno(anno_fname, split, order_id, shift_x, shift_y):
         cls, xywh = NAME2IDX[ann[0]], [int(a) for a in ann[1:5]]
         assert cls == 1
         xywh_shifted = shift_xywh(xywh, shift_x, shift_y)
-        bbox = xywh_shifted
+        bbox = xywh2xyxy(xywh_shifted)
         boxes.append(bbox)
         if split == 'test':
             test_ann = {"id": order_id,
@@ -43,8 +43,8 @@ def convert_anno(anno_fname, split, order_id, shift_x, shift_y):
                         "category_id": cls,
                         "iscrowd": 0,
                         "ignore": 0,
-                        "bbox": bbox,
-                        "vis_bbox": bbox,
+                        "bbox": xywh_shifted,
+                        "vis_bbox": xywh_shifted,
                         "height": xywh_shifted[-1],
                         "vis_ratio": 1}
             order_id += 1
