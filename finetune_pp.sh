@@ -25,7 +25,7 @@ do
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=a.vobecky@gmail.com
 
-python -u train_precarious.py ${EXP_NAME}"
+python -u train_precarious.py ${EXP_NAME}
 python -u test_precarious_finetuned.py "${EXP_NAME}"
 
 cd /home/vobecant/PhD/CSP/eval_precarious
