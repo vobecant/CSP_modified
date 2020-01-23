@@ -38,7 +38,7 @@ def merge_results(exp_name):
     losses_file = os.path.join(main_path.replace('valresults', 'valmodels'), 'records.txt')
     with open(losses_file, 'r') as f:
         all_losses = [l.split(' ') for l in f.readlines()]
-        losses = [float(l[0]) for l in all_losses]
+        losses = {i: float(l[0]) for i, l in enumerate(all_losses, 1) if i >= 50}
 
     exp_results['loss'] = losses
 
