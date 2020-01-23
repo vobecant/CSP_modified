@@ -48,6 +48,7 @@ def plot_results(all_results):
             plt.plot(x, y, label=exp_name)
         plt.legend()
         plt.title(split)
+        plt.axes().yaxis.grid()
         plt.savefig(split)
         plt.close()
 
