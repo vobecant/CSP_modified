@@ -33,14 +33,15 @@ batchsize = C.onegpu * num_gpu
 os.environ["CUDA_VISIBLE_DEVICES"] = C.gpu_ids
 
 # get the training data
-cache_path = '/home/vobecant/datasets/precarious_dataset/train_annotations'
+cache_path = '/home/vobecant/datasets/precarious_dataset/resized/train_annotations'
+images_dir = '/home/vobecant/datasets/precarious_dataset/resized/images'
 with open(cache_path, 'rb') as fid:
     train_data = cPickle.load(fid)
 print('Loaded cache from {}'.format(cache_path))
 num_imgs_train = len(train_data)
 random.shuffle(train_data)
 print('num of training samples: {}'.format(num_imgs_train))
-data_gen_train = data_generators.get_data_precarious(train_data, C, batchsize=batchsize, exp_name=exp_name)
+data_gen_train = data_generators.get_data_precarious(train_data, C, batchsize=batchsize, images_dir=images_dir)
 
 # define the base network (resnet here, can be MobileNet, etc)
 if C.network == 'resnet50':

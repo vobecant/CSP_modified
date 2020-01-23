@@ -2,6 +2,7 @@ from __future__ import absolute_import
 from __future__ import division
 # import numpy as np
 # import cv2
+import os
 import random
 from . import data_augment
 from .bbox_transform import *
@@ -195,7 +196,7 @@ def get_data(ped_data, C, batchsize=8, exp_name=''):
             yield np.copy(x_img_batch), [np.copy(y_seman_batch), np.copy(y_height_batch)]
 
 
-def get_data_precarious(ped_data, C, batchsize=8, exp_name=''):
+def get_data_precarious(ped_data, C, batchsize=8, images_dir=None):
     current_ped = 0
     sample_filepath_printed = False
     while True:
@@ -205,14 +206,13 @@ def get_data_precarious(ped_data, C, batchsize=8, exp_name=''):
             current_ped = 0
         for img_data in ped_data[current_ped:current_ped + batchsize]:
             try:
-                images_dir_name = 'images{}/'.format(exp_name if 'base' not in exp_name else '')
-                img_data['filepath'] = img_data['filepath'].replace('images/', images_dir_name)
-                if ('blurred' in images_dir_name) or ('anonymized' in images_dir_name):
-                    img_data['filepath'] = img_data['filepath'].replace('.png', '_blurred.jpg')
+                filepath = img_data['filepath']
+                img_name = os.path.split(filepath)[-1]
+                filepath = os.path.join(images_dir, img_name)
+                img_data['filepath'] = filepath
                 if not sample_filepath_printed:
                     print('Sample filepath: {}'.format(img_data['filepath']))
                     sample_filepath_printed = True
-                assert exp_name in img_data['filepath']
                 img_data, x_img = data_augment.augment(img_data, C)
                 if C.offset:
                     y_seman, y_height, y_offset = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=True)
