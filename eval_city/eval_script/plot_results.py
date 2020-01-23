@@ -35,6 +35,13 @@ def merge_results(exp_name):
             exp_results[split][epoch] = results[i]
         print('')
 
+    losses_file = os.path.join(main_path.replace('valresults', 'valmodels'), 'records.txt')
+    with open(losses_file, 'r') as f:
+        all_losses = [l.split(' ') for l in f.readlines()]
+        losses = [float(l[0]) for l in all_losses]
+
+    exp_results['loss'] = losses
+
     return exp_results
 
 
@@ -68,5 +75,4 @@ if __name__ == '__main__':
     with open(fname, 'wb') as f:
         cPickle.dump(all_results, f)
 
-    print([s for s in SPLITS])
     plot_results(all_results)
