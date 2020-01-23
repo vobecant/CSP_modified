@@ -19,7 +19,7 @@ do
 #SBATCH --output=${EXPNAME}.out
 #SBATCH --time=1-00:00:00
 #SBATCH --mem=30GB
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:3
 #SBATCH --cpus-per-task=16
 #SBATCH --partition=gpu
 #SBATCH --mail-type=BEGIN,END,FAIL
