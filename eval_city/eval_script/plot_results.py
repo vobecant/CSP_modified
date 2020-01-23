@@ -61,6 +61,22 @@ def plot_results(all_results):
         plt.savefig(split)
         plt.close()
 
+    # plot losses
+    split = 'loss'
+    fig, ax = plt.subplots()
+    for exp_name, exp_results in all_results.items():
+        if exp_results is None:
+            continue
+        split_result = exp_results[split]
+        x, y = list(split_result.keys()), list(split_result.values())
+        plt.plot(x, y, label=exp_name)
+    plt.legend()
+    plt.title(split)
+    ax.yaxis.grid()
+    ax.set(xlabel='Epoch', ylabel='loss')
+    plt.savefig(split)
+    plt.close()
+
 
 if __name__ == '__main__':
     experiments = ['baseline', '1P', 'halfP', 'blurred']
