@@ -53,7 +53,7 @@ def plot_results(all_results):
 
 
 if __name__ == '__main__':
-    experiments = ['baseline', '1P', 'halfP', 'ganonymized', 'blurred']
+    experiments = ['baseline', '1P', 'halfP', 'blurred']
     fname = 'results.pkl'
 
     all_results = {}
