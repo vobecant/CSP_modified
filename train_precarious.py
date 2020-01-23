@@ -91,7 +91,7 @@ else:
     else:
         model.compile(optimizer=optimizer, loss=[losses.cls_center, losses.regr_h])
 
-epoch_length = int(C.iter_per_epoch / batchsize)
+epoch_length = int(num_imgs_train / batchsize)
 iter_num = 0
 add_epoch = 0
 losses = np.zeros((epoch_length, 3))
