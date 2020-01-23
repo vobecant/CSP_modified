@@ -30,3 +30,6 @@ python train_city.py halfP_blurred
 #   b1) convert the detections to json format with eval_city/dt_txt2json.py ${EXP_NAME}
 #   b1) Evaluate them with eval_city/eval_script/eval_demo.py #{EXP_NAME}
 # c) Plot the comparison of the results with eval_city/eval_script/plot_results.py
+
+# 5) Evaluate all networks on Precarious Pedestrians
+#    experiments: ['baseline', '1P', 'halfP', 'blurred']
