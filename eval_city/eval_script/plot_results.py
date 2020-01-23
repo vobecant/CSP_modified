@@ -40,6 +40,7 @@ def merge_results(exp_name):
 
 def plot_results(all_results):
     for split in SPLITS:
+        fig, ax = plt.subplots()
         for exp_name, exp_results in all_results.items():
             if exp_results is None:
                 continue
@@ -48,9 +49,8 @@ def plot_results(all_results):
             plt.plot(x, y, label=exp_name)
         plt.legend()
         plt.title(split)
-        plt.axes().yaxis.grid()
-        plt.xlabel('Epoch')
-        plt.ylabel(r'MR^{-2} [%]')
+        ax.yaxis.grid()
+        ax.set(xlabel='Epoch', ylabel=r'MR^{-2} [%]')
         plt.savefig(split)
         plt.close()
 
