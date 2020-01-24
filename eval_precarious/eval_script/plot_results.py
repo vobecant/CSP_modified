@@ -11,11 +11,11 @@ import matplotlib.pyplot as plt
 SPLITS = ['All']
 
 
-def merge_results(exp_name):
+def merge_results(exp_name, finetuned=''):
     exp_results = {split: {} for split in SPLITS}
 
     epoch_offset = 0 if exp_name != '' else 27
-    main_path = '../../output/valresults/precarious/h/off_{}_finetuned'.format(exp_name)
+    main_path = '../../output/valresults/precarious/h/off_{}{}'.format(exp_name, finetuned)
     if not os.path.exists(main_path):
         print('{} does not exist. Skipping...'.format(main_path))
         return None
@@ -58,6 +58,7 @@ def plot_results(all_results):
 if __name__ == '__main__':
     experiments = ['baseline', '1P', 'halfP', 'blurred']
     fname = 'results.pkl'
+    finetuned = '_finetuned' if int(sys.argv[1]) == 1 else ''
 
     all_results = {}
     for exp_name in experiments:
