@@ -19,13 +19,13 @@ do
 #SBATCH --output=${EXPNAME}.out
 #SBATCH --time=1-00:00:00
 #SBATCH --mem=30GB
-#SBATCH --gres=gpu:4
+#SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=16
 #SBATCH --partition=gpu
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=a.vobecky@gmail.com
 
-python -u train_precarious.py ${EXP_NAME}
+#python -u train_precarious.py ${EXP_NAME}
 python -u test_precarious_finetuned.py "${EXP_NAME}"
 
 cd /home/vobecant/PhD/CSP/eval_precarious
@@ -33,8 +33,8 @@ python dt_txt2json.py /home/vobecant/PhD/CSP/output/valresults/precarious/h/off_
 
 cd eval_script
 python eval_precarious.py ${EXP_NAME}" > ${job_file}
+    
     sbatch ${job_file}
-
-	echo ""
-
+    echo ""
 done
+
