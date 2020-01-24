@@ -40,7 +40,7 @@ if __name__ == '__main__':
     print('New training set size: {} -> {} left for validation.'.format(len(train_anns),
                                                                         len(orig_train) - len(train_anns)))
 
-    with open(new_fname_train, 'rb') as f:
+    with open(new_fname_train, 'wb') as f:
         pickle.dump(train_anns, f, protocol=2)
 
     # step 2
@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
         print('New validation set size: {}.'.format(len(val_anns)))
 
-        with open(new_fname_val, 'rb') as f:
+        with open(new_fname_val, 'wb') as f:
             pickle.dump(val_anns, f, protocol=2)
 
     print('Splitted original annotations from {} to training cache {} and validation cache {}.'.format(orig_path,
