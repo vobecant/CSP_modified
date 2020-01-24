@@ -2,8 +2,12 @@ import sys, os
 
 if sys.version_info[0] == 2:
     import cPickle as pickle
+
+    py = 2
 else:
     import pickle
+
+    py = 3
 
 VAL_CITIES = ['aachen', 'bochum', 'dusseldorf']
 
@@ -22,7 +26,10 @@ if __name__ == '__main__':
     # step 1
     # create new training split from the EXTENDED original training split
     with open(orig_path, 'rb') as f:
-        orig_train = pickle.load(f, encoding='latin1')
+        if py == 3:
+            orig_train = pickle.load(f, encoding='latin1')
+        else:
+            orig_train = pickle.load(f)
 
     train_anns = []
     for ann in orig_train:
@@ -40,7 +47,10 @@ if __name__ == '__main__':
     # create new validation split from the NONEXTENDED original training split
     if not os.path.exists(new_fname_val):
         with open('../cityperson/train_h50', 'rb') as f:
-            orig_train = pickle.load(f, encoding='latin1')
+            if py == 3:
+                orig_train = pickle.load(f, encoding='latin1')
+            else:
+                orig_train = pickle.load(f)
 
         val_anns = []
         for ann in orig_train:
