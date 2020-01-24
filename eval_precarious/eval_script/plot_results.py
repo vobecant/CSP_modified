@@ -1,5 +1,5 @@
 from __future__ import print_function
-import os
+import os, sys
 import cPickle
 from coco import COCO
 from eval_MR_multisetup import COCOeval
