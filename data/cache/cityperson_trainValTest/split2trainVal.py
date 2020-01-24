@@ -19,7 +19,7 @@ def get_city(filename):
 
 if __name__ == '__main__':
     orig_path = sys.argv[1]
-    exp_name = os.path.split(orig_path)[1].split('_')[-1]
+    exp_name = '_'.join(os.path.split(orig_path)[1].split('_')[1:])
     new_fname_train = 'train_{}'.format(exp_name)
     new_fname_val = 'val'
 
