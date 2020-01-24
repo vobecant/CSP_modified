@@ -47,7 +47,7 @@ data_gen_train = data_generators.get_data_precarious(train_data, C, batchsize=ba
 if C.network == 'resnet50':
     from keras_csp import resnet50 as nn
 
-    weight_dir = 'output/valmodels/city/h/off{}'.format(exp_name)
+    weight_dir = 'output/valmodels/city_val/h/off{}'.format(exp_name)
     weight_path = os.path.join(weight_dir, 'best_val.hdf5')
 
 input_shape_img = (C.size_train[0], C.size_train[1], 3)

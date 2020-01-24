@@ -23,8 +23,18 @@ do
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=a.vobecky@gmail.com
 
+# train the detector on Cityperson
 python -u train_city_val.py ${EXP_NAME}
+# test the detector on images from Cityperson test split
+python -u test_city.py ${EXP_NAME}
+python -u test_city_bestVal.py ${EXP_NAME}
+python /home/vobecant/PhD/CSP/eval_city/dt_txt2json.py /home/vobecant/PhD/CSP/output/valresults/city_val/h/off_${EXP_NAME}
+# evaluate the detections
+python /home/vobecant/PhD/CSP/eval_city/eval_script/eval_demo_val.py ${EXP_NAME}
+
+# finetune the detector for Precarious Pedestrians
 python -u train_precarious.py ${EXP_NAME}
+# test the detector on images Precarious Pedestrians test split
 python -u test_precarious_finetuned.py "${EXP_NAME}"
 
 cd /home/vobecant/PhD/CSP/eval_precarious
