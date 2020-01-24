@@ -48,8 +48,8 @@ else:
 if not os.path.exists(out_path):
     os.makedirs(out_path)
 files = sorted(os.listdir(w_path))
-min_epoch = 1
-max_epoch = 11
+min_epoch = 11
+max_epoch = 31
 for w_ind in range(min_epoch, max_epoch):
     net_found = False
     for f in files:
