@@ -41,7 +41,7 @@ cd /home/vobecant/PhD/CSP/eval_precarious
 python dt_txt2json.py /home/vobecant/PhD/CSP/output/valresults/precarious/h/off_${EXP_NAME}_finetuned
 
 cd eval_script
-python eval_precarious.py ${EXP_NAME}" > ${job_file}
+python eval_precarious_finetuned.py ${EXP_NAME}" > ${job_file}
     sbatch ${job_file}
 
 	echo ""
