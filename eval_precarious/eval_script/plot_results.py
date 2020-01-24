@@ -15,7 +15,7 @@ def merge_results(exp_name):
     exp_results = {split: {} for split in SPLITS}
 
     epoch_offset = 0 if exp_name != '' else 27
-    main_path = '../../output/valresults/precarious/h/off_{}'.format(exp_name)
+    main_path = '../../output/valresults/precarious/h/off_{}_finetuned'.format(exp_name)
     if not os.path.exists(main_path):
         print('{} does not exist. Skipping...'.format(main_path))
         return None
