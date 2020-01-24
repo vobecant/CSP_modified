@@ -8,6 +8,8 @@ from keras.utils import generic_utils
 from keras.optimizers import Adam
 from keras.layers import Input
 from keras.models import Model
+from shutil import copyfile
+
 from keras_csp import config, data_generators
 from keras_csp import losses as losses
 
@@ -21,11 +23,12 @@ else:
 
 # get the config parameters
 C = config.Config()
-C.gpu_ids = '0,1,2,3'  # '0,1,2,3'
+C.gpu_ids = '0,1,2,3'
 C.onegpu = 2
 C.size_train = (640, 1280)
 C.init_lr = 2e-4
-C.num_epochs = 30
+C.num_epochs = 150
+max_nonimproving_epochs = 10
 C.offset = True
 
 num_gpu = len(C.gpu_ids.split(','))
@@ -33,22 +36,30 @@ batchsize = C.onegpu * num_gpu
 os.environ["CUDA_VISIBLE_DEVICES"] = C.gpu_ids
 
 # get the training data
-cache_path = '/home/vobecant/datasets/precarious_dataset/resized/train_annotations'
-images_dir = '/home/vobecant/datasets/precarious_dataset/resized/images'
-with open(cache_path, 'rb') as fid:
+cache_path_train = 'data/cache/cityperson_trainValTest/train{}'.format(exp_name if 'base' not in exp_name else '')
+with open(cache_path_train, 'rb') as fid:
     train_data = cPickle.load(fid)
-print('Loaded cache from {}'.format(cache_path))
+print('Loaded training cache from {}'.format(cache_path_train))
 num_imgs_train = len(train_data)
 random.shuffle(train_data)
 print('num of training samples: {}'.format(num_imgs_train))
-data_gen_train = data_generators.get_data_precarious(train_data, C, batchsize=batchsize, images_dir=images_dir)
+data_gen_train = data_generators.get_data(train_data, C, batchsize=batchsize, exp_name=exp_name)
+
+# get the validation data
+cache_path_val = 'data/cache/cityperson_trainValTest/val'
+with open(cache_path_val, 'rb') as fid:
+    val_data = cPickle.load(fid)
+print('Loaded validation cache from {}'.format(cache_path_val))
+num_imgs_val = len(val_data)
+random.shuffle(val_data)
+print('num of validation samples: {}'.format(num_imgs_val))
+data_gen_val = data_generators.get_data_eval(val_data, C, batchsize=batchsize)
 
 # define the base network (resnet here, can be MobileNet, etc)
 if C.network == 'resnet50':
     from keras_csp import resnet50 as nn
 
-    weight_dir = 'output/valmodels/city/h/off{}'.format(exp_name)
-    weight_path = os.path.join(weight_dir, 'best_val.hdf5')
+    weight_path = 'data/models/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
 
 input_shape_img = (C.size_train[0], C.size_train[1], 3)
 img_input = Input(shape=input_shape_img)
@@ -69,9 +80,9 @@ model_tea.load_weights(weight_path, by_name=True)
 print('load weights from {}'.format(weight_path))
 
 if C.offset:
-    out_path = 'output/valmodels/precarious/{}/off{}'.format(C.scale, exp_name)
+    out_path = 'output/valmodels/city/{}/off{}'.format(C.scale, exp_name)
 else:
-    out_path = 'output/valmodels/precarious/{}/nooff{}'.format(C.scale, exp_name)
+    out_path = 'output/valmodels/city/{}/nooff{}'.format(C.scale, exp_name)
 if not os.path.exists(out_path):
     os.makedirs(out_path)
 res_file = os.path.join(out_path, 'records.txt')
@@ -85,17 +96,23 @@ else:
     else:
         model.compile(optimizer=optimizer, loss=[losses.cls_center, losses.regr_h])
 
-epoch_length = int(num_imgs_train / batchsize)
-print('Make {} iterations per epoch (batch size: {})'.format(epoch_length, batchsize))
+epoch_length = int(C.iter_per_epoch / batchsize)
 iter_num = 0
 add_epoch = 0
 losses = np.zeros((epoch_length, 3))
 
-best_loss = np.Inf
+best_loss_train = np.Inf
+best_loss_val = np.Inf
+prev_loss_val = np.Inf
+nonimproving_epochs = 0
 print('Starting training with lr {} and alpha {}'.format(C.init_lr, C.alpha))
 start_time = time.time()
-total_loss_r, cls_loss_r1, regr_loss_r1, offset_loss_r1 = [], [], [], []
+total_loss_r, cls_loss_r1, regr_loss_r1, offset_loss_r1, val_loss_history = [], [], [], [], []
 for epoch_num in range(C.num_epochs):
+    if nonimproving_epochs == max_nonimproving_epochs:
+        print('Maximum number of continuous nonimproving epochs reached! Ending training after epoch {}'.format(
+            epoch_num))
+        break
     progbar = generic_utils.Progbar(epoch_length)
     print('Epoch {}/{}'.format(epoch_num + 1 + add_epoch, C.num_epochs + C.add_epoch))
     while True:
@@ -137,24 +154,55 @@ for epoch_num in range(C.num_epochs):
                 regr_loss_r1.append(regr_loss1)
                 offset_loss_r1.append(offset_loss1)
                 print('Total loss: {}'.format(total_loss))
-                print('Elapsed time: {}'.format(time.time() - start_time))
 
                 iter_num = 0
                 start_time = time.time()
 
-                if total_loss < best_loss:
-                    print('Total loss decreased from {} to {}, saving weights'.format(best_loss, total_loss))
-                    best_loss = total_loss
-                model_tea.save_weights(
-                    os.path.join(out_path, 'net_e{}_l{}.hdf5'.format(epoch_num + 1 + add_epoch, total_loss)))
+                if total_loss < best_loss_train:
+                    print('Total loss decreased from {} to {}, saving weights'.format(best_loss_train, total_loss))
+                    best_loss_train = total_loss
+                model_savefile = os.path.join(out_path,
+                                              'net_e{}_l{}.hdf5'.format(epoch_num + 1 + add_epoch, total_loss))
+                model_tea.save_weights(model_savefile)
+
+                # validate the model
+                print('Start evaluation.')
+                val_completed = False
+                val_losses = []
+                while not val_completed:
+                    X, Y, val_completed = next(data_gen_val)
+                    val_loss = model.test_on_batch(X, Y)
+                    val_losses.append(val_loss)
+                cur_loss_val = np.mean(val_losses)
+                val_loss_history.append(cur_loss_val)
+                if cur_loss_val < best_loss_val:
+                    print('New best validation loss: {} -> {} . '.format(best_loss_val, cur_loss_val), end='')
+                    best_loss_val = cur_loss_val
+                    val_model_savefile = os.path.join(out_path, 'best_val.hdf5')
+                    copyfile(model_savefile, val_model_savefile)
+                    print('Saved the network to {}'.format(val_model_savefile))
+                else:
+                    print('Current validation loss: {}, best validation loss so far: {}')
+                if cur_loss_val > prev_loss_val:
+                    nonimproving_epochs += 1
+                    print('Validation loss did not improve for {} epochs (max {} nonimproving epochs allowed)'.format(
+                        nonimproving_epochs, max_nonimproving_epochs))
+                else:
+                    nonimproving_epochs = 0
+                prev_loss_val = cur_loss_val
+
+                print('Elapsed time: {}'.format(time.time() - start_time))
+                # End of the epoch
                 break
+
         except Exception as e:
             print('Exception: {}'.format(e))
             continue
+
     records = np.concatenate((np.asarray(total_loss_r).reshape((-1, 1)),
                               np.asarray(cls_loss_r1).reshape((-1, 1)),
                               np.asarray(regr_loss_r1).reshape((-1, 1)),
-                              np.asarray(offset_loss_r1).reshape((-1, 1)),),
-                             axis=-1)
+                              np.asarray(offset_loss_r1).reshape((-1, 1)),
+                              np.asarray(val_loss_history).reshape((-1, 1))), axis=-1)
     np.savetxt(res_file, np.array(records), fmt='%.6f')
-print('Training complete, exiting.')
+    print('Training complete, exiting.')
