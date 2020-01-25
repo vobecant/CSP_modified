@@ -16,6 +16,7 @@ Usage:
     The script processes each detections file and saves its JSON version to the same folder.
 """
 
+
 def txt2jsonFile(res):
     out_arr = []
     for det in res:
@@ -29,6 +30,19 @@ def txt2jsonFile(res):
                     'score': score}
         out_arr.append(det_dict)
     return out_arr
+
+
+def convert_file(dt_path):
+    if not os.path.exists(dt_path):
+        print('File was not found! Skipping...')
+        return None
+    with open(dt_path, 'r') as f:
+        res = f.readlines()
+    out_path = os.path.join(d, 'val_dt.json')
+    res_json = txt2jsonFile(res)
+    with open(out_path, 'w') as f:
+        json.dump(res_json, f)
+    return out_path
 
 
 if __name__ == '__main__':
@@ -49,19 +63,7 @@ if __name__ == '__main__':
         dt_coco = {}
         dt_path = os.path.join(d, 'val_det.txt')
         print('Processing detections from file {}'.format(dt_path))
-        if not os.path.exists(dt_path):
-            print('File was not found! Skipping...')
-            continue
-        with open(dt_path, 'r') as f:
-            res = f.readlines()
-        out_path = os.path.join(d, 'val_dt.json')
-        if os.path.exists(out_path):
-            print('File was already processed. Skipping...')
-            continue
-        res_json = txt2jsonFile(res)
-
-        with open(out_path, 'w') as f:
-            json.dump(res_json, f)
+        out_path = convert_file(dt_path)
         print('Saved detections to {}\n'.format(out_path))
 
     elapsed_t = time.time() - start_t

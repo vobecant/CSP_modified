@@ -4,7 +4,7 @@ from coco import COCO
 from eval_MR_multisetup import COCOeval
 
 
-def eval_json_reasonable(annFile,resFile):
+def eval_json_reasonable(annFile, resFile):
     dt_path = os.path.split(resFile)[0]
     respath = os.path.join(dt_path, 'results.txt')
     res_file = open(respath, "w")
@@ -37,7 +37,7 @@ else:
 
 # initialize COCO ground truth api
 annFile = '../val_gt.json'
-main_path = '../../output/valresults/city_val/h/off{}'.format(exp_name)
+main_path = '../../output/valresults/city_valMR/h/off{}'.format(exp_name)
 print('Looking for detections in {}'.format(main_path))
 
 for f in sorted(os.listdir(main_path)):
