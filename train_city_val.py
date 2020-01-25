@@ -186,7 +186,8 @@ for epoch_num in range(C.num_epochs):
                     copyfile(model_savefile, val_model_savefile)
                     print('Saved the network to {}'.format(val_model_savefile))
                 else:
-                    print('Current validation loss: {}, best validation loss so far: {}')
+                    print('Current validation loss: {}, best validation loss so far: {}'.format(cur_loss_val,
+                                                                                                best_loss_val))
                 if cur_loss_val > prev_loss_val:
                     nonimproving_epochs += 1
                     print('Validation loss did not improve for {} epochs (max {} nonimproving epochs allowed)'.format(
