@@ -81,11 +81,13 @@ if __name__ == '__main__':
 
         print('New validation set size: {}.'.format(len(val_anns)))
 
-        with open(new_fname_val, 'wb') as f:
-            pickle.dump(val_anns, f, protocol=2)
+        if not os.path.exists(new_fname_val):
+            with open(new_fname_val, 'wb') as f:
+                pickle.dump(val_anns, f, protocol=2)
 
-        with open(new_fname_val_json, 'wb') as f:
-            pickle.dump(val_gt_json, f, protocol=2)
+        if not os.path.exists(new_fname_val_json):
+            with open(new_fname_val_json, 'wb') as f:
+                pickle.dump(val_gt_json, f, protocol=2)
 
     print('Splitted original annotations from {} to training cache {} and validation cache {}.'.format(orig_path,
                                                                                                        new_fname_train,
