@@ -214,7 +214,7 @@ def get_data_eval(ped_data, C, batchsize=8, exp_name=''):
                 if not sample_filepath_printed:
                     print('Sample filepath: {}'.format(img_data['filepath']))
                     sample_filepath_printed = True
-                assert exp_name in img_data['filepath']
+                assert (exp_name in img_data['filepath']) or 'baseline' in exp_name
                 img_data, x_img = data_augment.augment(img_data, C)
                 if C.offset:
                     y_seman, y_height, y_offset = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=True)
