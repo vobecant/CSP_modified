@@ -36,7 +36,7 @@ batchsize = C.onegpu * num_gpu
 os.environ["CUDA_VISIBLE_DEVICES"] = C.gpu_ids
 
 # get the training data
-cache_path_train = 'data/cache/cityperson_trainValTest/train_h50{}'.format(exp_name if 'base' not in exp_name else '')
+cache_path_train = 'data/cache/cityperson_trainValTest/train_h50{}'.format(exp_name)
 with open(cache_path_train, 'rb') as fid:
     train_data = cPickle.load(fid)
 print('Loaded training cache from {}'.format(cache_path_train))
