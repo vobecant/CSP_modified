@@ -54,6 +54,8 @@ num_imgs_val = len(val_data)
 random.shuffle(val_data)
 print('num of validation samples: {}'.format(num_imgs_val))
 data_gen_val = data_generators.get_data_eval(val_data, C, batchsize=batchsize)
+n_iter_eval = len(val_data) // batchsize
+eval_report_after = n_iter_eval // 10
 
 # define the base network (resnet here, can be MobileNet, etc)
 if C.network == 'resnet50':
@@ -167,12 +169,17 @@ for epoch_num in range(C.num_epochs):
 
                 # validate the model
                 print('Start evaluation.')
+                progbar_val = generic_utils.Progbar(n_iter_eval)
                 val_completed = False
                 val_losses = []
+                val_iter_done = 0
                 while not val_completed:
                     X, Y, val_completed = next(data_gen_val)
                     val_loss = model.test_on_batch(X, Y)
                     val_losses.append(val_loss)
+                    val_iter_done += 1
+                    if val_iter_done % n_iter_eval == 0:
+                        progbar_val.update(val_iter_done, [('val_loss', np.mean(val_losses))])
                 cur_loss_val = np.mean(val_losses)
                 val_loss_history.append(cur_loss_val)
                 if cur_loss_val < best_loss_val:
