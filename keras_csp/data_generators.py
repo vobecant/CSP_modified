@@ -245,7 +245,7 @@ def get_data_eval(ped_data, C, batchsize=8, exp_name=''):
         if C.offset:
             y_offset_batch = np.concatenate(y_offset_batch, axis=0)
         current_ped = next_ped
-        last_batch = next_ped == len(ped_data)
+        last_batch = next_ped == max_sample_id
         if C.offset:
             yield np.copy(x_img_batch), [np.copy(y_seman_batch), np.copy(y_height_batch),
                                          np.copy(y_offset_batch)], last_batch
