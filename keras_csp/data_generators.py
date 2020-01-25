@@ -198,13 +198,14 @@ def get_data(ped_data, C, batchsize=8, exp_name=''):
 
 def get_data_eval(ped_data, C, batchsize=8, exp_name=''):
     current_ped = 0
+    max_sample_id = (len(ped_data) // batchsize) * batchsize
     sample_filepath_printed = False
     while True:
         x_img_batch, y_seman_batch, y_height_batch, y_offset_batch = [], [], [], []
         if current_ped == len(ped_data):
             random.shuffle(ped_data)
             current_ped = 0
-        next_ped = min([len(ped_data), current_ped + batchsize])
+        next_ped = min([max_sample_id, current_ped + batchsize])
         for img_data in ped_data[current_ped:next_ped]:
             try:
                 images_dir_name = 'images{}/'.format(exp_name if 'base' not in exp_name else '')
