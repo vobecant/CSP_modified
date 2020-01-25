@@ -157,9 +157,6 @@ for epoch_num in range(C.num_epochs):
                 offset_loss_r1.append(offset_loss1)
                 print('Total loss: {}'.format(total_loss))
 
-                iter_num = 0
-                start_time = time.time()
-
                 if total_loss < best_loss_train:
                     print('Total loss decreased from {} to {}, saving weights'.format(best_loss_train, total_loss))
                     best_loss_train = total_loss
@@ -199,6 +196,8 @@ for epoch_num in range(C.num_epochs):
                 prev_loss_val = cur_loss_val
 
                 print('Elapsed time: {}'.format(time.time() - start_time))
+                iter_num = 0
+                start_time = time.time()
                 # End of the epoch
                 break
 
