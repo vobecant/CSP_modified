@@ -56,9 +56,6 @@ if __name__ == '__main__':
         with open(dt_path, 'r') as f:
             res = f.readlines()
         out_path = os.path.join(d, 'val_dt.json')
-        if os.path.exists(out_path):
-            print('File was already processed. Skipping...')
-            continue
         res_json = txt2jsonFile(res)
 
         with open(out_path, 'w') as f:

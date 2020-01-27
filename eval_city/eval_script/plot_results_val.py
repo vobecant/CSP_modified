@@ -15,6 +15,7 @@ def merge_results(exp_name):
     exp_results = {split: {} for split in SPLITS}
 
     main_path = '../../output/valresults/city_val/h/off_{}'.format(exp_name)
+    print('Search main path {} for results.')
     if not os.path.exists(main_path):
         print('{} does not exist. Skipping...'.format(main_path))
         return None

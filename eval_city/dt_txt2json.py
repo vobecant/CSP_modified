@@ -33,9 +33,6 @@ def txt2jsonFile(res):
 
 
 def convert_file(dt_path):
-    if not os.path.exists(dt_path):
-        print('File was not found! Skipping...')
-        return None
     with open(dt_path, 'r') as f:
         res = f.readlines()
     out_path = os.path.join(dt_path, 'val_dt.json')

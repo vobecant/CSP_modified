@@ -25,7 +25,7 @@ do
 #SBATCH --output=${EXPNAME}.out
 #SBATCH --time=3-00:00:00
 #SBATCH --mem=30GB
-#SBATCH --gres=gpu:4
+#SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=16
 #SBATCH --partition=gpu
 #SBATCH --mail-type=BEGIN,END,FAIL
@@ -34,9 +34,6 @@ do
 ##################
 #   CITYPERSON   #
 ##################
-# train the detector on Cityperson
-python -u train_city_val.py ${EXP_NAME}
-
 # test the detector (with best val loss) on images from Cityperson test split and convert them to JSON file
 python -u test_city_bestVal.py ${EXP_NAME}
 RES_FILE=/home/vobecant/PhD/CSP/output/valresults/city_val/h/off_${EXP_NAME}
@@ -48,15 +45,12 @@ python /home/vobecant/PhD/CSP/eval_city/eval_script/eval_demo_val.py ${RES_FILE}
 ##################
 #   PRECARIOUS   #
 ##################
-# finetune the detector for Precarious Pedestrians
-python -u train_precarious.py ${EXP_NAME}
-
-# test the detector on images Precarious Pedestrians test split and convert it to JSON file
+# test the detector on images Precarious Pedestrians test split
 python -u test_precarious_finetuned.py "${EXP_NAME}"
+
 cd /home/vobecant/PhD/CSP/eval_precarious
 python dt_txt2json.py /home/vobecant/PhD/CSP/output/valresults/precarious/h/off_${EXP_NAME}_finetuned
 
-#evaluate the detections
 cd eval_script
 python eval_precarious_finetuned.py ${EXP_NAME}" > ${job_file}
     sbatch ${job_file}
