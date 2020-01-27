@@ -6,7 +6,7 @@ EXP_NAMES=( baseline 1P halfP)
 
 for EXP_NAME in "${EXP_NAMES[@]}"
 do
-    EXPNAME="csp_${EXP_NAME}_valMR"
+    EXPNAME="t_${EXP_NAME}_valMR"
     echo "Run experiment ${EXP_NAME}"
 
 
