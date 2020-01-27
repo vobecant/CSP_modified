@@ -25,7 +25,7 @@ C.gpu_ids = '0,1,2,3'  # '0,1,2,3'
 C.onegpu = 2
 C.size_train = (640, 1280)
 C.init_lr = 2e-4
-C.num_epochs = 50
+C.num_epochs = 60
 C.offset = True
 
 num_gpu = len(C.gpu_ids.split(','))
