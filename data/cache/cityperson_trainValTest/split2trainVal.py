@@ -1,3 +1,4 @@
+import json
 import sys, os
 
 if sys.version_info[0] == 2:
@@ -86,8 +87,8 @@ if __name__ == '__main__':
                 pickle.dump(val_anns, f, protocol=2)
 
         if not os.path.exists(new_fname_val_json):
-            with open(new_fname_val_json, 'wb') as f:
-                pickle.dump(val_gt_json, f, protocol=2)
+            with open(new_fname_val_json, 'w') as f:
+                json.dump(val_gt_json,f)
 
     print('Splitted original annotations from {} to training cache {} and validation cache {}.'.format(orig_path,
                                                                                                        new_fname_train,

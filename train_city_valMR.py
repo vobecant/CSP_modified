@@ -56,7 +56,7 @@ cache_path_val = 'data/cache/cityperson_trainValTest/val'
 annFile = 'data/cityperson_trainValTest/val_gt.json'
 with open(cache_path_val, 'rb') as fid:
     val_data = cPickle.load(fid)
-annFile = 'data/cache/cityperson_trainValTest/val_gt.json'
+annFile = '/home/vobecant/PhD/CSP/data/cache/cityperson_trainValTest/val_gt.json'
 data_gen_val = data_generators.get_data_eval(val_data, C, batchsize=batchsize, exp_name=exp_name)
 
 # define the base network (resnet here, can be MobileNet, etc)
