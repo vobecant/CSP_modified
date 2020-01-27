@@ -28,16 +28,12 @@ def eval_json_reasonable(annFile,resFile):
 annType = 'bbox'  # specify type here
 
 # parse experiment name
-if len(sys.argv) == 1:
-    exp_name = ''
-    print('No experiment name given. Run with default parameters.')
-else:
-    exp_name = '_{}'.format(sys.argv[1])
-    print("Given experiment name: '{}'.".format(sys.argv[1]))
+assert len(sys.argv)==2, "You must specify path to the root directory with results!"
+main_path = sys.argv[1]
+print("Given experiment name: '{}'.".format(sys.argv[1]))
 
 # initialize COCO ground truth api
-annFile = '../val_gt.json'
-main_path = '../../output/valresults/city_val/h/off{}'.format(exp_name)
+annFile = '/home/vobecant/PhD/CSP/eval_city/val_gt.json'
 print('Looking for detections in {}'.format(main_path))
 
 for f in sorted(os.listdir(main_path)):

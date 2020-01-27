@@ -33,12 +33,14 @@ do
 
 # train the detector on Cityperson
 python -u train_city_val.py ${EXP_NAME}
-# test the detector on images from Cityperson test split
-python -u test_city.py ${EXP_NAME}
+
+# test the detector (with best val loss) on images from Cityperson test split and convert them to JSON file
 python -u test_city_bestVal.py ${EXP_NAME}
-python /home/vobecant/PhD/CSP/eval_city/dt_txt2json.py /home/vobecant/PhD/CSP/output/valresults/city_val/h/off_${EXP_NAME}
+RES_FILE=/home/vobecant/PhD/CSP/output/valresults/city_val/h/off_${EXP_NAME}
+python /home/vobecant/PhD/CSP/eval_city/dt_txt2json.py ${RES_FILE}
+
 # evaluate the detections
-python /home/vobecant/PhD/CSP/eval_city/eval_script/eval_demo_val.py ${EXP_NAME}
+python /home/vobecant/PhD/CSP/eval_city/eval_script/eval_demo_val.py ${RES_FILE}
 
 # finetune the detector for Precarious Pedestrians
 python -u train_precarious.py ${EXP_NAME}
