@@ -172,12 +172,14 @@ for epoch_num in range(C.num_epochs):
                 res_path = os.path.join(out_path, 'valDt_ep{}'.format(epoch_num))
                 if not os.path.exists(res_path):
                     os.makedirs(res_path)
-                print(res_path)
+                print('res_path directory: {}'.format(res_path))
                 res_file = os.path.join(res_path, 'val_det.txt')
                 res_all = []
                 for f in range(len(val_data)):
                     filepath = val_data[f]['filepath']
                     img = cv2.imread(filepath)
+                    img = cv2.resize(img, (1280, 640),
+                                     interpolation=cv2.INTER_CUBIC)  # need to resize to correct input size
                     x_rcnn = format_img(img, C)
                     Y = model.predict(x_rcnn)
                     if C.offset:
