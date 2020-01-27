@@ -1,5 +1,13 @@
 #!/bin/bash
 
+#conda deactivate
+#ml purge
+#conda activate csp
+#ml cuDNN/7.0.5.15-fosscuda-2018a
+#ml CUDA/10.0.130
+#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/opt/apps/software/CUDA/10.0.130/lib64:/home/vobecant/miniconda3/envs/csp/lib/
+
+
 EXP_NAMES=( baseline 1P halfP blurred)
 
 
