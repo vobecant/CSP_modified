@@ -12,8 +12,7 @@ from keras.layers import Input
 from keras.models import Model
 from shutil import copyfile
 
-from eval_city.dt_txt2json import convert_file
-from eval_city.eval_script.eval_demo_val import eval_json_reasonable
+from eval_utils import *
 from keras_csp import config, data_generators, bbox_process
 from keras_csp import losses as losses
 
