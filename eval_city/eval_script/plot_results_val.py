@@ -21,6 +21,8 @@ def merge_results(exp_name):
     for epoch in sorted(os.listdir(main_path)):
         print('file: {}'.format(epoch))
         dt_path = os.path.join(main_path, epoch)
+        if 'best' in epoch:
+            continue
         epoch = int(epoch)
         respath = os.path.join(dt_path, 'results.txt')
         if not os.path.exists(respath):
