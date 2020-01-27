@@ -203,7 +203,7 @@ def get_data_eval(ped_data, C, batchsize=8, exp_name=''):
     while True:
         x_img_batch, y_seman_batch, y_height_batch, y_offset_batch = [], [], [], []
         if current_ped == max_sample_id:
-            random.shuffle(ped_data)
+            # random.shuffle(ped_data)
             current_ped = 0
         next_ped = min([max_sample_id, current_ped + batchsize])
         for img_data in ped_data[current_ped:next_ped]:

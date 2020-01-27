@@ -31,6 +31,7 @@ C = config.Config()
 C.gpu_ids = '0,1,2,3'
 C.onegpu = 2
 C.size_train = (640, 1280)
+C.size_test = C.size_train
 C.init_lr = 2e-4
 C.num_epochs = 150
 max_nonimproving_epochs = 5
@@ -56,6 +57,7 @@ annFile = 'data/cityperson_trainValTest/val_gt.json'
 with open(cache_path_val, 'rb') as fid:
     val_data = cPickle.load(fid)
 annFile = 'data/cache/cityperson_trainValTest/val_gt.json'
+data_gen_val = data_generators.get_data_eval(val_data, C, batchsize=batchsize, exp_name=exp_name)
 
 # define the base network (resnet here, can be MobileNet, etc)
 if C.network == 'resnet50':
@@ -118,117 +120,117 @@ for epoch_num in range(C.num_epochs):
     progbar = generic_utils.Progbar(epoch_length)
     print('Epoch {}/{}'.format(epoch_num + 1 + add_epoch, C.num_epochs + C.add_epoch))
     while True:
-        try:
-            X, Y = next(data_gen_train)
-            loss_s1 = model.train_on_batch(X, Y)
+        # try:
+        X, Y = next(data_gen_train)
+        loss_s1 = model.train_on_batch(X, Y)
 
-            for l in model_tea.layers:
-                weights_tea = l.get_weights()
-                if len(weights_tea) > 0:
-                    if num_gpu > 1:
-                        weights_stu = model_stu.get_layer(name=l.name).get_weights()
-                    else:
-                        weights_stu = model.get_layer(name=l.name).get_weights()
-                    weights_tea = [C.alpha * w_tea + (1 - C.alpha) * w_stu for (w_tea, w_stu) in
-                                   zip(weights_tea, weights_stu)]
-                    l.set_weights(weights_tea)
-            # print loss_s1
-            losses[iter_num, 0] = loss_s1[1]
-            losses[iter_num, 1] = loss_s1[2]
-            if C.offset:
-                losses[iter_num, 2] = loss_s1[3]
-            else:
-                losses[iter_num, 2] = 0
+        for l in model_tea.layers:
+            weights_tea = l.get_weights()
+            if len(weights_tea) > 0:
+                if num_gpu > 1:
+                    weights_stu = model_stu.get_layer(name=l.name).get_weights()
+                else:
+                    weights_stu = model.get_layer(name=l.name).get_weights()
+                weights_tea = [C.alpha * w_tea + (1 - C.alpha) * w_stu for (w_tea, w_stu) in
+                               zip(weights_tea, weights_stu)]
+                l.set_weights(weights_tea)
+        # print loss_s1
+        losses[iter_num, 0] = loss_s1[1]
+        losses[iter_num, 1] = loss_s1[2]
+        if C.offset:
+            losses[iter_num, 2] = loss_s1[3]
+        else:
+            losses[iter_num, 2] = 0
 
-            iter_num += 1
-            if iter_num % 20 == 0:
-                progbar.update(iter_num,
-                               [('cls', np.mean(losses[:iter_num, 0])), ('regr_h', np.mean(losses[:iter_num, 1])),
-                                ('offset', np.mean(losses[:iter_num, 2]))])
-            if iter_num == epoch_length:
-                cls_loss1 = np.mean(losses[:, 0])
-                regr_loss1 = np.mean(losses[:, 1])
-                offset_loss1 = np.mean(losses[:, 2])
-                total_loss = cls_loss1 + regr_loss1 + offset_loss1
+        iter_num += 1
+        if iter_num % 20 == 0:
+            progbar.update(iter_num,
+                           [('cls', np.mean(losses[:iter_num, 0])), ('regr_h', np.mean(losses[:iter_num, 1])),
+                            ('offset', np.mean(losses[:iter_num, 2]))])
+        if iter_num == epoch_length:
+            cls_loss1 = np.mean(losses[:, 0])
+            regr_loss1 = np.mean(losses[:, 1])
+            offset_loss1 = np.mean(losses[:, 2])
+            total_loss = cls_loss1 + regr_loss1 + offset_loss1
 
-                total_loss_r.append(total_loss)
-                cls_loss_r1.append(cls_loss1)
-                regr_loss_r1.append(regr_loss1)
-                offset_loss_r1.append(offset_loss1)
-                print('Total loss: {}'.format(total_loss))
+            total_loss_r.append(total_loss)
+            cls_loss_r1.append(cls_loss1)
+            regr_loss_r1.append(regr_loss1)
+            offset_loss_r1.append(offset_loss1)
+            print('Total loss: {}'.format(total_loss))
 
-                if total_loss < best_loss_train:
-                    print('Total loss decreased from {} to {}, saving weights'.format(best_loss_train, total_loss))
-                    best_loss_train = total_loss
-                model_savefile = os.path.join(out_path,
-                                              'net_e{}_l{}.hdf5'.format(epoch_num + 1 + add_epoch, total_loss))
-                model_tea.save_weights(model_savefile)
+            if total_loss < best_loss_train:
+                print('Total loss decreased from {} to {}, saving weights'.format(best_loss_train, total_loss))
+                best_loss_train = total_loss
+            model_savefile = os.path.join(out_path,
+                                          'net_e{}_l{}.hdf5'.format(epoch_num + 1 + add_epoch, total_loss))
+            model_tea.save_weights(model_savefile)
 
-                # validate the model
-                print('Start evaluation.')
-                # TODO: compute MR-2 for validation on *REASONABLE* subset
-                # 1) run equivalent of test_city.py with the latest network
-                start_time_val = time.time()
-                res_path = os.path.join(out_path, 'valDt_ep{}'.format(epoch_num))
-                if not os.path.exists(res_path):
-                    os.makedirs(res_path)
-                print('res_path directory: {}'.format(res_path))
-                res_file = os.path.join(res_path, 'val_det.txt')
-                res_all = []
-                for f in range(len(val_data)):
-                    filepath = val_data[f]['filepath']
-                    img = cv2.imread(filepath)
-                    img = cv2.resize(img, (1280, 640),
-                                     interpolation=cv2.INTER_CUBIC)  # need to resize to correct input size
-                    x_rcnn = format_img(img, C)
-                    Y = model.predict(x_rcnn)
-                    if C.offset:
-                        boxes = bbox_process.parse_det_offset(Y, C, score=0.1, down=4)
-                    else:
-                        boxes = bbox_process.parse_det(Y, C, score=0.1, down=4, scale=C.scale)
+            # validate the model
+            print('Start evaluation.')
+            # TODO: compute MR-2 for validation on *REASONABLE* subset
+            # 1) run equivalent of test_city.py with the latest network
+            start_time_val = time.time()
+            res_path = os.path.join(out_path, 'valDt_ep{}'.format(epoch_num))
+            if not os.path.exists(res_path):
+                os.makedirs(res_path)
+            res_file = os.path.join(res_path, 'val_det.txt')
+            print('Save validation detections to {}'.format(res_file))
+            res_all = []
+            val_completed = False
+            img_num = 0
+            while not val_completed:
+                X, _, val_completed = next(data_gen_val)
+                Y = model.predict(X)
+                if C.offset:
+                    boxes_batch = bbox_process.parse_det_offset_batch(Y, C, score=0.1, down=4)
+                else:
+                    boxes_batch = bbox_process.parse_det(Y, C, score=0.1, down=4, scale=C.scale)
+                for boxes in boxes_batch:
                     if len(boxes) > 0:
-                        f_res = np.repeat(f + 1, len(boxes), axis=0).reshape((-1, 1))
+                        f_res = np.repeat(img_num + 1, len(boxes), axis=0).reshape((-1, 1))
                         boxes[:, [2, 3]] -= boxes[:, [0, 1]]
                         res_all += np.concatenate((f_res, boxes), axis=-1).tolist()
-                np.savetxt(res_file, np.array(res_all), fmt='%6f')
+                    img_num += 1
+            np.savetxt(res_file, np.array(res_all), fmt='%6f')
 
-                # 2) transform detections from .txt file to JSON
-                json_filepath = convert_file(res_file)
+            # 2) transform detections from .txt file to JSON
+            json_filepath = convert_file(res_file)
 
-                # 3) run evaluation for the REASONABLE subset
-                cur_mr_val_reasonable = eval_json_reasonable(annFile, json_filepath)
+            # 3) run evaluation for the REASONABLE subset
+            cur_mr_val_reasonable = eval_json_reasonable(annFile, json_filepath)
 
-                # 4) compare to the best reasonable MR-2 so far
-                val_mr_history.append(cur_mr_val_reasonable)
-                if cur_mr_val_reasonable < best_mr_val:
-                    print('New best validation MR-2: {} -> {} . '.format(best_mr_val, cur_mr_val_reasonable), end='')
-                    best_mr_val = cur_mr_val_reasonable
-                    val_model_savefile = os.path.join(out_path, 'best_val.hdf5')
-                    copyfile(model_savefile, val_model_savefile)
-                    print('Saved the network to {}'.format(val_model_savefile))
-                else:
-                    print('Current validation MR-2: {}, best validation MR-2 so far: {}'.format(cur_mr_val_reasonable,
-                                                                                                best_mr_val))
-                if cur_mr_val_reasonable > prev_mr_val:
-                    nonimproving_epochs += 1
-                    print('Validation MR-2 did not improve for {} epochs (max {} nonimproving epochs allowed)'.format(
-                        nonimproving_epochs, max_nonimproving_epochs))
-                else:
-                    print('Validation MR-2 better than in the previous step. Current: {}'.format(cur_mr_val_reasonable))
-                    nonimproving_epochs = 0
-                prev_mr_val = cur_mr_val_reasonable
+            # 4) compare to the best reasonable MR-2 so far
+            val_mr_history.append(cur_mr_val_reasonable)
+            if cur_mr_val_reasonable < best_mr_val:
+                print('New best validation MR-2: {} -> {} . '.format(best_mr_val, cur_mr_val_reasonable), end='')
+                best_mr_val = cur_mr_val_reasonable
+                val_model_savefile = os.path.join(out_path, 'best_val.hdf5')
+                copyfile(model_savefile, val_model_savefile)
+                print('Saved the network to {}'.format(val_model_savefile))
+            else:
+                print('Current validation MR-2: {}, best validation MR-2 so far: {}'.format(cur_mr_val_reasonable,
+                                                                                            best_mr_val))
+            if cur_mr_val_reasonable > prev_mr_val:
+                nonimproving_epochs += 1
+                print('Validation MR-2 did not improve for {} epochs (max {} nonimproving epochs allowed)'.format(
+                    nonimproving_epochs, max_nonimproving_epochs))
+            else:
+                print('Validation MR-2 better than in the previous step. Current: {}'.format(cur_mr_val_reasonable))
+                nonimproving_epochs = 0
+            prev_mr_val = cur_mr_val_reasonable
 
-                print('Elapsed time for validation: {}'.format(time.time() - start_time_val))
-                print('Elapsed time for epoch: {}'.format(time.time() - start_time))
+            print('Elapsed time for validation: {}'.format(time.time() - start_time_val))
+            print('Elapsed time for epoch: {}'.format(time.time() - start_time))
 
-                iter_num = 0
-                start_time = time.time()
-                # End of the epoch
-                break
+            iter_num = 0
+            start_time = time.time()
+            # End of the epoch
+            break
 
-        except Exception as e:
-            print('Exception: {}'.format(e))
-            continue
+            # except Exception as e:
+            #    print('Exception: {}'.format(e))
+            #    continue
 
     records = np.concatenate((np.asarray(total_loss_r).reshape((-1, 1)),
                               np.asarray(cls_loss_r1).reshape((-1, 1)),
