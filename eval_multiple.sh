@@ -13,7 +13,7 @@ EXP_NAMES=( baseline 1P halfP blurred)
 
 for EXP_NAME in "${EXP_NAMES[@]}"
 do
-    EXPNAME="csp_${EXP_NAME}"
+    EXPNAME="csp_${EXP_NAME}_eval"
     echo "Test experiment ${EXP_NAME}"
 
 
