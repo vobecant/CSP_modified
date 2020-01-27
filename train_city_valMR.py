@@ -33,7 +33,7 @@ C.onegpu = 2
 C.size_train = (640, 1280)
 C.init_lr = 2e-4
 C.num_epochs = 150
-max_nonimproving_epochs = 10
+max_nonimproving_epochs = 5
 C.offset = True
 
 num_gpu = len(C.gpu_ids.split(','))
@@ -205,13 +205,14 @@ for epoch_num in range(C.num_epochs):
                     copyfile(model_savefile, val_model_savefile)
                     print('Saved the network to {}'.format(val_model_savefile))
                 else:
-                    print('Current validation loss: {}, best validation loss so far: {}'.format(cur_mr_val_reasonable,
+                    print('Current validation MR-2: {}, best validation MR-2 so far: {}'.format(cur_mr_val_reasonable,
                                                                                                 best_mr_val))
                 if cur_mr_val_reasonable > prev_mr_val:
                     nonimproving_epochs += 1
-                    print('Validation loss did not improve for {} epochs (max {} nonimproving epochs allowed)'.format(
+                    print('Validation MR-2 did not improve for {} epochs (max {} nonimproving epochs allowed)'.format(
                         nonimproving_epochs, max_nonimproving_epochs))
                 else:
+                    print('Validation MR-2 better than in the previous step. Current: {}'.format(cur_mr_val_reasonable))
                     nonimproving_epochs = 0
                 prev_mr_val = cur_mr_val_reasonable
 
