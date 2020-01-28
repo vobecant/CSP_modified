@@ -1,5 +1,6 @@
 import json
 import sys, os
+import numpy as np
 
 if sys.version_info[0] == 2:
     import cPickle as pickle
@@ -73,11 +74,13 @@ if __name__ == '__main__':
                                                   'im_name': image_name,
                                                   'height': 1024, 'width': 2048})
                 for bbox, vis_bbox in zip(ann['bboxes'], ann['vis_bboxes']):
-                    vis_ratio = (vis_bbox[-2] * vis_bbox[-1]) / (bbox[-2] * bbox[-1])
+                    bbox = [int(b) for b in bbox]
+                    vis_bbox = [int(vb) for vb in vis_bbox]
+                    vis_ratio = float((vis_bbox[-2] * vis_bbox[-1]) / (bbox[-2] * bbox[-1]))
                     ann_json = {"id": len(val_gt_json['annotations']) + 1, "image_id": images_added[image_name],
                                 "category_id": 1, "iscrowd": 0, "ignore": 0,
                                 "bbox": bbox, "vis_bbox": vis_bbox,
-                                "height": bbox[-1], "vis_ratio": vis_ratio}
+                                "height": int(bbox[-1]), "vis_ratio": vis_ratio}
                     val_gt_json['annotations'].append(ann_json)
 
         print('New validation set size: {}.'.format(len(val_anns)))
@@ -88,7 +91,7 @@ if __name__ == '__main__':
 
         if not os.path.exists(new_fname_val_json):
             with open(new_fname_val_json, 'w') as f:
-                json.dump(val_gt_json,f)
+                json.dump(val_gt_json, f)
 
     print('Splitted original annotations from {} to training cache {} and validation cache {}.'.format(orig_path,
                                                                                                        new_fname_train,
