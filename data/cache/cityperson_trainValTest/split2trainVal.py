@@ -43,11 +43,10 @@ if __name__ == '__main__':
 
         print('New training set size: {} -> {} left for validation.'.format(len(train_anns),
                                                                             len(orig_train) - len(train_anns)))
+        with open(new_fname_train, 'wb') as f:
+            pickle.dump(train_anns, f, protocol=2)
     else:
         print('Skipping creating training cache file {} . Already exists.'.format(new_fname_train))
-
-    with open(new_fname_train, 'wb') as f:
-        pickle.dump(train_anns, f, protocol=2)
 
     # step 2
     # create new validation split from the NONEXTENDED original training split
