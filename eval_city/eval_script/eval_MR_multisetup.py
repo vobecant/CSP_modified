@@ -455,7 +455,7 @@ class COCOeval:
 
         if not self.eval:
             raise Exception('Please run accumulate() first')
-        _summarize(iouThr=.5, maxDets=1000)
+        return _summarize(iouThr=.5, maxDets=1000)
 
     def __str__(self):
         self.summarize()
