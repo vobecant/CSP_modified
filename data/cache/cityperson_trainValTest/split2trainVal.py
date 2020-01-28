@@ -73,7 +73,7 @@ if __name__ == '__main__':
                 image_name = os.path.split(ann['filepath'])[1]
                 if image_name not in images_added.keys():
                     images_added[image_name] = len(images_added) + 1
-                    val_gt_json['images'].append({'id': len(images_added) + 1,
+                    val_gt_json['images'].append({'id': len(images_added),
                                                   'im_name': image_name,
                                                   'height': 1024, 'width': 2048})
                 for bbox, vis_bbox in zip(ann['bboxes'], ann['vis_bboxes']):

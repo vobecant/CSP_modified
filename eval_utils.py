@@ -2,6 +2,7 @@ import json
 import os
 
 from eval_city.eval_script.coco import COCO
+from eval_city.eval_script.eval_MR_multisetup import COCOeval
 
 
 def txt2jsonFile(res):
@@ -32,7 +33,8 @@ def convert_file(dt_path):
         json.dump(res_json, f)
     return out_path
 
-def eval_json_reasonable(annFile,resFile):
+
+def eval_json_reasonable(annFile, resFile, annType='bbox'):
     dt_path = os.path.split(resFile)[0]
     respath = os.path.join(dt_path, 'results.txt')
     res_file = open(respath, "w")
@@ -51,3 +53,10 @@ def eval_json_reasonable(annFile,resFile):
     print('')
     res_file.close()
     return mr_reasonable
+
+
+if __name__ == '__main__':
+    annFile = 'C:\\Users\\Antonin-PC\\Downloads\\val_gt.json'
+    resFile = 'C:\\Users\\Antonin-PC\\Downloads\\val_dt.json'
+    mr_reasonable = eval_json_reasonable(annFile, resFile)
+    print('MR: {}'.format(mr_reasonable))
