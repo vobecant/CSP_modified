@@ -99,8 +99,8 @@ def parse_det_offset_batch(Y, C, h_mult, w_mult, score=0.1, down=4):
         boxs_img = []
         if len(y_c) > 0:
             for i in range(len(y_c)):
-                h = np.exp(height[y_c[i], x_c[i]]) * down
-                w = 0.41 * h
+                h = np.exp(height[y_c[i], x_c[i]]) * down * h_mult
+                w = 0.41 * h * w_mult
                 o_y = offset_y[y_c[i], x_c[i]]
                 o_x = offset_x[y_c[i], x_c[i]]
                 s = seman[y_c[i], x_c[i]]
