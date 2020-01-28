@@ -31,7 +31,9 @@ C = config.Config()
 C.gpu_ids = '0,1,2,3'
 C.onegpu = 2
 C.size_train = (640, 1280)
-C.size_test = C.size_train
+C.size_test = (1024, 2048)
+h_mult = C.size_test[0] / C.size_train[0]
+w_mult = C.size_test[1] / C.size_train[1]
 C.init_lr = 2e-4
 C.num_epochs = 150
 max_nonimproving_epochs = 5
@@ -91,7 +93,7 @@ else:
     out_path = 'output/valmodels/city_valMR/{}/nooff{}'.format(C.scale, exp_name)
 if not os.path.exists(out_path):
     os.makedirs(out_path)
-res_file = os.path.join(out_path, 'records.txt')
+res_file_all = os.path.join(out_path, 'records.txt')
 
 optimizer = Adam(lr=C.init_lr)
 if C.offset:
@@ -184,7 +186,7 @@ for epoch_num in range(C.num_epochs):
                 X, _, val_completed, fnames = next(data_gen_val)
                 Y = model.predict(X)
                 if C.offset:
-                    boxes_batch = bbox_process.parse_det_offset_batch(Y, C, score=0.1, down=4)
+                    boxes_batch = bbox_process.parse_det_offset_batch(Y, C, h_mult, w_mult, score=0.1, down=4)
                 else:
                     boxes_batch = bbox_process.parse_det(Y, C, score=0.1, down=4, scale=C.scale)
                 for boxes, fname in zip(boxes_batch, fnames):
@@ -239,5 +241,5 @@ for epoch_num in range(C.num_epochs):
                               np.asarray(regr_loss_r1).reshape((-1, 1)),
                               np.asarray(offset_loss_r1).reshape((-1, 1)),
                               np.asarray(val_mr_history).reshape((-1, 1))), axis=-1)
-    np.savetxt(res_file, np.array(records), fmt='%.6f')
-    print('Training complete, exiting.')
+    np.savetxt(res_file_all, np.array(records), fmt='%.6f')
+print('Training complete, exiting.')
