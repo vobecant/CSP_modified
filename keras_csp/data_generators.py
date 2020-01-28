@@ -196,12 +196,12 @@ def get_data(ped_data, C, batchsize=8, exp_name=''):
             yield np.copy(x_img_batch), [np.copy(y_seman_batch), np.copy(y_height_batch)]
 
 
-def get_data_eval(ped_data, C, batchsize=8, exp_name=''):
+def get_data_eval(ped_data, C, batchsize=8, exp_name='', return_fname=False):
     current_ped = 0
     max_sample_id = (len(ped_data) // batchsize) * batchsize
     sample_filepath_printed = False
     while True:
-        x_img_batch, y_seman_batch, y_height_batch, y_offset_batch = [], [], [], []
+        x_img_batch, y_seman_batch, y_height_batch, y_offset_batch, fnames = [], [], [], [], []
         if current_ped == max_sample_id:
             # random.shuffle(ped_data)
             current_ped = 0
@@ -210,6 +210,8 @@ def get_data_eval(ped_data, C, batchsize=8, exp_name=''):
             try:
                 images_dir_name = 'images{}/'.format(exp_name if 'base' not in exp_name else '')
                 img_data['filepath'] = img_data['filepath'].replace('images/', images_dir_name)
+                fname = os.path.split(img_data['filepath'])[1]
+                fnames.append(fname)
                 if ('blurred' in images_dir_name) or ('anonymized' in images_dir_name):
                     img_data['filepath'] = img_data['filepath'].replace('.png', '_blurred.jpg')
                 if not sample_filepath_printed:
@@ -247,8 +249,12 @@ def get_data_eval(ped_data, C, batchsize=8, exp_name=''):
         current_ped = next_ped
         last_batch = next_ped == max_sample_id
         if C.offset:
-            yield np.copy(x_img_batch), [np.copy(y_seman_batch), np.copy(y_height_batch),
-                                         np.copy(y_offset_batch)], last_batch
+            if return_fname:
+                yield np.copy(x_img_batch), [np.copy(y_seman_batch), np.copy(y_height_batch),
+                                             np.copy(y_offset_batch)], last_batch, fnames
+            else:
+                yield np.copy(x_img_batch), [np.copy(y_seman_batch), np.copy(y_height_batch),
+                                             np.copy(y_offset_batch)], last_batch
         else:
             yield np.copy(x_img_batch), [np.copy(y_seman_batch), np.copy(y_height_batch)], last_batch
 

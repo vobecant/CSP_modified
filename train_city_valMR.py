@@ -57,7 +57,9 @@ annFile = 'data/cityperson_trainValTest/val_gt.json'
 with open(cache_path_val, 'rb') as fid:
     val_data = cPickle.load(fid)
 annFile = '/home/vobecant/PhD/CSP/data/cache/cityperson_trainValTest/val_gt.json'
-data_gen_val = data_generators.get_data_eval(val_data, C, batchsize=batchsize, exp_name=exp_name)
+img_id_lut = json.load(open(annFile, 'r'))['images']
+img_id_lut = {tmp['im_name']: tmp['id'] for tmp in img_id_lut}
+data_gen_val = data_generators.get_data_eval(val_data, C, batchsize=batchsize, exp_name=exp_name, return_fname=True)
 
 # define the base network (resnet here, can be MobileNet, etc)
 if C.network == 'resnet50':
@@ -178,20 +180,19 @@ for epoch_num in range(C.num_epochs):
             print('Save validation detections to {}'.format(res_file))
             res_all = []
             val_completed = False
-            img_num = 0
             while not val_completed:
-                X, _, val_completed = next(data_gen_val)
+                X, _, val_completed, fnames = next(data_gen_val)
                 Y = model.predict(X)
                 if C.offset:
                     boxes_batch = bbox_process.parse_det_offset_batch(Y, C, score=0.1, down=4)
                 else:
                     boxes_batch = bbox_process.parse_det(Y, C, score=0.1, down=4, scale=C.scale)
-                for boxes in boxes_batch:
+                for boxes, fname in zip(boxes_batch, fnames):
                     if len(boxes) > 0:
-                        f_res = np.repeat(img_num + 1, len(boxes), axis=0).reshape((-1, 1))
+                        img_id = img_id_lut[fname]
+                        f_res = np.repeat(img_id, len(boxes), axis=0).reshape((-1, 1))
                         boxes[:, [2, 3]] -= boxes[:, [0, 1]]
                         res_all += np.concatenate((f_res, boxes), axis=-1).tolist()
-                    img_num += 1
             np.savetxt(res_file, np.array(res_all), fmt='%6f')
 
             # 2) transform detections from .txt file to JSON
@@ -216,7 +217,8 @@ for epoch_num in range(C.num_epochs):
                 print('Validation MR-2 did not improve for {} epochs (max {} nonimproving epochs allowed)'.format(
                     nonimproving_epochs, max_nonimproving_epochs))
             else:
-                print('Validation MR-2 better than in the previous step. Current: {}'.format(cur_mr_val_reasonable))
+                print('Validation MR-2 better than in the previous step. Current: {}, previous: {}'.format(
+                    cur_mr_val_reasonable, prev_mr_val))
                 nonimproving_epochs = 0
             prev_mr_val = cur_mr_val_reasonable
 
