@@ -70,17 +70,26 @@ if __name__ == '__main__':
                 image_name = os.path.split(ann['filepath'])[1]
                 if image_name not in images_added.keys():
                     images_added[image_name] = len(images_added) + 1
-                    val_gt_json['images'].append({'id': len(images) + 1,
+                    val_gt_json['images'].append({'id': len(images_added) + 1,
                                                   'im_name': image_name,
                                                   'height': 1024, 'width': 2048})
                 for bbox, vis_bbox in zip(ann['bboxes'], ann['vis_bboxes']):
                     bbox = [int(b) for b in bbox]
                     vis_bbox = [int(vb) for vb in vis_bbox]
                     vis_ratio = float((vis_bbox[-2] * vis_bbox[-1]) / (bbox[-2] * bbox[-1]))
-                    ann_json = {"id": len(val_gt_json['annotations']) + 1, "image_id": images_added[image_name],
+                    idx = len(val_gt_json['annotations']) + 1
+                    height = int(bbox[-1])
+                    print('Add ID: {}, image_id: {},  bbox: {}, vis_bbox: {}, height: {}, vis_ratio: {}'.format(idx,
+                                                                                                                images_added[
+                                                                                                                    image_name],
+                                                                                                                bbox,
+                                                                                                                vis_bbox,
+                                                                                                                height,
+                                                                                                                vis_ratio))
+                    ann_json = {"id": idx, "image_id": images_added[image_name],
                                 "category_id": 1, "iscrowd": 0, "ignore": 0,
                                 "bbox": bbox, "vis_bbox": vis_bbox,
-                                "height": int(bbox[-1]), "vis_ratio": vis_ratio}
+                                "height": height, "vis_ratio": vis_ratio}
                     val_gt_json['annotations'].append(ann_json)
 
         print('New validation set size: {}.'.format(len(val_anns)))
