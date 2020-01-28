@@ -28,20 +28,23 @@ if __name__ == '__main__':
 
     # step 1
     # create new training split from the EXTENDED original training split
-    with open(orig_path, 'rb') as f:
-        if py == 3:
-            orig_train = pickle.load(f, encoding='latin1')
-        else:
-            orig_train = pickle.load(f)
+    if not os.path.exists(new_fname_train):
+        with open(orig_path, 'rb') as f:
+            if py == 3:
+                orig_train = pickle.load(f, encoding='latin1')
+            else:
+                orig_train = pickle.load(f)
 
-    train_anns = []
-    for ann in orig_train:
-        city = get_city(ann['filepath'])
-        if city not in VAL_CITIES:
-            train_anns.append(ann)
+        train_anns = []
+        for ann in orig_train:
+            city = get_city(ann['filepath'])
+            if city not in VAL_CITIES:
+                train_anns.append(ann)
 
-    print('New training set size: {} -> {} left for validation.'.format(len(train_anns),
-                                                                        len(orig_train) - len(train_anns)))
+        print('New training set size: {} -> {} left for validation.'.format(len(train_anns),
+                                                                            len(orig_train) - len(train_anns)))
+    else:
+        print('Skipping creating training cache file {} . Already exists.'.format(new_fname_train))
 
     with open(new_fname_train, 'wb') as f:
         pickle.dump(train_anns, f, protocol=2)
@@ -49,6 +52,7 @@ if __name__ == '__main__':
     # step 2
     # create new validation split from the NONEXTENDED original training split
     if not os.path.exists(new_fname_val) or not os.path.exists(new_fname_val_json):
+        print('Create new JSON files.')
         val_gt_json = {'categories': [{"id": 1, "name": "pedestrian"}, {"id": 2, "name": "rider"},
                                       {"id": 3, "name": "sitting person"}, {"id": 4, "name": "other person"},
                                       {"id": 5, "name": "people group"}, {"id": 0, "name": "ignore region"}],
@@ -99,6 +103,7 @@ if __name__ == '__main__':
                 pickle.dump(val_anns, f, protocol=2)
 
         if not os.path.exists(new_fname_val_json):
+            print('Save new JSON validation file.')
             with open(new_fname_val_json, 'w') as f:
                 json.dump(val_gt_json, f)
 
