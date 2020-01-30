@@ -87,7 +87,7 @@ def parse_det_offset(Y, C, score=0.1, down=4):
     return boxs
 
 
-def parse_det_offset_batch(Y, C, h_mult, w_mult, score=0.1, down=4):
+def parse_det_offset_batch(Y, C, score=0.1, down=4):
     batch_size = Y[0].shape[0]
     boxes = []
     for bnum in range(batch_size):
@@ -99,14 +99,14 @@ def parse_det_offset_batch(Y, C, h_mult, w_mult, score=0.1, down=4):
         boxs_img = []
         if len(y_c) > 0:
             for i in range(len(y_c)):
-                h = np.exp(height[y_c[i], x_c[i]]) * down * h_mult
-                w = 0.41 * h * w_mult
+                h = np.exp(height[y_c[i], x_c[i]]) * down
+                w = 0.41 * h
                 o_y = offset_y[y_c[i], x_c[i]]
                 o_x = offset_x[y_c[i], x_c[i]]
                 s = seman[y_c[i], x_c[i]]
                 x1, y1 = max(0, (x_c[i] + o_x + 0.5) * down - w / 2), max(0, (y_c[i] + o_y + 0.5) * down - h / 2)
-                x1 = x1 * w_mult
-                y1 = y1 * h_mult
+                x1 = x1
+                y1 = y1
                 boxs_img.append([x1, y1, min(x1 + w, C.size_test[1]), min(y1 + h, C.size_test[0]), s])
             boxs_img = np.asarray(boxs_img, dtype=np.float32)
             keep = nms(boxs_img, 0.5, usegpu=False, gpu_id=0)

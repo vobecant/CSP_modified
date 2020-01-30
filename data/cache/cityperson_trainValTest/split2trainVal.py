@@ -21,6 +21,8 @@ def get_city(filename):
 
 if __name__ == '__main__':
     orig_path = sys.argv[1]
+    tst_height = sys.argv[2]
+    tst_width = sys.argv[3]
     exp_name = '_'.join(os.path.split(orig_path)[1].split('_')[1:])
     new_fname_train = 'train_{}'.format(exp_name)
     new_fname_val = 'val'
@@ -66,6 +68,8 @@ if __name__ == '__main__':
         val_anns = []
         images_added = {}
         images = []
+        mult_h = 1024 / tst_height
+        mult_w = 2048 / tst_width
         for ann in orig_train:
             city = get_city(ann['filepath'])
             if city in VAL_CITIES:
@@ -75,10 +79,16 @@ if __name__ == '__main__':
                     images_added[image_name] = len(images_added) + 1
                     val_gt_json['images'].append({'id': len(images_added),
                                                   'im_name': image_name,
-                                                  'height': 1024, 'width': 2048})
+                                                  'height': tst_height, 'width': tst_width})
                 for bbox, vis_bbox in zip(ann['bboxes'], ann['vis_bboxes']):
-                    bbox = [int(b) for b in bbox]
-                    vis_bbox = [int(vb) for vb in vis_bbox]
+                    x1, y1, x2, y2 = bbox
+                    x1, x2 = x1 * mult_w, x2 * mult_w
+                    y1, y2 = y1 * mult_h, y2 * mult_h
+                    bbox = [int(b) for b in [x1, y1, x2, y2]]
+                    x1v, y1v, x2v, y2v = vis_bbox
+                    x1v, x2v = x1v * mult_w, x2v * mult_w
+                    y1v, y2v = y1v * mult_h, y2v * mult_h
+                    vis_bbox = [int(vb) for vb in [x1v,y1v,x2v,y2v]]
                     vis_ratio = float((vis_bbox[-2] * vis_bbox[-1]) / (bbox[-2] * bbox[-1]))
                     idx = len(val_gt_json['annotations']) + 1
                     height = int(bbox[-1])

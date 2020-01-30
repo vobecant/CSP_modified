@@ -186,7 +186,7 @@ for epoch_num in range(C.num_epochs):
                 X, _, val_completed, fnames = next(data_gen_val)
                 Y = model.predict(X)
                 if C.offset:
-                    boxes_batch = bbox_process.parse_det_offset_batch(Y, C, h_mult, w_mult, score=0.1, down=4)
+                    boxes_batch = bbox_process.parse_det_offset_batch(Y, C, score=0.1, down=4)
                 else:
                     boxes_batch = bbox_process.parse_det(Y, C, score=0.1, down=4, scale=C.scale)
                 for boxes, fname in zip(boxes_batch, fnames):
