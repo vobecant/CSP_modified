@@ -68,8 +68,8 @@ if __name__ == '__main__':
         val_anns = []
         images_added = {}
         images = []
-        mult_h = 1024 / tst_height
-        mult_w = 2048 / tst_width
+        mult_h = tst_height / 1024
+        mult_w = tst_width / 2048
         for ann in orig_train:
             city = get_city(ann['filepath'])
             if city in VAL_CITIES:
@@ -88,7 +88,9 @@ if __name__ == '__main__':
                     x1v, y1v, x2v, y2v = vis_bbox
                     x1v, x2v = x1v * mult_w, x2v * mult_w
                     y1v, y2v = y1v * mult_h, y2v * mult_h
-                    vis_bbox = [int(vb) for vb in [x1v,y1v,x2v,y2v]]
+                    vis_bbox = [int(vb) for vb in [x1v, y1v, x2v, y2v]]
+                    assert all([x1 < tst_width, x2 < tst_width, x1v < tst_width, x2v < tst_width])
+                    assert all([y1 < tst_height, y2 < tst_height, y1v < tst_height, y2v < tst_height])
                     vis_ratio = float((vis_bbox[-2] * vis_bbox[-1]) / (bbox[-2] * bbox[-1]))
                     idx = len(val_gt_json['annotations']) + 1
                     height = int(bbox[-1])
