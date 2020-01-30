@@ -93,9 +93,9 @@ if __name__ == '__main__':
                     w, h = x2v - x1v, y2v - y1v
                     assert all([w > 0, h > 0]), 'w={},h={}, prev: {}'.format(w, h, vis_bbox)
                     vis_bbox = [int(vb) for vb in [x1v, y1v, w, h]]
-                    assert all([x1 + w < tst_width, x1 >= 0, x2 + w < tst_width, x2 >= 0])
-                    assert all([y1 + h < tst_height, y1 >= 0, y2 + h < tst_height, y2 >= 0])
-                    vis_ratio = float((vis_bbox[-2] * vis_bbox[-1]) / (bbox[-2] * bbox[-1]))
+                    assert all([x1 + w < tst_width, x1 >= 0, x2 + w < tst_width, x2 >= 0]), bbox
+                    assert all([y1 + h < tst_height, y1 >= 0, y2 + h < tst_height, y2 >= 0]), bbox
+                    vis_ratio = float((vis_bbox[-2] * vis_bbox[-1])) / float((bbox[-2] * bbox[-1]))
                     idx = len(val_gt_json['annotations']) + 1
                     height = int(bbox[-1])
                     print('Add ID: {}, image_id: {},  bbox: {}, vis_bbox: {}, height: {}, vis_ratio: {}'.format(idx,
