@@ -84,14 +84,17 @@ if __name__ == '__main__':
                     x1, y1, x2, y2 = bbox
                     x1, x2 = x1 * mult_w, x2 * mult_w
                     y1, y2 = y1 * mult_h, y2 * mult_h
-                    assert all([x1 > 0, x2 > 0, y1 > 0, y2 > 0]), 'new: [{},{},{},{}], prev: {}'.format(x1, y1, x2, y2, bbox)
-                    bbox = [int(b) for b in [x1, y1, x2, y2]]
+                    w, h = x2 - x1, y2 - y1
+                    assert all([w > 0, h > 0]), 'w={},h={}, prev: {}'.format(w, h, bbox)
+                    bbox = [int(b) for b in [x1, y1, w, h]]
                     x1v, y1v, x2v, y2v = vis_bbox
                     x1v, x2v = x1v * mult_w, x2v * mult_w
                     y1v, y2v = y1v * mult_h, y2v * mult_h
-                    vis_bbox = [int(vb) for vb in [x1v, y1v, x2v, y2v]]
-                    assert all([x1 < tst_width, x2 < tst_width, x1v < tst_width, x2v < tst_width])
-                    assert all([y1 < tst_height, y2 < tst_height, y1v < tst_height, y2v < tst_height])
+                    w, h = x2v - x1v, y2v - y1v
+                    assert all([w > 0, h > 0]), 'w={},h={}, prev: {}'.format(w, h, vis_bbox)
+                    vis_bbox = [int(vb) for vb in [x1v, y1v, w, h]]
+                    assert all([x1 + w < tst_width, x1 >= 0, x2 + w < tst_width, x2 >= 0])
+                    assert all([y1 + h < tst_height, y1 >= 0, y2 + h < tst_height, y2 >= 0])
                     vis_ratio = float((vis_bbox[-2] * vis_bbox[-1]) / (bbox[-2] * bbox[-1]))
                     idx = len(val_gt_json['annotations']) + 1
                     height = int(bbox[-1])
