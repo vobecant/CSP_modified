@@ -68,8 +68,8 @@ if __name__ == '__main__':
         val_anns = []
         images_added = {}
         images = []
-        mult_h = tst_height / 1024
-        mult_w = tst_width / 2048
+        mult_h = tst_height / 1024.0
+        mult_w = tst_width / 2048.0
         for ann in orig_train:
             city = get_city(ann['filepath'])
             if city in VAL_CITIES:
