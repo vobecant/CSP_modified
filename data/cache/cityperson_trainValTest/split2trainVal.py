@@ -90,11 +90,11 @@ if __name__ == '__main__':
                     x1v, y1v, x2v, y2v = vis_bbox
                     x1v, x2v = x1v * mult_w, x2v * mult_w
                     y1v, y2v = y1v * mult_h, y2v * mult_h
-                    w, h = x2v - x1v, y2v - y1v
-                    assert all([w > 0, h > 0]), 'w={},h={}, prev: {}'.format(w, h, vis_bbox)
-                    vis_bbox = [int(vb) for vb in [x1v, y1v, w, h]]
-                    assert all([x1 + w < tst_width, x1 >= 0, x2 + w < tst_width, x2 >= 0]), bbox
-                    assert all([y1 + h < tst_height, y1 >= 0, y2 + h < tst_height, y2 >= 0]), bbox
+                    w_v, h_v = x2v - x1v, y2v - y1v
+                    assert all([w_v > 0, h_v > 0]), 'w={},h={}, prev: {}'.format(w_v, h_v, vis_bbox)
+                    vis_bbox = [int(vb) for vb in [x1v, y1v, w_v, h_v]]
+                    assert all([x1 + w < tst_width, x1 >= 0, x1v + w_v < tst_width, x1v >= 0]), bbox
+                    assert all([y1 + h < tst_height, y1 >= 0, y1v + h_v < tst_height, y1v >= 0]), bbox
                     vis_ratio = float((vis_bbox[-2] * vis_bbox[-1])) / float((bbox[-2] * bbox[-1]))
                     idx = len(val_gt_json['annotations']) + 1
                     height = int(bbox[-1])
