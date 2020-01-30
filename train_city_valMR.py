@@ -28,7 +28,7 @@ else:
 
 # get the config parameters
 C = config.Config()
-C.gpu_ids = '0,1,2,3'
+C.gpu_ids = '0,1'  # '0,1,2,3'
 C.onegpu = 2
 C.size_train = (640, 1280)
 C.size_test = (640, 1280)
@@ -62,6 +62,9 @@ annFile = '/home/vobecant/PhD/CSP/data/cache/cityperson_trainValTest/val_gt.json
 img_id_lut = json.load(open(annFile, 'r'))['images']
 img_id_lut = {tmp['im_name']: tmp['id'] for tmp in img_id_lut}
 data_gen_val = data_generators.get_data_eval(val_data, C, batchsize=batchsize, exp_name=exp_name, return_fname=True)
+# TODO: delete!!!
+X, tgt, val_completed, fnames = next(data_gen_val)
+print('Validation target: {}'.format(tgt))
 
 # define the base network (resnet here, can be MobileNet, etc)
 if C.network == 'resnet50':
@@ -183,7 +186,8 @@ for epoch_num in range(C.num_epochs):
             res_all = []
             val_completed = False
             while not val_completed:
-                X, _, val_completed, fnames = next(data_gen_val)
+                X, tgt, val_completed, fnames = next(data_gen_val)
+                print('Validation target: {}'.format(tgt))
                 Y = model.predict(X)
                 if C.offset:
                     boxes_batch = bbox_process.parse_det_offset_batch(Y, C, score=0.1, down=4)
