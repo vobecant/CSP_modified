@@ -84,6 +84,8 @@ if __name__ == '__main__':
                     x1, y1, x2, y2 = bbox
                     x1, x2 = x1 * mult_w, x2 * mult_w
                     y1, y2 = y1 * mult_h, y2 * mult_h
+                    assert all([x1 > 0, x2 > 0, y1 > 0, y2 > 0]), print(
+                        'new: [{},{},{},{}], prev: {}'.format(x1, y1, x2, y2, bbox))
                     bbox = [int(b) for b in [x1, y1, x2, y2]]
                     x1v, y1v, x2v, y2v = vis_bbox
                     x1v, x2v = x1v * mult_w, x2v * mult_w
