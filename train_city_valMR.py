@@ -33,6 +33,7 @@ if len(sys.argv) == 3:
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     C.gpu_ids = '0'
+    print(sys.argv)
 else:
     C.gpu_ids = '0,1,2,3'
 
@@ -46,6 +47,7 @@ C.offset = True
 
 num_gpu = len(C.gpu_ids.split(','))
 batchsize = C.onegpu * num_gpu
+print('num_gpu: {}, batchsize: {}, C.gpu_ids: {}'.format(num_gpu, batchsize,C.gpu_ids))
 os.environ["CUDA_VISIBLE_DEVICES"] = C.gpu_ids
 
 # get the training data
