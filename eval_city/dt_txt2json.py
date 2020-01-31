@@ -35,7 +35,8 @@ def txt2jsonFile(res):
 def convert_file(dt_path):
     with open(dt_path, 'r') as f:
         res = f.readlines()
-    out_path = os.path.join(dt_path, 'val_dt.json')
+    dt_folder = os.path.split(dt_path)[0]
+    out_path = os.path.join(dt_folder, 'val_dt.json')
     res_json = txt2jsonFile(res)
     with open(out_path, 'w') as f:
         json.dump(res_json, f)

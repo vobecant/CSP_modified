@@ -193,10 +193,12 @@ for epoch_num in range(C.num_epochs):
                     boxes_batch = bbox_process.parse_det_offset_batch(Y, C, score=0.1, down=4)
                 else:
                     boxes_batch = bbox_process.parse_det(Y, C, score=0.1, down=4, scale=C.scale)
+                # boxes are in XYXY format
                 for boxes, fname in zip(boxes_batch, fnames):
                     if len(boxes) > 0:
                         img_id = img_id_lut[fname]
                         f_res = np.repeat(img_id, len(boxes), axis=0).reshape((-1, 1))
+                        # change boxes to XYWH format
                         boxes[:, [2, 3]] -= boxes[:, [0, 1]]
                         res_all += np.concatenate((f_res, boxes), axis=-1).tolist()
             np.savetxt(res_file, np.array(res_all), fmt='%6f')
