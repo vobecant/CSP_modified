@@ -197,7 +197,7 @@ for epoch_num in range(C.num_epochs):
             res_all = []
             val_completed = False
             while not val_completed:
-                X, tgt, val_completed, fnames = next(data_gen_val)
+                X, val_completed, fnames = next(data_gen_val)
                 Y = model.predict(X)
                 if C.offset:
                     boxes_batch = bbox_process.parse_det_offset_batch(Y, C_tst, score=0.1, down=4)
