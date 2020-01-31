@@ -47,7 +47,7 @@ C.offset = True
 
 num_gpu = len(C.gpu_ids.split(','))
 batchsize = C.onegpu * num_gpu
-print('num_gpu: {}, batchsize: {}, C.gpu_ids: {}'.format(num_gpu, batchsize,C.gpu_ids))
+print('num_gpu: {}, batchsize: {}, C.gpu_ids: {}'.format(num_gpu, batchsize, C.gpu_ids))
 os.environ["CUDA_VISIBLE_DEVICES"] = C.gpu_ids
 
 # get the training data
@@ -70,8 +70,8 @@ img_id_lut = json.load(open(annFile, 'r'))['images']
 img_id_lut = {tmp['im_name']: tmp['id'] for tmp in img_id_lut}
 data_gen_val = data_generators.get_data_eval(val_data, C_tst, batchsize=batchsize, exp_name=exp_name, return_fname=True)
 # TODO: delete!!!
-#X, tgt, val_completed, fnames = next(data_gen_val)
-#print('Validation target: {}'.format([t.shape for t in tgt]))
+# X, tgt, val_completed, fnames = next(data_gen_val)
+# print('Validation target: {}'.format([t.shape for t in tgt]))
 data_gen_val = data_generators.get_data_eval(val_data, C_tst, batchsize=batchsize, exp_name=exp_name, return_fname=True)
 
 # define the base network (resnet here, can be MobileNet, etc)
@@ -200,9 +200,9 @@ for epoch_num in range(C.num_epochs):
                 X, tgt, val_completed, fnames = next(data_gen_val)
                 Y = model.predict(X)
                 if C.offset:
-                    boxes_batch = bbox_process.parse_det_offset_batch(Y, C, score=0.1, down=4)
+                    boxes_batch = bbox_process.parse_det_offset_batch(Y, C_tst, score=0.1, down=4)
                 else:
-                    boxes_batch = bbox_process.parse_det(Y, C, score=0.1, down=4, scale=C.scale)
+                    boxes_batch = bbox_process.parse_det(Y, C_tst, score=0.1, down=4, scale=C.scale)
                 # boxes are in XYXY format
                 for boxes, fname in zip(boxes_batch, fnames):
                     if len(boxes) > 0:
