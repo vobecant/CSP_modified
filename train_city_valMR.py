@@ -39,8 +39,6 @@ else:
 C.onegpu = 2
 C.size_train = (640, 1280)
 C_tst.size_test = (640, 1280)
-h_mult = C.size_test[0] / C.size_train[0]
-w_mult = C.size_test[1] / C.size_train[1]
 C.init_lr = 2e-4
 C.num_epochs = 150
 max_nonimproving_epochs = 5
@@ -71,6 +69,7 @@ img_id_lut = {tmp['im_name']: tmp['id'] for tmp in img_id_lut}
 data_gen_val = data_generators.get_data_eval(val_data, C_tst, batchsize=batchsize, exp_name=exp_name, return_fname=True)
 # TODO: delete!!!
 X, tgt, val_completed, fnames = next(data_gen_val)
+data_gen_val = data_generators.get_data_eval(val_data, C_tst, batchsize=batchsize, exp_name=exp_name, return_fname=True)
 print('Validation target: {}'.format([t.shape for t in tgt]))
 
 # define the base network (resnet here, can be MobileNet, etc)
