@@ -196,7 +196,6 @@ for epoch_num in range(C.num_epochs):
             val_completed = False
             while not val_completed:
                 X, tgt, val_completed, fnames = next(data_gen_val)
-                print('Validation target: {}'.format(tgt))
                 Y = model.predict(X)
                 print('Evaluation: X.shape={} , Y.shape={}, tgt.shape={}'.format(X[0].shape, Y[0].shape, tgt[0].shape))
                 if C.offset:
