@@ -68,7 +68,7 @@ img_id_lut = json.load(open(annFile, 'r'))['images']
 img_id_lut = {tmp['im_name']: tmp['id'] for tmp in img_id_lut}
 data_gen_val = data_generators.get_data_eval(val_data, C_tst, batchsize=batchsize, exp_name=exp_name, return_fname=True)
 # TODO: delete!!!
-X, tgt, val_completed, fnames = next(data_gen_val)
+#X, tgt, val_completed, fnames = next(data_gen_val)
 data_gen_val = data_generators.get_data_eval(val_data, C_tst, batchsize=batchsize, exp_name=exp_name, return_fname=True)
 print('Validation target: {}'.format([t.shape for t in tgt]))
 
