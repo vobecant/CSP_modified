@@ -88,7 +88,7 @@ def parse_det_offset(Y, C, score=0.1, down=4):
 
 
 def parse_det_offset_batch(Y, C, score=0.1, down=4):
-    print('parsing detections in batch form, Y.shape: {}'.format(Y.shape))
+    print('parsing detections in batch form, Y size: {}, shape of Y[0]: {}'.format(len(Y), Y[0].shape))
     batch_size = Y[0].shape[0]
     boxes = []
     for bnum in range(batch_size):
