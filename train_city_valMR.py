@@ -28,7 +28,13 @@ else:
 
 # get the config parameters
 C = config.Config()
-C.gpu_ids = '0,1'  # '0,1,2,3'
+if len(sys.argv) == 3:
+    os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+    C.gpu_ids = '0'
+else:
+    C.gpu_ids = '0,1,2,3'
+
 C.onegpu = 2
 C.size_train = (640, 1280)
 C.size_test = (640, 1280)
