@@ -208,42 +208,42 @@ def get_data_eval(ped_data, C, batchsize=8, exp_name='', return_fname=False):
             current_ped = 0
         next_ped = min([max_sample_id, current_ped + batchsize])
         for img_data in ped_data[current_ped:next_ped]:
-            try:
-                images_dir_name = 'images{}/'.format(exp_name if 'base' not in exp_name else '')
-                img_data['filepath'] = img_data['filepath'].replace('images/', images_dir_name)
-                fname = os.path.split(img_data['filepath'])[1]
-                fnames.append(fname)
-                if ('blurred' in images_dir_name) or ('anonymized' in images_dir_name):
-                    img_data['filepath'] = img_data['filepath'].replace('.png', '_blurred.jpg')
-                assert (exp_name in img_data['filepath']) or 'baseline' in exp_name
-                img_data, x_img = data_augment.augment_eval(img_data, C)
-                if C.offset:
-                    y_seman, y_height, y_offset = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=True)
+            #try:
+            images_dir_name = 'images{}/'.format(exp_name if 'base' not in exp_name else '')
+            img_data['filepath'] = img_data['filepath'].replace('images/', images_dir_name)
+            fname = os.path.split(img_data['filepath'])[1]
+            fnames.append(fname)
+            if ('blurred' in images_dir_name) or ('anonymized' in images_dir_name):
+                img_data['filepath'] = img_data['filepath'].replace('.png', '_blurred.jpg')
+            assert (exp_name in img_data['filepath']) or 'baseline' in exp_name
+            img_data, x_img = data_augment.augment_eval(img_data, C)
+            if C.offset:
+                y_seman, y_height, y_offset = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=True)
+            else:
+                if C.point == 'top':
+                    y_seman, y_height = calc_gt_top(C, img_data)
+                elif C.point == 'bottom':
+                    y_seman, y_height = calc_gt_bottom(C, img_data)
                 else:
-                    if C.point == 'top':
-                        y_seman, y_height = calc_gt_top(C, img_data)
-                    elif C.point == 'bottom':
-                        y_seman, y_height = calc_gt_bottom(C, img_data)
-                    else:
-                        y_seman, y_height = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=False)
+                    y_seman, y_height = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=False)
 
-                x_img = x_img.astype(np.float32)
-                x_img[:, :, 0] -= C.img_channel_mean[0]
-                x_img[:, :, 1] -= C.img_channel_mean[1]
-                x_img[:, :, 2] -= C.img_channel_mean[2]
+            x_img = x_img.astype(np.float32)
+            x_img[:, :, 0] -= C.img_channel_mean[0]
+            x_img[:, :, 1] -= C.img_channel_mean[1]
+            x_img[:, :, 2] -= C.img_channel_mean[2]
 
-                if not sample_filepath_printed:
-                    print('Sample filepath: {}'.format(img_data['filepath']))
-                    cv2.imwrite('sample.png', x_img)
-                    sample_filepath_printed = True
+            if not sample_filepath_printed:
+                print('Sample filepath: {}'.format(img_data['filepath']))
+                cv2.imwrite('sample.png', x_img)
+                sample_filepath_printed = True
 
-                x_img_batch.append(np.expand_dims(x_img, axis=0))
-                y_seman_batch.append(np.expand_dims(y_seman, axis=0))
-                y_height_batch.append(np.expand_dims(y_height, axis=0))
-                if C.offset:
-                    y_offset_batch.append(np.expand_dims(y_offset, axis=0))
-            except Exception as e:
-                print('get_batch_gt:', e)
+            x_img_batch.append(np.expand_dims(x_img, axis=0))
+            y_seman_batch.append(np.expand_dims(y_seman, axis=0))
+            y_height_batch.append(np.expand_dims(y_height, axis=0))
+            if C.offset:
+                y_offset_batch.append(np.expand_dims(y_offset, axis=0))
+            #except Exception as e:
+            #    print('get_batch_gt:', e)
         x_img_batch = np.concatenate(x_img_batch, axis=0)
         y_seman_batch = np.concatenate(y_seman_batch, axis=0)
         y_height_batch = np.concatenate(y_height_batch, axis=0)
