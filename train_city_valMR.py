@@ -86,9 +86,10 @@ if num_gpu > 1:
     model_stu = Model(img_input, preds)
 model_tea = Model(img_input, preds_tea)
 
+load_st = time.time()
 model.load_weights(weight_path, by_name=True)
 model_tea.load_weights(weight_path, by_name=True)
-print('load weights from {}'.format(weight_path))
+print('load weights from {} in {}'.format(weight_path, time.time() - load_st))
 
 if C.offset:
     out_path = 'output/valmodels/city_valMR/{}/off{}'.format(C.scale, exp_name)
@@ -129,6 +130,8 @@ for epoch_num in range(C.num_epochs):
     while True:
         # try:
         X, Y = next(data_gen_train)
+        if iter_num == 0:
+            print('Training. X.shape={}, Y.shape={}'.format(X[0].shape, Y[0].shape))
         loss_s1 = model.train_on_batch(X, Y)
 
         for l in model_tea.layers:
@@ -189,6 +192,7 @@ for epoch_num in range(C.num_epochs):
                 X, tgt, val_completed, fnames = next(data_gen_val)
                 print('Validation target: {}'.format(tgt))
                 Y = model.predict(X)
+                print('Evaluation: X.shape={} , Y.shape={}, tgt.shape={}'.format(X[0].shape, Y[0].shape, tgt[0].shape))
                 if C.offset:
                     boxes_batch = bbox_process.parse_det_offset_batch(Y, C, score=0.1, down=4)
                 else:
