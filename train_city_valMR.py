@@ -159,6 +159,9 @@ for epoch_num in range(C.num_epochs):
             losses[iter_num, 2] = 0
 
         iter_num += 1
+        if len(sys.argv)==3:
+            print('Just debug. End training loop after 1 iteration.')
+            break
         if iter_num % 20 == 0:
             progbar.update(iter_num,
                            [('cls', np.mean(losses[:iter_num, 0])), ('regr_h', np.mean(losses[:iter_num, 1])),
