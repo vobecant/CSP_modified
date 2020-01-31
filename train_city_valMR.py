@@ -38,7 +38,7 @@ else:
 
 C.onegpu = 2
 C.size_train = (640, 1280)
-C.size_test = (640, 1280)
+C_tst.size_test = (640, 1280)
 h_mult = C.size_test[0] / C.size_train[0]
 w_mult = C.size_test[1] / C.size_train[1]
 C.init_lr = 2e-4
