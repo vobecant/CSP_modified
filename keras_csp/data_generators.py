@@ -6,6 +6,7 @@ import os
 import random
 from . import data_augment
 from .bbox_transform import *
+import cv2
 
 
 def calc_gt_center(C, img_data, r=2, down=4, scale='h', offset=True):
@@ -214,11 +215,8 @@ def get_data_eval(ped_data, C, batchsize=8, exp_name='', return_fname=False):
                 fnames.append(fname)
                 if ('blurred' in images_dir_name) or ('anonymized' in images_dir_name):
                     img_data['filepath'] = img_data['filepath'].replace('.png', '_blurred.jpg')
-                if not sample_filepath_printed:
-                    print('Sample filepath: {}'.format(img_data['filepath']))
-                    sample_filepath_printed = True
                 assert (exp_name in img_data['filepath']) or 'baseline' in exp_name
-                img_data, x_img = data_augment.augment(img_data, C)
+                img_data, x_img = data_augment.augment_eval(img_data, C)
                 if C.offset:
                     y_seman, y_height, y_offset = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=True)
                 else:
@@ -233,6 +231,11 @@ def get_data_eval(ped_data, C, batchsize=8, exp_name='', return_fname=False):
                 x_img[:, :, 0] -= C.img_channel_mean[0]
                 x_img[:, :, 1] -= C.img_channel_mean[1]
                 x_img[:, :, 2] -= C.img_channel_mean[2]
+
+                if not sample_filepath_printed:
+                    print('Sample filepath: {}'.format(img_data['filepath']))
+                    cv2.imwrite('sample.png', x_img)
+                    sample_filepath_printed = True
 
                 x_img_batch.append(np.expand_dims(x_img, axis=0))
                 y_seman_batch.append(np.expand_dims(y_seman, axis=0))

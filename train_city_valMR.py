@@ -28,6 +28,7 @@ else:
 
 # get the config parameters
 C = config.Config()
+C_tst = config.TestConfig()
 if len(sys.argv) == 3:
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -67,7 +68,7 @@ with open(cache_path_val, 'rb') as fid:
 annFile = '/home/vobecant/PhD/CSP/data/cache/cityperson_trainValTest/val_gt.json'
 img_id_lut = json.load(open(annFile, 'r'))['images']
 img_id_lut = {tmp['im_name']: tmp['id'] for tmp in img_id_lut}
-data_gen_val = data_generators.get_data_eval(val_data, C, batchsize=batchsize, exp_name=exp_name, return_fname=True)
+data_gen_val = data_generators.get_data_eval(val_data, C_tst, batchsize=batchsize, exp_name=exp_name, return_fname=True)
 # TODO: delete!!!
 X, tgt, val_completed, fnames = next(data_gen_val)
 print('Validation target: {}'.format([t.shape for t in tgt]))
@@ -197,7 +198,6 @@ for epoch_num in range(C.num_epochs):
             while not val_completed:
                 X, tgt, val_completed, fnames = next(data_gen_val)
                 Y = model.predict(X)
-                print('Evaluation: X.shape={} , Y.shape={}, tgt.shape={}'.format(X[0].shape, Y[0].shape, tgt[0].shape))
                 if C.offset:
                     boxes_batch = bbox_process.parse_det_offset_batch(Y, C, score=0.1, down=4)
                 else:
