@@ -203,6 +203,7 @@ for epoch_num in range(C.num_epochs):
                     img_data['filepath'] = img_data['filepath'].replace('images/', images_dir_name)
                     fname = os.path.split(img_data['filepath'])[1]
                     fnames.append(fname)
+                    x_img = cv2.imread(img_data['filepath'])
                     x_img = x_img.astype(np.float32)
                     x_img[:, :, 0] -= C.img_channel_mean[0]
                     x_img[:, :, 1] -= C.img_channel_mean[1]
