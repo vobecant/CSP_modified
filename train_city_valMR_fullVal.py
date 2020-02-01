@@ -209,7 +209,7 @@ for epoch_num in range(C.num_epochs):
                     x_img[:, :, 1] -= C.img_channel_mean[1]
                     x_img[:, :, 2] -= C.img_channel_mean[2]
                     X.append(np.expand_dims(x_img, axis=0))
-                X = np.concatenate(x, axis=0)
+                X = np.concatenate(X, axis=0)
                 Y = model.predict(X)
                 if epoch_num == 0 and cur_val_id == 0:
                     print('Val X shape: {}, Y shape: {}'.format(X.shape, Y.shape))
