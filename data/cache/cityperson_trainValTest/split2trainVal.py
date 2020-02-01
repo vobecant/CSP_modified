@@ -21,12 +21,20 @@ def get_city(filename):
 
 if __name__ == '__main__':
     orig_path = sys.argv[1]
-    tst_height = int(sys.argv[2])
-    tst_width = int(sys.argv[3])
     exp_name = '_'.join(os.path.split(orig_path)[1].split('_')[1:])
+    if len(sys.argv) == 4:
+        tst_height = int(sys.argv[2])
+        tst_width = int(sys.argv[3])
+        mult_h = tst_height / 1024.0
+        mult_w = tst_width / 2048.0
+        new_fname_val_json = 'val_gt.json'
+    else:
+        tst_height = 1024
+        tst_width = 2048
+        mult_h, mult_w = 1, 1
+        new_fname_val_json = 'val_gt_fullRes.json'
     new_fname_train = 'train_{}'.format(exp_name)
     new_fname_val = 'val'
-    new_fname_val_json = 'val_gt.json'
 
     # step 1
     # create new training split from the EXTENDED original training split
@@ -68,8 +76,6 @@ if __name__ == '__main__':
         val_anns = []
         images_added = {}
         images = []
-        mult_h = tst_height / 1024.0
-        mult_w = tst_width / 2048.0
         for ann in orig_train:
             city = get_city(ann['filepath'])
             if city in VAL_CITIES:
@@ -98,13 +104,8 @@ if __name__ == '__main__':
                     vis_ratio = float((vis_bbox[-2] * vis_bbox[-1])) / float((bbox[-2] * bbox[-1]))
                     idx = len(val_gt_json['annotations']) + 1
                     height = int(bbox[-1])
-                    print('Add ID: {}, image_id: {},  bbox: {}, vis_bbox: {}, height: {}, vis_ratio: {}'.format(idx,
-                                                                                                                images_added[
-                                                                                                                    image_name],
-                                                                                                                bbox,
-                                                                                                                vis_bbox,
-                                                                                                                height,
-                                                                                                                vis_ratio))
+                    print('Add ID: {}, image_id: {},  bbox: {}, vis_bbox: {}, height: {}, '
+                          'vis_ratio: {}'.format(idx, images_added[image_name], bbox, vis_bbox, height, vis_ratio))
                     ann_json = {"id": idx, "image_id": images_added[image_name],
                                 "category_id": 1, "iscrowd": 0, "ignore": 0,
                                 "bbox": bbox, "vis_bbox": vis_bbox,

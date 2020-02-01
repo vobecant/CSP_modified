@@ -96,10 +96,6 @@ def parse_det_offset_batch(Y, C, score=0.1, down=4):
         height = Y[1][bnum, :, :, 0]
         offset_y = Y[2][bnum, :, :, 0]
         offset_x = Y[2][bnum, :, :, 1]
-        print('seman.shape: {}, height.shape: {}, offset_y.shape: {}, offset_x.shape: {}'.format(seman.shape,
-                                                                                                 height.shape,
-                                                                                                 offset_y.shape,
-                                                                                                 offset_x.shape))
         y_c, x_c = np.where(seman > score)
         boxs_img = []
         if len(y_c) > 0:
