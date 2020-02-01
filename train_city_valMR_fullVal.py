@@ -212,7 +212,7 @@ for epoch_num in range(C.num_epochs):
                 X = np.concatenate(X, axis=0)
                 Y = model.predict(X)
                 if epoch_num == 0 and cur_val_id == 0:
-                    print('Val X shape: {}, Y shape: {}'.format(X.shape, Y.shape))
+                    print('Val X shape: {}, Y shape: {}'.format(X[0].shape, Y[0].shape))
                 if C.offset:
                     boxes_batch = bbox_process.parse_det_offset_batch(Y, C_tst, score=0.1, down=4)
                 else:
