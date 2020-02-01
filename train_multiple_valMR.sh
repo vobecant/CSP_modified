@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#EXP_NAMES=( 1P halfP blurred)
-EXP_NAMES=( baseline 1P halfP)
+#EXP_NAMES=( baseline 1P halfP blurred)
+EXP_NAMES=( 1P halfP)
 
 
 for EXP_NAME in "${EXP_NAMES[@]}"
