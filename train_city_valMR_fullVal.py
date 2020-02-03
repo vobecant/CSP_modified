@@ -30,11 +30,13 @@ else:
 C = config.Config()
 C_tst = config.TestConfig()
 if len(sys.argv) == 3:
+    debug = True
     os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     C.gpu_ids = '0'
     print(sys.argv)
 else:
+    debug = False
     C.gpu_ids = '0,1,2,3'
 
 C.onegpu = 2
@@ -176,7 +178,7 @@ for epoch_num in range(C.num_epochs):
             if total_loss < best_loss_train:
                 print('Total loss decreased from {} to {}, saving weights'.format(best_loss_train, total_loss))
                 best_loss_train = total_loss
-            if len(sys.argv)!=3:
+            if len(sys.argv) != 3:
                 model_savefile = os.path.join(out_path,
                                               'net_e{}_l{}.hdf5'.format(epoch_num + 1 + add_epoch, total_loss))
                 model_tea.save_weights(model_savefile)
@@ -200,10 +202,12 @@ for epoch_num in range(C.num_epochs):
                 X, fnames = [], []
                 for img_data in val_data[cur_val_id:next_val_id]:
                     # try:
-                    images_dir_name = 'images{}/'.format(exp_name if 'base' not in exp_name else '')
-                    img_data['filepath'] = img_data['filepath'].replace('images/', images_dir_name)
+                    # images_dir_name = 'images{}/'.format(exp_name if 'base' not in exp_name else '')
+                    # img_data['filepath'] = img_data['filepath'].replace('images/', images_dir_name)
                     fname = os.path.split(img_data['filepath'])[1]
                     fnames.append(fname)
+                    if debug:
+                        print(fname, img_data['filepath'])
                     x_img = cv2.imread(img_data['filepath'])
                     x_img = x_img.astype(np.float32)
                     x_img[:, :, 0] -= C.img_channel_mean[0]
@@ -215,10 +219,11 @@ for epoch_num in range(C.num_epochs):
                 if C.offset:
                     boxes_batch = bbox_process.parse_det_offset_batch(Y, C_tst, score=0.1, down=4)
                 else:
+                    assert False
                     boxes_batch = bbox_process.parse_det(Y, C_tst, score=0.1, down=4, scale=C.scale)
                 if cur_val_id == 0:
                     print('Val X shape: {}, Y shape: {}, boxes_batch: {}'.format(X[0].shape, Y[0].shape, boxes_batch))
-                if len(sys.argv)==3:
+                if len(sys.argv) == 3:
                     assert False, "End of debug..."
                 # boxes are in XYXY format
                 for boxes, fname in zip(boxes_batch, fnames):
