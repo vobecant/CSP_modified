@@ -48,7 +48,6 @@ class TestConfig(object):
 		# setting for data augmentation
 		self.use_horizontal_flips = False
 		self.brightness = False
-		self.size_train = (336, 448)
 
 		# image channel-wise mean to subtract, the order is BGR
 		self.img_channel_mean = [103.939, 116.779, 123.68]
