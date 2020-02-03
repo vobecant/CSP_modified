@@ -207,7 +207,7 @@ for epoch_num in range(C.num_epochs):
                     fname = os.path.split(img_data['filepath'])[1]
                     fnames.append(fname)
                     if debug:
-                        print(fname, img_data['filepath'])
+                        print(img_id_lut[fname], fname, img_data['filepath'])
                     x_img = cv2.imread(img_data['filepath'])
                     x_img = x_img.astype(np.float32)
                     x_img[:, :, 0] -= C.img_channel_mean[0]
