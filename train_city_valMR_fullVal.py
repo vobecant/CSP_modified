@@ -176,9 +176,10 @@ for epoch_num in range(C.num_epochs):
             if total_loss < best_loss_train:
                 print('Total loss decreased from {} to {}, saving weights'.format(best_loss_train, total_loss))
                 best_loss_train = total_loss
-            model_savefile = os.path.join(out_path,
-                                          'net_e{}_l{}.hdf5'.format(epoch_num + 1 + add_epoch, total_loss))
-            model_tea.save_weights(model_savefile)
+            if len(sys.argv)!=3:
+                model_savefile = os.path.join(out_path,
+                                              'net_e{}_l{}.hdf5'.format(epoch_num + 1 + add_epoch, total_loss))
+                model_tea.save_weights(model_savefile)
 
             # validate the model
             print('Start evaluation.')
@@ -211,12 +212,14 @@ for epoch_num in range(C.num_epochs):
                     X.append(np.expand_dims(x_img, axis=0))
                 X = np.concatenate(X, axis=0)
                 Y = model.predict(X)
-                if epoch_num == 0 and cur_val_id == 0:
-                    print('Val X shape: {}, Y shape: {}'.format(X[0].shape, Y[0].shape))
                 if C.offset:
                     boxes_batch = bbox_process.parse_det_offset_batch(Y, C_tst, score=0.1, down=4)
                 else:
                     boxes_batch = bbox_process.parse_det(Y, C_tst, score=0.1, down=4, scale=C.scale)
+                if cur_val_id == 0:
+                    print('Val X shape: {}, Y shape: {}, boxes_batch: {}'.format(X[0].shape, Y[0].shape, boxes_batch))
+                if len(sys.argv)==3:
+                    assert False, "End of debug..."
                 # boxes are in XYXY format
                 for boxes, fname in zip(boxes_batch, fnames):
                     if len(boxes) > 0:
