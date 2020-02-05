@@ -37,6 +37,7 @@ if len(sys.argv) == 3:
 else:
     C.gpu_ids = '0,1,2,3'
 
+EVAL = False
 C.onegpu = 2
 C.size_train = (640, 1280)
 C_tst.size_test = (640, 1280)
@@ -185,62 +186,63 @@ for epoch_num in range(C.num_epochs):
             model_tea.save_weights(model_savefile)
 
             # validate the model
-            print('Start evaluation.')
-            # TODO: compute MR-2 for validation on *REASONABLE* subset
-            # 1) run equivalent of test_city.py with the latest network
-            start_time_val = time.time()
-            res_path = os.path.join(out_path, 'valDt_ep{}'.format(epoch_num))
-            if not os.path.exists(res_path):
-                os.makedirs(res_path)
-            res_file = os.path.join(res_path, 'val_det.txt')
-            print('Save validation detections to {}'.format(res_file))
-            res_all = []
-            val_completed = False
-            while not val_completed:
-                X, val_completed, fnames = next(data_gen_val)
-                Y = model.predict(X)
-                if C.offset:
-                    boxes_batch = bbox_process.parse_det_offset_batch(Y, C_tst, score=0.1, down=4)
+            if EVAL:
+                print('Start evaluation.')
+                # TODO: compute MR-2 for validation on *REASONABLE* subset
+                # 1) run equivalent of test_city.py with the latest network
+                start_time_val = time.time()
+                res_path = os.path.join(out_path, 'valDt_ep{}'.format(epoch_num))
+                if not os.path.exists(res_path):
+                    os.makedirs(res_path)
+                res_file = os.path.join(res_path, 'val_det.txt')
+                print('Save validation detections to {}'.format(res_file))
+                res_all = []
+                val_completed = False
+                while not val_completed:
+                    X, val_completed, fnames = next(data_gen_val)
+                    Y = model.predict(X)
+                    if C.offset:
+                        boxes_batch = bbox_process.parse_det_offset_batch(Y, C_tst, score=0.1, down=4)
+                    else:
+                        boxes_batch = bbox_process.parse_det(Y, C_tst, score=0.1, down=4, scale=C.scale)
+                    # boxes are in XYXY format
+                    for boxes, fname in zip(boxes_batch, fnames):
+                        if len(boxes) > 0:
+                            img_id = img_id_lut[fname]
+                            f_res = np.repeat(img_id, len(boxes), axis=0).reshape((-1, 1))
+                            # change boxes to XYWH format
+                            boxes[:, [2, 3]] -= boxes[:, [0, 1]]
+                            res_all += np.concatenate((f_res, boxes), axis=-1).tolist()
+                np.savetxt(res_file, np.array(res_all), fmt='%6f')
+
+                # 2) transform detections from .txt file to JSON
+                json_filepath = convert_file(res_file)
+
+                # 3) run evaluation for the REASONABLE subset
+                cur_mr_val_reasonable = eval_json_reasonable(annFile, json_filepath)
+
+                # 4) compare to the best reasonable MR-2 so far
+                val_mr_history.append(cur_mr_val_reasonable)
+                if cur_mr_val_reasonable < best_mr_val:
+                    print('New best validation MR-2: {} -> {} . '.format(best_mr_val, cur_mr_val_reasonable), end='')
+                    best_mr_val = cur_mr_val_reasonable
+                    val_model_savefile = os.path.join(out_path, 'best_val.hdf5')
+                    copyfile(model_savefile, val_model_savefile)
+                    print('Saved the network to {}'.format(val_model_savefile))
                 else:
-                    boxes_batch = bbox_process.parse_det(Y, C_tst, score=0.1, down=4, scale=C.scale)
-                # boxes are in XYXY format
-                for boxes, fname in zip(boxes_batch, fnames):
-                    if len(boxes) > 0:
-                        img_id = img_id_lut[fname]
-                        f_res = np.repeat(img_id, len(boxes), axis=0).reshape((-1, 1))
-                        # change boxes to XYWH format
-                        boxes[:, [2, 3]] -= boxes[:, [0, 1]]
-                        res_all += np.concatenate((f_res, boxes), axis=-1).tolist()
-            np.savetxt(res_file, np.array(res_all), fmt='%6f')
+                    print('Current validation MR-2: {}, best validation MR-2 so far: {}'.format(cur_mr_val_reasonable,
+                                                                                                best_mr_val))
+                if cur_mr_val_reasonable > prev_mr_val:
+                    nonimproving_epochs += 1
+                    print('Validation MR-2 did not improve for {} epochs (max {} nonimproving epochs allowed)'.format(
+                        nonimproving_epochs, max_nonimproving_epochs))
+                else:
+                    print('Validation MR-2 better than in the previous step. Current: {}, previous: {}'.format(
+                        cur_mr_val_reasonable, prev_mr_val))
+                    nonimproving_epochs = 0
+                prev_mr_val = cur_mr_val_reasonable
 
-            # 2) transform detections from .txt file to JSON
-            json_filepath = convert_file(res_file)
-
-            # 3) run evaluation for the REASONABLE subset
-            cur_mr_val_reasonable = eval_json_reasonable(annFile, json_filepath)
-
-            # 4) compare to the best reasonable MR-2 so far
-            val_mr_history.append(cur_mr_val_reasonable)
-            if cur_mr_val_reasonable < best_mr_val:
-                print('New best validation MR-2: {} -> {} . '.format(best_mr_val, cur_mr_val_reasonable), end='')
-                best_mr_val = cur_mr_val_reasonable
-                val_model_savefile = os.path.join(out_path, 'best_val.hdf5')
-                copyfile(model_savefile, val_model_savefile)
-                print('Saved the network to {}'.format(val_model_savefile))
-            else:
-                print('Current validation MR-2: {}, best validation MR-2 so far: {}'.format(cur_mr_val_reasonable,
-                                                                                            best_mr_val))
-            if cur_mr_val_reasonable > prev_mr_val:
-                nonimproving_epochs += 1
-                print('Validation MR-2 did not improve for {} epochs (max {} nonimproving epochs allowed)'.format(
-                    nonimproving_epochs, max_nonimproving_epochs))
-            else:
-                print('Validation MR-2 better than in the previous step. Current: {}, previous: {}'.format(
-                    cur_mr_val_reasonable, prev_mr_val))
-                nonimproving_epochs = 0
-            prev_mr_val = cur_mr_val_reasonable
-
-            print('Elapsed time for validation: {}'.format(time.time() - start_time_val))
+                print('Elapsed time for validation: {}'.format(time.time() - start_time_val))
             print('Elapsed time for epoch: {}'.format(time.time() - start_time))
 
             iter_num = 0

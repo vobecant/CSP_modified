@@ -1,5 +1,8 @@
 from __future__ import print_function
 import os, sys
+
+import numpy as np
+import shutil
 from coco import COCO
 from eval_MR_multisetup import COCOeval
 
@@ -25,6 +28,14 @@ def eval_json_reasonable(annFile, resFile):
     return mr_reasonable
 
 
+def find_model(directory, epoch):
+    files = os.listdir(directory)
+    target = 'net_e{}_'.format(epoch)
+    for f in files:
+        if target in f:
+            return f
+
+
 annType = 'bbox'  # specify type here
 
 # parse experiment name
@@ -39,6 +50,9 @@ else:
 annFile = '../val_gt.json'
 main_path = '../../output/valresults/city_valMR/h/off{}'.format(exp_name)
 print('Looking for detections in {}'.format(main_path))
+
+best_mr_reasonable = np.inf
+best_mr_name = None
 
 for f in sorted(os.listdir(main_path)):
     print('file: {}'.format(f))
@@ -61,7 +75,20 @@ for f in sorted(os.listdir(main_path)):
         cocoEval.params.imgIds = imgIds
         cocoEval.evaluate(id_setup)
         cocoEval.accumulate()
-        cocoEval.summarize(id_setup, res_file)
+        mean_mr = cocoEval.summarize(id_setup, res_file)
+        if id_setup == 0:
+            mr_reasonable = mean_mr
+            if mr_reasonable < best_mr_reasonable:
+                print('New best validation MR with model {} : {} -> {}'.format(f, best_mr_reasonable, mr_reasonable))
+                best_mr_reasonable = mr_reasonable
+                best_mr_name = f
     print('')
 
     res_file.close()
+
+weights_path = 'output/valmodels/city_valMR/h/off{}'.format(exp_name)
+model_name = find_model(weights_path, int(best_mr_name))
+print('Best overall MR with model {} : {}'.format(model_name, best_mr_reasonable))
+best_model_path = os.path.join(weights_path, model_name)
+tgt_path = os.path.join(weights_path, 'best_val.hdf5')
+shutil.copy(best_model_path, tgt_path)

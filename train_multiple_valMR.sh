@@ -1,7 +1,7 @@
 #!/bin/bash
 
-#EXP_NAMES=( baseline 1P halfP blurred)
-EXP_NAMES=( 1P halfP)
+EXP_NAMES=( baseline 1P halfP blurred)
+#EXP_NAMES=( 1P halfP)
 
 
 for EXP_NAME in "${EXP_NAMES[@]}"
@@ -31,11 +31,12 @@ do
 python -u train_city_valMR.py ${EXP_NAME}
 
 # test the detector on images from Cityperson test split and convert the detections to JSON file
-python -u test_city_bestValMR.py ${EXP_NAME}
+python -u test_city_valSet.py ${EXP_NAME}
 RES_FILE=/home/vobecant/PhD/CSP/output/valresults/city_valMR/h/off_${EXP_NAME}
 python /home/vobecant/PhD/CSP/eval_city/dt_txt2json.py ${RES_FILE}
 
 # evaluate the detections
+# TODO: get the best performing one and copy it to 'best_val.hdf5' to the right directory
 python /home/vobecant/PhD/CSP/eval_city/eval_script/eval_demo_valMR.py ${RES_FILE}
 
 
