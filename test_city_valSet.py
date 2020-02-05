@@ -67,9 +67,6 @@ for w_ind in range(min_epoch, max_epoch):
         os.makedirs(res_path)
     print(res_path)
     res_file = os.path.join(res_path, 'val_det.txt')
-    if os.path.exists(res_file):
-        print('{} already exists... Skipping...'.format(res_file))
-        continue
     weight1 = os.path.join(w_path, cur_file)
     print('load weights from {}'.format(weight1))
     model.load_weights(weight1, by_name=True)
