@@ -128,7 +128,8 @@ prev_mr_val = np.Inf
 nonimproving_epochs = 0
 print('Starting training with lr {} and alpha {}'.format(C.init_lr, C.alpha))
 start_time = time.time()
-total_loss_r, cls_loss_r1, regr_loss_r1, offset_loss_r1, val_mr_history = [], [], [], [], []
+total_loss_r, cls_loss_r1, regr_loss_r1, offset_loss_r1 = [], [], [], []
+val_mr_history = []
 for epoch_num in range(C.num_epochs):
     if nonimproving_epochs == max_nonimproving_epochs:
         print('Maximum number of continuous nonimproving epochs reached! Ending training after epoch {}'.format(
@@ -257,7 +258,7 @@ for epoch_num in range(C.num_epochs):
     records = np.concatenate((np.asarray(total_loss_r).reshape((-1, 1)),
                               np.asarray(cls_loss_r1).reshape((-1, 1)),
                               np.asarray(regr_loss_r1).reshape((-1, 1)),
-                              np.asarray(offset_loss_r1).reshape((-1, 1)),
-                              np.asarray(val_mr_history).reshape((-1, 1))), axis=-1)
+                              np.asarray(offset_loss_r1).reshape((-1, 1))), axis=-1)
+    # np.asarray(val_mr_history).reshape((-1, 1))), axis=-1)
     np.savetxt(res_file_all, np.array(records), fmt='%.6f')
-print('Training complete, exiting.')
+    print('Training complete, exiting.')
