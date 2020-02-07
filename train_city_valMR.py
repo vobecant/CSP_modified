@@ -261,4 +261,4 @@ for epoch_num in range(C.num_epochs):
                               np.asarray(offset_loss_r1).reshape((-1, 1))), axis=-1)
     # np.asarray(val_mr_history).reshape((-1, 1))), axis=-1)
     np.savetxt(res_file_all, np.array(records), fmt='%.6f')
-    print('Training complete, exiting.')
+print('Training complete, exiting.')
