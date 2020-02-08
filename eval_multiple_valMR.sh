@@ -1,6 +1,6 @@
 #!/bin/bash
 
-EXP_NAMES=( baseline 1P halfP) #  blurred
+EXP_NAMES=( blurred) #( baseline 1P halfP) #  blurred
 
 
 for EXP_NAME in "${EXP_NAMES[@]}"
