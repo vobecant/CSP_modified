@@ -77,6 +77,7 @@ for w_ind in range(min_epoch, max_epoch):
         images_dir_name = 'images{}/'.format(exp_name if 'base' not in exp_name else '')
         # print('filepath: {}, images_dir_name: {}'.format(filepath, images_dir_name))
         filepath = filepath.replace('images/', images_dir_name)
+        print(filepath)
         # print('filepath after replace: {}'.format(filepath))
         # if 'blurred' in filepath:
         #    filepath = filepath.replace('.png', '_blurred.jpg')
