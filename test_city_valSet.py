@@ -13,7 +13,7 @@ if len(sys.argv) == 1:
 else:
     exp_name = '_{}'.format(sys.argv[1])
 
-os.environ["CUDA_VISIBLE_DEVICES"] = '0'
+os.environ["CUDA_VISIBLE_DEVICES"] = '2'
 C = config.Config()
 C.offset = True
 cache_path = 'data/cache/cityperson_trainValTest/val'
