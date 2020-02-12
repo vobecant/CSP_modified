@@ -92,3 +92,18 @@ print('Best overall MR with model {} : {}'.format(model_name, best_mr_reasonable
 best_model_path = os.path.join(weights_path, model_name)
 tgt_path = os.path.join(weights_path, 'best_val.hdf5')
 shutil.copy(best_model_path, tgt_path)
+
+annFile_test = '../val_gt.json'
+dt_path = os.path.join(main_path, best_mr_name)
+resFile = os.path.join(dt_path, 'val_dt.json')
+respath = os.path.join(dt_path, 'results.txt')
+res_file = open(respath, "w")
+print('\nResults on the TEST set:')
+for id_setup in range(6):
+    cocoGt = COCO(annFile_test)
+    cocoDt = cocoGt.loadRes(resFile)
+    imgIds = sorted(cocoGt.getImgIds())
+    cocoEval = COCOeval(cocoGt, cocoDt, annType)
+    cocoEval.params.imgIds = imgIds
+    cocoEval.evaluate(id_setup)
+    cocoEval.accumulate()
