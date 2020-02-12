@@ -56,6 +56,8 @@ best_mr_name = None
 
 for f in sorted(os.listdir(main_path)):
     print('file: {}'.format(f))
+    if 'eval' in f:
+        continue
     # initialize COCO detections api
     dt_path = os.path.join(main_path, f)
     resFile = os.path.join(dt_path, 'val_dt.json')
