@@ -47,7 +47,7 @@ else:
     print("Given experiment name: '{}'.".format(sys.argv[1]))
 
 # initialize COCO ground truth api
-annFile = '/home/vobecant/PhD/CSP/data/cache/cityperson_trainValTest/val_gt.json'
+annFile = '/home/vobecant/PhD/CSP/data/cache/cityperson_trainValTest/val_gt_fullRes.json'
 main_path = '../../output/valresults/city_valMR/h/off{}'.format(exp_name)
 print('Looking for detections in {}'.format(main_path))
 
