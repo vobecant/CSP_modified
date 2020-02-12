@@ -85,7 +85,8 @@ for f in sorted(os.listdir(main_path)):
 
     res_file.close()
 
-weights_path = 'output/valmodels/city_valMR/h/off{}'.format(exp_name)
+print('best_mr_name: {}'.format(best_mr_name))
+weights_path = '../../output/valmodels/city_valMR/h/off{}'.format(exp_name)
 model_name = find_model(weights_path, int(best_mr_name))
 print('Best overall MR with model {} : {}'.format(model_name, best_mr_reasonable))
 best_model_path = os.path.join(weights_path, model_name)
