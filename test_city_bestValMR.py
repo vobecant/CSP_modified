@@ -4,6 +4,10 @@ import time
 import cPickle
 from keras.layers import Input
 from keras.models import Model
+
+from eval_city.dt_txt2json import convert_file
+from eval_city.eval_script.coco import COCO
+from eval_city.eval_script.eval_MR_multisetup import COCOeval
 from keras_csp import config, bbox_process
 from keras_csp.utilsfunc import *
 
@@ -49,7 +53,7 @@ res_path = os.path.join(out_path, 'best_val')
 if not os.path.exists(res_path):
     os.makedirs(res_path)
 print(res_path)
-res_file = os.path.join(res_path, 'val_det.txt')
+res_file_txt = os.path.join(res_path, 'val_det.txt')
 
 print('load weights from {}'.format(weight1))
 model.load_weights(weight1, by_name=True)
@@ -71,5 +75,23 @@ for f in range(num_imgs):
         f_res = np.repeat(f + 1, len(boxes), axis=0).reshape((-1, 1))
         boxes[:, [2, 3]] -= boxes[:, [0, 1]]
         res_all += np.concatenate((f_res, boxes), axis=-1).tolist()
-np.savetxt(res_file, np.array(res_all), fmt='%6f')
+np.savetxt(res_file_txt, np.array(res_all), fmt='%6f')
 print(time.time() - start_time)
+
+dt_path = res_path
+json_path = convert_file(res_file_txt)
+
+annFile_test = '/home/vobecant/PhD/CSP/eval_city/val_gt.json'
+resFile = os.path.join(dt_path, 'val_dt.json')
+respath = os.path.join(dt_path, 'results_testSet.txt')
+res_file = open(respath, "w")
+print('\nResults on the TEST set:')
+for id_setup in range(6):
+    print('setup {}'.format(id_setup))
+    cocoGt = COCO(annFile_test)
+    cocoDt = cocoGt.loadRes(resFile)
+    imgIds = sorted(cocoGt.getImgIds())
+    cocoEval = COCOeval(cocoGt, cocoDt, 'bbox')
+    cocoEval.params.imgIds = imgIds
+    cocoEval.evaluate(id_setup)
+    cocoEval.accumulate()
