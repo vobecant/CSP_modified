@@ -57,6 +57,9 @@ if __name__ == '__main__':
     print('Found {} directories with detections.\n'.format(len(dirs)))
 
     for d in dirs:
+        if 'best' in d:
+            print('Skipping {}'.format(d))
+            continue
         ndt = 0
         dt_coco = {}
         dt_path = os.path.join(d, 'val_det.txt')
