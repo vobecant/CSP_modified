@@ -95,3 +95,4 @@ for id_setup in range(6):
     cocoEval.params.imgIds = imgIds
     cocoEval.evaluate(id_setup)
     cocoEval.accumulate()
+    cocoEval.summarize(id_setup, res_file)
