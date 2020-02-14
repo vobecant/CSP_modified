@@ -11,7 +11,7 @@ w_path = sys.argv[1]
 w_dir = os.path.split(w_path)[0]
 out_path = w_dir.replace('valmodels', 'valresults')
 
-os.environ["CUDA_VISIBLE_DEVICES"] = '0'
+os.environ["CUDA_VISIBLE_DEVICES"] = '1'
 C = config.Config()
 C.offset = True
 cache_path = 'data/cache/cityperson/val_500'
