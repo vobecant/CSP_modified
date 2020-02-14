@@ -7,16 +7,15 @@ from keras.models import Model
 from keras_csp import config, bbox_process
 from keras_csp.utilsfunc import *
 
-# parse experiment name
-if len(sys.argv) == 1:
-    exp_name = ''
-else:
-    exp_name = '_{}'.format(sys.argv[1])
+w_path = sys.argv[1]
+w_dir = os.path.split(w_path)[0]
+out_path = w_dir.replace('valmodels', 'valresults')
+print('w_dir={}\nout_path={}'.format(w_dir, out_path))
 
-os.environ["CUDA_VISIBLE_DEVICES"] = '2'
+os.environ["CUDA_VISIBLE_DEVICES"] = '1'
 C = config.Config()
 C.offset = True
-cache_path = 'data/cache/cityperson_trainValTest/val'
+cache_path = 'data/cache/cityperson/val_500'
 with open(cache_path, 'rb') as fid:
     val_data = cPickle.load(fid)
 num_imgs = len(val_data)
@@ -38,46 +37,26 @@ else:
 preds = nn.nn_p3p4p5(img_input, offset=C.offset, num_scale=C.num_scale, trainable=True)
 model = Model(img_input, preds)
 
-if C.offset:
-    w_path = 'output/valmodels/city_valMR/{}/off{}'.format(C.scale, exp_name)
-    out_path = 'output/valresults/city_valMR/{}/off{}'.format(C.scale, exp_name)
-else:
-    assert False
-    w_path = 'output/valmodels/city/{}/nooff{}'.format(C.scale, exp_name)
-    out_path = 'output/valresults/city/{}/nooff{}'.format(C.scale, exp_name)
-
 if not os.path.exists(out_path):
     os.makedirs(out_path)
 
-files = sorted(os.listdir(w_path))
-min_epoch = 51
-max_epoch = 151
-for w_ind in range(min_epoch, max_epoch):
-    net_found = False
-    for f in files:
-        if f.split('_')[0] == 'net' and int(f.split('_')[1][1:]) == w_ind:
-            cur_file = f
-            net_found = True
-            break
-    if not net_found:
-        print('Did not find the network from epoch {}. End testing.'.format(w_ind))
-        break
-    res_path = os.path.join(out_path, '%03d' % int(str(w_ind)))
-    if not os.path.exists(res_path):
-        os.makedirs(res_path)
-    print(res_path)
-    res_file = os.path.join(res_path, 'val_det.txt')
-    weight1 = os.path.join(w_path, cur_file)
-    print('load weights from {}'.format(weight1))
-    model.load_weights(weight1, by_name=True)
+res_path = os.path.join(out_path, '%03d' % int(str(w_ind)))
+if not os.path.exists(res_path):
+    os.makedirs(res_path)
+print(res_path)
+res_file = os.path.join(res_path, 'val_det.txt')
+if os.path.exists(res_file):
+    print('{} already exists... Skipping...'.format(res_file))
+else:
+    print('load weights from {}'.format(w_path))
+    model.load_weights(w_path, by_name=True)
     res_all = []
     start_time = time.time()
     for f in range(num_imgs):
         filepath = val_data[f]['filepath']
-        images_dir_name = 'images/'
+        images_dir_name = 'images{}/'.format(exp_name if 'base' not in exp_name else '')
         filepath = filepath.replace('images/', images_dir_name)
         img = cv2.imread(filepath)
-        assert img is not None, "img is None! File path: {}".format(filepath)
         x_rcnn = format_img(img, C)
         Y = model.predict(x_rcnn)
 
