@@ -208,7 +208,8 @@ for epoch_num in range(C.num_epochs):
                     fname = os.path.split(img_data['filepath'])[1]
                     fnames.append(fname)
                     if debug:
-                        print(img_id_lut[fname], fname, img_data['filepath'])
+                        pass
+                        # print(img_id_lut[fname], fname, img_data['filepath'])
                     x_img = cv2.imread(img_data['filepath'])
                     x_img = x_img.astype(np.float32)
                     x_img[:, :, 0] -= C.img_channel_mean[0]
@@ -269,7 +270,7 @@ for epoch_num in range(C.num_epochs):
             iter_num = 0
             start_time = time.time()
             # End of the epoch
-            if len(sys.argv) == 3 and epoch_num==2:
+            if len(sys.argv) == 3 and epoch_num == 2:
                 assert False, "End of debug..."
             break
 
