@@ -224,8 +224,6 @@ for epoch_num in range(C.num_epochs):
                     boxes_batch = bbox_process.parse_det(Y, C_tst, score=0.1, down=4, scale=C.scale)
                 if cur_val_id == 0:
                     print('Val X shape: {}, Y shape: {}, boxes_batch: {}'.format(X[0].shape, Y[0].shape, boxes_batch))
-                if len(sys.argv) == 3:
-                    assert False, "End of debug..."
                 # boxes are in XYXY format
                 for boxes, fname in zip(boxes_batch, fnames):
                     if len(boxes) > 0:
@@ -271,6 +269,8 @@ for epoch_num in range(C.num_epochs):
             iter_num = 0
             start_time = time.time()
             # End of the epoch
+            if len(sys.argv) == 3:
+                assert False, "End of debug..."
             break
 
             # except Exception as e:
