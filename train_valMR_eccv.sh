@@ -30,29 +30,13 @@ do
 python -u train_city_valMR_eccv.py ${EXP_NAME}
 
 # test the detector on images from Cityperson test split and convert the detections to JSON file
-python -u test_city_valSet.py ${EXP_NAME}
-RES_FILE=/home/vobecant/PhD/CSP/output/valresults/city_valMR/h/off_${EXP_NAME}
-python /home/vobecant/PhD/CSP/eval_city/dt_txt2json.py ${RES_FILE}
+python -u test_city_eccv.py ${EXP_NAME}
+RES_FOLDER=/home/vobecant/PhD/CSP/output/valresults/city_valMR_eccv/h/off_${EXP_NAME}
+python /home/vobecant/PhD/CSP/eval_city/dt_txt2json.py ${RES_FOLDER}
 
 # evaluate the detections
 # TODO: get the best performing one and copy it to 'best_val.hdf5' to the right directory
-python /home/vobecant/PhD/CSP/eval_city/eval_script/eval_demo_valMR.py ${RES_FILE}
-
-
-##################
-#   PRECARIOUS   #
-##################
-# finetune the detector for Precarious Pedestrians
-python -u train_precarious_valMR.py ${EXP_NAME}
-
-# test the detector on images Precarious Pedestrians test split and convert the detections to JSON file
-python -u test_precarious_finetuned_valMR.py "${EXP_NAME}"
-cd /home/vobecant/PhD/CSP/eval_precarious
-python dt_txt2json.py /home/vobecant/PhD/CSP/output/valresults/precarious_valMR/h/off_${EXP_NAME}_finetuned
-
-# evaluate the detections
-cd eval_script
-python eval_precarious_finetuned_valMR.py ${EXP_NAME}" > ${job_file}
+python /home/vobecant/PhD/CSP/eval_city/eval_script/eval_demo_eccv.py ${RES_FOLDER}" > ${job_file}
     sbatch ${job_file}
 
 	echo ""
