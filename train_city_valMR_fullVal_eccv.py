@@ -269,7 +269,7 @@ for epoch_num in range(C.num_epochs):
             iter_num = 0
             start_time = time.time()
             # End of the epoch
-            if len(sys.argv) == 3:
+            if len(sys.argv) == 3 and epoch_num==2:
                 assert False, "End of debug..."
             break
 
