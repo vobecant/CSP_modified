@@ -101,9 +101,9 @@ model_tea.load_weights(weight_path, by_name=True)
 print('load weights from {} in {}'.format(weight_path, time.time() - load_st))
 
 if C.offset:
-    out_path = 'output/valmodels/city_valMR/{}/off{}'.format(C.scale, exp_name)
+    out_path = 'output/valmodels/city_valMR_eccv/{}/off{}'.format(C.scale, exp_name)
 else:
-    out_path = 'output/valmodels/city_valMR/{}/nooff{}'.format(C.scale, exp_name)
+    out_path = 'output/valmodels/city_valMR_eccv/{}/nooff{}'.format(C.scale, exp_name)
 if not os.path.exists(out_path):
     os.makedirs(out_path)
 res_file_all = os.path.join(out_path, 'records.txt')
