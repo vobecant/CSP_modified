@@ -197,6 +197,55 @@ def get_data(ped_data, C, batchsize=8, exp_name=''):
             yield np.copy(x_img_batch), [np.copy(y_seman_batch), np.copy(y_height_batch)]
 
 
+def get_data_eccv(ped_data, C, batchsize=8, exp_name=''):
+    current_ped = 0
+    sample_filepath_printed = False
+    while True:
+        x_img_batch, y_seman_batch, y_height_batch, y_offset_batch = [], [], [], []
+        if current_ped > len(ped_data) - batchsize:
+            random.shuffle(ped_data)
+            current_ped = 0
+        for img_data in ped_data[current_ped:current_ped + batchsize]:
+            try:
+                if not sample_filepath_printed:
+                    print('Sample filepath: {}'.format(img_data['filepath']))
+                    sample_filepath_printed = True
+                assert (exp_name in img_data['filepath']) or 'baseline' in exp_name
+                img_data, x_img = data_augment.augment(img_data, C)
+                if C.offset:
+                    y_seman, y_height, y_offset = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=True)
+                else:
+                    if C.point == 'top':
+                        y_seman, y_height = calc_gt_top(C, img_data)
+                    elif C.point == 'bottom':
+                        y_seman, y_height = calc_gt_bottom(C, img_data)
+                    else:
+                        y_seman, y_height = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=False)
+
+                x_img = x_img.astype(np.float32)
+                x_img[:, :, 0] -= C.img_channel_mean[0]
+                x_img[:, :, 1] -= C.img_channel_mean[1]
+                x_img[:, :, 2] -= C.img_channel_mean[2]
+
+                x_img_batch.append(np.expand_dims(x_img, axis=0))
+                y_seman_batch.append(np.expand_dims(y_seman, axis=0))
+                y_height_batch.append(np.expand_dims(y_height, axis=0))
+                if C.offset:
+                    y_offset_batch.append(np.expand_dims(y_offset, axis=0))
+            except Exception as e:
+                print('get_batch_gt:', e)
+        x_img_batch = np.concatenate(x_img_batch, axis=0)
+        y_seman_batch = np.concatenate(y_seman_batch, axis=0)
+        y_height_batch = np.concatenate(y_height_batch, axis=0)
+        if C.offset:
+            y_offset_batch = np.concatenate(y_offset_batch, axis=0)
+        current_ped += batchsize
+        if C.offset:
+            yield np.copy(x_img_batch), [np.copy(y_seman_batch), np.copy(y_height_batch), np.copy(y_offset_batch)]
+        else:
+            yield np.copy(x_img_batch), [np.copy(y_seman_batch), np.copy(y_height_batch)]
+
+
 def get_data_eval(ped_data, C, batchsize=8, exp_name='', return_fname=False):
     current_ped = 0
     max_sample_id = (len(ped_data) // batchsize) * batchsize
@@ -231,6 +280,44 @@ def get_data_eval(ped_data, C, batchsize=8, exp_name='', return_fname=False):
             x_img_batch.append(np.expand_dims(x_img, axis=0))
             # except Exception as e:
             #    print('get_batch_gt:', e)
+        x_img_batch = np.concatenate(x_img_batch, axis=0)
+        current_ped = next_ped
+        last_batch = next_ped == max_sample_id
+        if C.offset:
+            if return_fname:
+                yield np.copy(x_img_batch), last_batch, fnames
+            else:
+                raise Exception("It should not be here...")
+        else:
+            yield np.copy(x_img_batch), [np.copy(y_seman_batch), np.copy(y_height_batch)], last_batch
+
+
+def get_data_eval_eccv(ped_data, C, batchsize=8, exp_name='', return_fname=False):
+    current_ped = 0
+    max_sample_id = (len(ped_data) // batchsize) * batchsize
+    sample_filepath_printed = False
+    while True:
+        x_img_batch, fnames = [], []
+        if current_ped == max_sample_id:
+            # random.shuffle(ped_data)
+            current_ped = 0
+        next_ped = min([max_sample_id, current_ped + batchsize])
+        for img_data in ped_data[current_ped:next_ped]:
+            fname = os.path.split(img_data['filepath'])[1]
+            fnames.append(fname)
+            img_data, x_img = data_augment.augment_eval(img_data, C)
+
+            x_img = x_img.astype(np.float32)
+            x_img[:, :, 0] -= C.img_channel_mean[0]
+            x_img[:, :, 1] -= C.img_channel_mean[1]
+            x_img[:, :, 2] -= C.img_channel_mean[2]
+
+            if not sample_filepath_printed:
+                print('Sample filepath: {}'.format(img_data['filepath']))
+                cv2.imwrite('sample.png', x_img)
+                sample_filepath_printed = True
+
+            x_img_batch.append(np.expand_dims(x_img, axis=0))
         x_img_batch = np.concatenate(x_img_batch, axis=0)
         current_ped = next_ped
         last_batch = next_ped == max_sample_id
