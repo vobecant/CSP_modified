@@ -39,7 +39,7 @@ else:
     debug = False
     C.gpu_ids = '0,1,2,3'
 
-EVAL = True
+EVAL = False
 C.onegpu = 2
 C.size_train = (640, 1280)
 C_tst.size_test = (640, 1280)
