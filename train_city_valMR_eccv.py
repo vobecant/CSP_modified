@@ -43,6 +43,7 @@ EVAL = True
 C.onegpu = 2
 C.size_train = (640, 1280)
 C_tst.size_test = (640, 1280)
+C_tst.size_train = (640, 1280)
 C.init_lr = 2e-4
 C.num_epochs = 150
 max_nonimproving_epochs = 5
