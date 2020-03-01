@@ -19,7 +19,7 @@ do
 #SBATCH --mem=30GB
 #SBATCH --gres=gpu:4
 #SBATCH --cpus-per-task=16
-#SBATCH --partition=gpu
+#SBATCH --partition=deadline
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=a.vobecky@gmail.com
 
