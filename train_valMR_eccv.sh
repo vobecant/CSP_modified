@@ -20,6 +20,7 @@ do
 #SBATCH --gres=gpu:4
 #SBATCH --cpus-per-task=16
 #SBATCH --partition=deadline
+#SBATCH --exclude=node-17
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=a.vobecky@gmail.com
 
