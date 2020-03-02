@@ -9,8 +9,8 @@ from keras_csp.utilsfunc import *
 
 # parse experiment name
 exp_name = '_baseline'
-from_ep = sys.argv[1]
-to_ep = sys.argv[2]
+from_ep = int(sys.argv[1])
+to_ep = int(sys.argv[2])
 
 os.environ["CUDA_VISIBLE_DEVICES"] = '1'
 C = config.Config()
