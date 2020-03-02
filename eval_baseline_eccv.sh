@@ -38,7 +38,8 @@ RES_FOLDER=/home/vobecant/PhD/CSP/output/valresults/city_valMR_eccv/h/off_baseli
 python /home/vobecant/PhD/CSP/eval_city/dt_txt2json.py ${RES_FOLDER}
 
 # evaluate the detections
-python /home/vobecant/PhD/CSP/eval_city/eval_script/eval_demo_eccv.py ${RES_FOLDER}" > ${job_file}
+#python /home/vobecant/PhD/CSP/eval_city/eval_script/eval_demo_eccv.py ${RES_FOLDER}
+" > ${job_file}
     sbatch ${job_file}
 
 	echo ""
