@@ -8,10 +8,9 @@ from keras_csp import config, bbox_process
 from keras_csp.utilsfunc import *
 
 # parse experiment name
-if len(sys.argv) == 1:
-    exp_name = ''
-else:
-    exp_name = '_{}'.format(sys.argv[1])
+exp_name = '_baseline'
+from_ep = sys.argv[1]
+to_ep = sys.argv[2]
 
 os.environ["CUDA_VISIBLE_DEVICES"] = '1'
 C = config.Config()
@@ -38,14 +37,15 @@ else:
 preds = nn.nn_p3p4p5(img_input, offset=C.offset, num_scale=C.num_scale, trainable=True)
 model = Model(img_input, preds)
 
-w_path = 'output/valmodels/city_valMR_eccv/h/off{}'.format(C.scale, exp_name)
-out_path = 'output/valresults/city_valMR_eccv/h/off'.format(C.scale, exp_name)
+w_path = 'output/valmodels/city_valMR/h/off{}'.format(exp_name)
+out_path = 'output/valresults/city_valMR_eccv/h/off{}'.format(exp_name)
 
 if not os.path.exists(out_path):
     os.makedirs(out_path)
 files = sorted(os.listdir(w_path))
-min_epoch = 31
-max_epoch = 151
+min_epoch = from_ep
+max_epoch = to_ep
+print('Evaluate networks from epoch {} to epoch {}'.format(from_ep, to_ep))
 for w_ind in range(min_epoch, max_epoch):
     net_found = False
     for f in files:
