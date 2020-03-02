@@ -86,11 +86,12 @@ for f in sorted(os.listdir(main_path)):
     res_file.close()
 
 print('best_mr_name: {}'.format(best_mr_name))
-weights_path = '../../output/valmodels/city_valMR_eccv/h/off{}'.format(exp_name)
-if not os.path.exists(weights_path):
-    os.makedirs(weights_path)
-model_name = find_model(weights_path, int(best_mr_name))
+weights_path_orig = '../../output/valmodels/city_valMR/h/off{}'.format(exp_name)
+weights_path_new = '../../output/valmodels/city_valMR_eccv/h/off{}'.format(exp_name)
+if not os.path.exists(weights_path_new):
+    os.makedirs(weights_path_new)
+model_name = find_model(weights_path_orig, int(best_mr_name))
 print('Best overall MR with model {} : {}'.format(model_name, best_mr_reasonable))
-best_model_path = os.path.join(weights_path, model_name)
-tgt_path = os.path.join(weights_path, 'best_val.hdf5')
+best_model_path = os.path.join(weights_path_orig, model_name)
+tgt_path = os.path.join(weights_path_new, 'best_val.hdf5')
 shutil.copy(best_model_path, tgt_path)
