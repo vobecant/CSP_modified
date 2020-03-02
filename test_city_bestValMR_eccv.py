@@ -43,8 +43,8 @@ preds = nn.nn_p3p4p5(img_input, offset=C.offset, num_scale=C.num_scale, trainabl
 model = Model(img_input, preds)
 
 if C.offset:
-    w_path = 'output/valmodels/city_valMR/{}/off{}'.format(C.scale, exp_name)
-    out_path = 'output/valresults/city_valMR/{}/off{}'.format(C.scale, exp_name)
+    w_path = 'output/valmodels/city_valMR_eccv/{}/off{}'.format(C.scale, exp_name)
+    out_path = 'output/valresults/city_valMR_eccv/{}/off{}'.format(C.scale, exp_name)
 if not os.path.exists(out_path):
     os.makedirs(out_path)
 
