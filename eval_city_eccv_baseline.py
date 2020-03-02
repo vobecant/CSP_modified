@@ -12,7 +12,7 @@ exp_name = '_baseline'
 from_ep = int(sys.argv[1])
 to_ep = int(sys.argv[2])
 
-os.environ["CUDA_VISIBLE_DEVICES"] = '1'
+os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 C = config.Config()
 C.offset = True
 cache_path = 'data/cache/cityperson_trainValTest/val'
