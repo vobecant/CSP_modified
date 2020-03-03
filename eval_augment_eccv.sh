@@ -12,6 +12,7 @@ SPECIF=$1
 EXPNAME="e_${SPECIF}"
 echo "Test experiment ${EXP_NAME}"
 
+RES_FOLDER=/home/vobecant/PhD/CSP/output/valresults/city_valMR_eccv/h/off_${SPECIF}
 
 job_file="${EXPNAME}.job"
 echo "run job_file ${job_file}"
@@ -33,7 +34,6 @@ echo "#!/bin/bash
 ##################
 # test the detector (with best val loss) on images from Cityperson test split and convert them to JSON file
 python -u eval_city_eccv.py ${SPECIF}
-RES_FOLDER=/home/vobecant/PhD/CSP/output/valresults/city_valMR_eccv/h/off_${SPECIF}
 python /home/vobecant/PhD/CSP/eval_city/dt_txt2json.py ${RES_FOLDER}
 
 # evaluate the detections
