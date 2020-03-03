@@ -48,7 +48,7 @@ else:
 
 # initialize COCO ground truth api
 annFile = '/home/vobecant/PhD/CSP/data/cache/cityperson_trainValTest/val_gt_fullRes.json'
-main_path = '../../output/valresults/city_valMR_eccv/h/off{}'.format(exp_name)
+main_path = '/home/vobecant/PhD/CSP/output/valresults/city_valMR_eccv/h/off{}'.format(exp_name)
 print('Looking for detections in {}'.format(main_path))
 
 best_mr_reasonable = np.inf
