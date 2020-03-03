@@ -23,6 +23,7 @@ echo "#!/bin/bash
 #SBATCH --mem=30GB
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=16
+#SBATCH --exclude=node-10,node-12
 #SBATCH --partition=deadline
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=a.vobecky@gmail.com
