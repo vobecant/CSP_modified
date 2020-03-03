@@ -59,7 +59,7 @@ for f in sorted(os.listdir(main_path)):
     if 'val' in f:
         continue
     print('file: {}'.format(f))
-    if '51' in f:
+    if '151' in f:
         print('Max allowed epoch reached.')
         break
     # initialize COCO detections api
