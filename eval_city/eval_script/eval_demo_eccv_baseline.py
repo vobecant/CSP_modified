@@ -58,6 +58,10 @@ for f in sorted(os.listdir(main_path)):
     print('file: {}'.format(f))
     if 'val' in f:
         continue
+    print('file: {}'.format(f))
+    if '51' in f:
+        print('Max allowed epoch reached.')
+        break
     # initialize COCO detections api
     dt_path = os.path.join(main_path, f)
     resFile = os.path.join(dt_path, 'val_dt.json')
@@ -86,9 +90,9 @@ for f in sorted(os.listdir(main_path)):
     res_file.close()
 
 print('best_mr_name: {}'.format(best_mr_name))
-weights_path = '/home/vobecant/PhD/CSP/output/valmodels/city_valMR/h/off_baseline'
-model_name = find_model(weights_path, int(best_mr_name))
-print('Best overall MR with model {} : {}'.format(model_name, best_mr_reasonable))
-best_model_path = os.path.join(weights_path, model_name)
-tgt_path = os.path.join('/home/vobecant/PhD/CSP/output/valmodels/city_valMR_eccv/h/off_baseline/best_val.hdf5')
-shutil.copy(best_model_path, tgt_path)
+# weights_path = '/home/vobecant/PhD/CSP/output/valmodels/city_valMR/h/off_baseline'
+# model_name = find_model(weights_path, int(best_mr_name))
+# print('Best overall MR with model {} : {}'.format(model_name, best_mr_reasonable))
+# best_model_path = os.path.join(weights_path, model_name)
+# tgt_path = os.path.join('/home/vobecant/PhD/CSP/output/valmodels/city_valMR_eccv/h/off_baseline/best_val.hdf5')
+# shutil.copy(best_model_path, tgt_path)
