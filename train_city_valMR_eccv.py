@@ -104,6 +104,7 @@ if C.offset:
     out_path = 'output/valmodels/city_valMR_eccv/{}/off{}'.format(C.scale, exp_name)
 else:
     out_path = 'output/valmodels/city_valMR_eccv/{}/nooff{}'.format(C.scale, exp_name)
+print('Output path: {}'.format(out_path))
 if not os.path.exists(out_path):
     os.makedirs(out_path)
 res_file_all = os.path.join(out_path, 'records.txt')

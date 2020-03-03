@@ -1,6 +1,6 @@
 #!/bin/bash
 
-EXP_NAMES=( eccv_1P_hard eccv_2P_hard)
+EXP_NAMES=( eccv_1P eccv_2P)
 
 
 for EXP_NAME in "${EXP_NAMES[@]}"
