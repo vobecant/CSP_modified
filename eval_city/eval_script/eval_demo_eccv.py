@@ -56,9 +56,9 @@ best_mr_name = None
 
 for f in sorted(os.listdir(main_path)):
     print('file: {}'.format(f))
-    if '126' in f:
-        print('Max allowed epoch reached.')
-        break
+    # if '126' in f:
+    #    print('Max allowed epoch reached.')
+    #    break
     if 'val' in f:
         continue
     # initialize COCO detections api
@@ -89,9 +89,9 @@ for f in sorted(os.listdir(main_path)):
     res_file.close()
 
 print('best_mr_name: {}'.format(best_mr_name))
-#weights_path = '/home/vobecant/PhD/CSP/output/valmodels/city_valMR/h/off{}'.format(exp_name)
-#model_name = find_model(weights_path, int(best_mr_name))
-#print('Best overall MR with model {} : {}'.format(model_name, best_mr_reasonable))
-#best_model_path = os.path.join(weights_path, model_name)
-#tgt_path = os.path.join(weights_path, 'best_val.hdf5')
-#shutil.copy(best_model_path, tgt_path)
+# weights_path = '/home/vobecant/PhD/CSP/output/valmodels/city_valMR/h/off{}'.format(exp_name)
+# model_name = find_model(weights_path, int(best_mr_name))
+# print('Best overall MR with model {} : {}'.format(model_name, best_mr_reasonable))
+# best_model_path = os.path.join(weights_path, model_name)
+# tgt_path = os.path.join(weights_path, 'best_val.hdf5')
+# shutil.copy(best_model_path, tgt_path)
