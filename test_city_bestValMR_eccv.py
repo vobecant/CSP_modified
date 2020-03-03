@@ -61,8 +61,8 @@ res_all = []
 start_time = time.time()
 for f in range(num_imgs):
     filepath = val_data[f]['filepath']
-    #images_dir_name = 'images{}/'.format(exp_name if 'base' not in exp_name else '')
-    #filepath = filepath.replace('images/', images_dir_name)
+    # images_dir_name = 'images{}/'.format(exp_name if 'base' not in exp_name else '')
+    # filepath = filepath.replace('images/', images_dir_name)
     img = cv2.imread(filepath)
     x_rcnn = format_img(img, C)
     Y = model.predict(x_rcnn)
