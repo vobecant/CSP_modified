@@ -56,9 +56,9 @@ best_mr_name = None
 
 for f in sorted(os.listdir(main_path)):
     print('file: {}'.format(f))
-    # if '126' in f:
-    #    print('Max allowed epoch reached.')
-    #    break
+    if '51' in f:
+        print('Max allowed epoch reached.')
+        break
     if 'val' in f:
         continue
     # initialize COCO detections api
