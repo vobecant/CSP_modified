@@ -1,4 +1,6 @@
 from __future__ import print_function
+
+import json
 import os, sys
 
 import numpy as np
@@ -64,6 +66,10 @@ for f in sorted(os.listdir(main_path)):
     # initialize COCO detections api
     dt_path = os.path.join(main_path, f)
     resFile = os.path.join(dt_path, 'val_dt.json')
+    with open(res_file,'r') as f:
+        tmp = json.load(f)
+        if len(tmp)==0:
+            print('No detections with {}. Skipping...')
     respath = os.path.join(dt_path, 'results.txt')
     # if os.path.exists(respath):
     #     continue
