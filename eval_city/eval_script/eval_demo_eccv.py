@@ -69,7 +69,8 @@ for f in sorted(os.listdir(main_path)):
     with open(resFile,'r') as f:
         tmp = json.load(f)
         if len(tmp)==0:
-            print('No detections with {}. Skipping...')
+            print('No detections with {}. Skipping...'.format(f))
+            continue
     respath = os.path.join(dt_path, 'results.txt')
     # if os.path.exists(respath):
     #     continue
