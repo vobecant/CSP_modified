@@ -66,7 +66,7 @@ for f in sorted(os.listdir(main_path)):
     # initialize COCO detections api
     dt_path = os.path.join(main_path, f)
     resFile = os.path.join(dt_path, 'val_dt.json')
-    with open(res_file,'r') as f:
+    with open(resFile,'r') as f:
         tmp = json.load(f)
         if len(tmp)==0:
             print('No detections with {}. Skipping...')
