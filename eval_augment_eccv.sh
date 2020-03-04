@@ -25,7 +25,7 @@ echo "#!/bin/bash
 #SBATCH --gres=gpu:1
 #SBATCH --cpus-per-task=16
 #SBATCH --exclude=node-10,node-12
-#SBATCH --partition=gpu
+#SBATCH --partition=deadline
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=a.vobecky@gmail.com
 
