@@ -13,7 +13,7 @@ from keras_csp import losses as losses
 
 # get the config parameters
 C = config.Config()
-C.gpu_ids = '0,1,2,3'
+C.gpu_ids = '0,1,2,3,4,5,6,7'
 C.onegpu = 2
 C.size_train = (640,1280)
 C.init_lr = 2e-4
