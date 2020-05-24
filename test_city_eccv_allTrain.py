@@ -42,7 +42,7 @@ if not os.path.exists(out_path):
 files = sorted(os.listdir(w_path))
 min_epoch = int(sys.argv[1])
 max_epoch = int(sys.argv[2])
-for w_ind in range(min_epoch, max_epoch+1):
+for w_ind in range(min_epoch, max_epoch + 1):
     net_found = False
     for f in files:
         if f.split('_')[0] == 'net' and int(f.split('_')[1][1:]) == w_ind:
@@ -75,6 +75,11 @@ for w_ind in range(min_epoch, max_epoch+1):
             boxes = bbox_process.parse_det_offset(Y, C, score=0.1, down=4)
         else:
             boxes = bbox_process.parse_det(Y, C, score=0.1, down=4, scale=C.scale)
+        if f == 0:
+            print('image: {}'.format(filepath))
+            print('Y: {}'.format(Y))
+            print('C: {}'.format(C))
+            print('boxes: {}'.format(boxes))
         if len(boxes) > 0:
             f_res = np.repeat(f + 1, len(boxes), axis=0).reshape((-1, 1))
             boxes[:, [2, 3]] -= boxes[:, [0, 1]]
