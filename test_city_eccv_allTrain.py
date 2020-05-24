@@ -7,9 +7,10 @@ from keras.models import Model
 from keras_csp import config, bbox_process
 from keras_csp.utilsfunc import *
 
-exp_name = '_trnval'
-if len(sys.argv) > 3:
-    exp_name += sys.argv[3]
+w_path = sys.argv[3]
+out_path = w_path.replace('valmodels', 'valresults')
+if not os.path.exists(out_path):
+    os.makedirs(out_path)
 
 # os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 C = config.Config()
@@ -36,11 +37,6 @@ else:
 preds = nn.nn_p3p4p5(img_input, offset=C.offset, num_scale=C.num_scale, trainable=True)
 model = Model(img_input, preds)
 
-w_path = 'output/valmodels/city/h/off{}'.format(exp_name)
-out_path = 'output/valresults/city/h/off{}'.format(exp_name)
-
-if not os.path.exists(out_path):
-    os.makedirs(out_path)
 files = sorted(os.listdir(w_path))
 min_epoch = int(sys.argv[1])
 max_epoch = int(sys.argv[2])
