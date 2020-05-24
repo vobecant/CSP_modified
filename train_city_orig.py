@@ -19,6 +19,7 @@ C.size_train = (640, 1280)
 # we need to increase the learning rate as we use more GPUs and bigger batch size
 lr_mult = int(len(C.gpu_ids) // 4 * (C.onegpu // 2))
 C.init_lr = 2e-4 * lr_mult
+print('lr_mult: {}, C.init_lr: {}'.format(lr_mult, C.init_lr))
 C.num_epochs = 150
 C.offset = True
 
