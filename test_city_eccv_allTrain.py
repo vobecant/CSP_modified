@@ -8,6 +8,8 @@ from keras_csp import config, bbox_process
 from keras_csp.utilsfunc import *
 
 exp_name = '_trnval'
+if len(sys.argv) > 1:
+    exp_name += sys.argv[1]
 
 # os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 C = config.Config()
@@ -34,8 +36,8 @@ else:
 preds = nn.nn_p3p4p5(img_input, offset=C.offset, num_scale=C.num_scale, trainable=True)
 model = Model(img_input, preds)
 
-w_path = 'output/valmodels/city/h/off_trnval'
-out_path = 'output/valresults/city/h/off_trnval'
+w_path = 'output/valmodels/city/h/off{}'.format(exp_name)
+out_path = 'output/valresults/city/h/off{}'.format(exp_name)
 
 if not os.path.exists(out_path):
     os.makedirs(out_path)
