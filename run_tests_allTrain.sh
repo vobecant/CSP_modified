@@ -3,7 +3,7 @@
 MINEP=${1}
 MAXEP=${2}
 SPECIF=${3}
-MODELDIR='${4}
+MODELDIR=${4}
 EXPNAME="test_allTrain_ep${MINEP}-${MAXEP}${SPECIF}"
 JOB_FILE="./jobs/${EXPNAME}.job"
 RESDIR="/home/vobecant/PhD/CSP/output/valresults/city/h/off_trnval${SPECIF}"
