@@ -58,7 +58,7 @@ for f in sorted(os.listdir(main_path)):
     # if os.path.exists(respath):
     #     continue
     ## running evaluation
-    filesize = os.path.getsize(respath)
+    filesize = os.path.getsize(resFile_txt)
     if filesize == 0:
         print("The file is empty: {}. No detections. Skipping".format(resFile_txt))
         continue
