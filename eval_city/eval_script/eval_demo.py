@@ -5,17 +5,9 @@ from eval_MR_multisetup import COCOeval
 
 annType = 'bbox'  # specify type here
 
-# parse experiment name
-if len(sys.argv) == 1:
-    exp_name = ''
-    print('No experiment name given. Run with default parameters.')
-else:
-    exp_name = '_{}'.format(sys.argv[1])
-    print("Given experiment name: '{}'.".format(sys.argv[1]))
-
 # initialize COCO ground truth api
-annFile = '../val_gt.json'
-main_path = '../../output/valresults/city/h/off{}'.format(exp_name)
+annFile = '/home/vobecant/PhD/CSP/eval_city/val_gt.json'
+main_path = sys.argv[1]
 
 for f in sorted(os.listdir(main_path)):
     print('file: {}'.format(f))

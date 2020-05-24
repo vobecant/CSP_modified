@@ -63,8 +63,11 @@ if __name__ == '__main__':
         ndt = 0
         dt_coco = {}
         dt_path = os.path.join(d, 'val_det.txt')
-        print('Processing detections from file {}'.format(dt_path))
         out_path = convert_file(dt_path)
+        if os.path.exists(out_path):
+            print('{} already exists! Skipping...')
+            continue
+        print('Processing detections from file {}'.format(dt_path))
         print('Saved detections to {}\n'.format(out_path))
 
     elapsed_t = time.time() - start_t
