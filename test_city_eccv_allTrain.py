@@ -8,8 +8,8 @@ from keras_csp import config, bbox_process
 from keras_csp.utilsfunc import *
 
 exp_name = '_trnval'
-if len(sys.argv) > 1:
-    exp_name += sys.argv[1]
+if len(sys.argv) > 3:
+    exp_name += sys.argv[3]
 
 # os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 C = config.Config()

@@ -2,9 +2,10 @@
 
 MINEP=${1}
 MAXEP=${2}
-EXPNAME="test_allTrain_ep${MINEP}-${MAXEP}"
+SPECIF=${3}
+EXPNAME="test_allTrain_ep${MINEP}-${MAXEP}${SPECIF}"
 JOB_FILE="./jobs/${EXPNAME}.job"
-RESDIR="/home/vobecant/PhD/CSP/output/valresults/city/h/off_trnval"
+RESDIR="/home/vobecant/PhD/CSP/output/valresults/city/h/off_trnval${SPECIF}"
 
 echo "#!/bin/bash -l
 #SBATCH --job-name=${EXPNAME}
@@ -16,7 +17,7 @@ echo "#!/bin/bash -l
 #SBATCH --mem=20GB
 #SBATCH --time=2-00:00:00
 
-python -u test_city_eccv_allTrain.py ${MINEP} ${MAXEP} > ${EXPNAME}.out
+python -u test_city_eccv_allTrain.py ${MINEP} ${MAXEP} ${SPECIF} > ${EXPNAME}.out
 python -u /home/vobecant/PhD/CSP/eval_city/dt_txt2json.py ${RESDIR}
 python /home/vobecant/PhD/CSP/eval_city/eval_script/eval_demo_allTrain.py ${RESDIR}" >${JOB_FILE}
 echo "run job ${JOB_FILE}"

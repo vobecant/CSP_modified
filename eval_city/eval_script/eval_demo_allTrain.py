@@ -62,6 +62,14 @@ for f in sorted(os.listdir(main_path)):
     if filesize == 0:
         print("The file is empty: {}. No detections. Skipping".format(resFile_txt))
         continue
+    if os.path.exists(respath):
+        with open('myfile.txt') as f:
+            mr_reasonable = float(f.readline)
+        if mr_reasonable < best_mr_reasonable:
+            print('New best test MR with model {} : {} -> {}'.format(f, best_mr_reasonable, mr_reasonable))
+            best_mr_reasonable = mr_reasonable
+            best_mr_name = f
+        continue
     res_file = open(respath, "w")
     for id_setup in range(6):
         cocoGt = COCO(annFile)
