@@ -52,11 +52,16 @@ for f in sorted(os.listdir(main_path)):
         continue
     # initialize COCO detections api
     dt_path = os.path.join(main_path, f)
+    resFile_txt = os.path.join(dt_path, 'val_det.txt')
     resFile = os.path.join(dt_path, 'val_dt.json')
     respath = os.path.join(dt_path, 'results.txt')
     # if os.path.exists(respath):
     #     continue
     ## running evaluation
+    filesize = os.path.getsize(respath)
+    if filesize == 0:
+        print("The file is empty: {}. No detections. Skipping".format(resFile_txt))
+        continue
     res_file = open(respath, "w")
     for id_setup in range(6):
         cocoGt = COCO(annFile)

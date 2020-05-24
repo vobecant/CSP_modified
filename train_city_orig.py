@@ -56,7 +56,7 @@ model_tea.load_weights(weight_path, by_name=True)
 print 'load weights from {}'.format(weight_path)
 
 if C.offset:
-    out_path = 'output/valmodels/city/%s/off_trnval' % (C.scale)
+        out_path = 'output/valmodels/city/%s/off_trnval' % (C.scale)
 else:
     out_path = 'output/valmodels/city/%s/nooff' % (C.scale)
 if not os.path.exists(out_path):

@@ -75,11 +75,6 @@ for w_ind in range(min_epoch, max_epoch + 1):
             boxes = bbox_process.parse_det_offset(Y, C, score=0.1, down=4)
         else:
             boxes = bbox_process.parse_det(Y, C, score=0.1, down=4, scale=C.scale)
-        if f == 0:
-            print('image: {}'.format(filepath))
-            print('Y: {}'.format(Y))
-            print('C: {}'.format(C))
-            print('boxes: {}'.format(boxes))
         if len(boxes) > 0:
             f_res = np.repeat(f + 1, len(boxes), axis=0).reshape((-1, 1))
             boxes[:, [2, 3]] -= boxes[:, [0, 1]]
