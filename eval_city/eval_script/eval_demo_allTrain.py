@@ -63,7 +63,7 @@ for f in sorted(os.listdir(main_path)):
         print("The file is empty: {}. No detections. Skipping".format(resFile_txt))
         continue
     if os.path.exists(respath):
-        with open('myfile.txt') as f:
+        with open(respath) as f:
             mr_reasonable = float(f.readline)
         if mr_reasonable < best_mr_reasonable:
             print('New best test MR with model {} : {} -> {}'.format(f, best_mr_reasonable, mr_reasonable))
