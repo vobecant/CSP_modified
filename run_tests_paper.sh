@@ -2,11 +2,10 @@
 
 MINEP=${1}
 MAXEP=${2}
-SPECIF=${3}
-MODELDIR=${4}
-EXPNAME="test_allTrain_ep${MINEP}-${MAXEP}${SPECIF}"
+MODELDIR="/home/vobecant/PhD/CSP/output/valmodels/city/h/off"
+EXPNAME="test_allTrain_ep${MINEP}-${MAXEP}_paper"
 JOB_FILE="./jobs/${EXPNAME}.job"
-RESDIR="/home/vobecant/PhD/CSP/output/valresults/city/h/off_trnval${SPECIF}"
+RESDIR="/home/vobecant/PhD/CSP/output/valresults/city/h/off"
 
 echo "#!/bin/bash -l
 #SBATCH --job-name=${EXPNAME}
