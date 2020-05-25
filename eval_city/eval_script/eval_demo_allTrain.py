@@ -64,7 +64,7 @@ for f in sorted(os.listdir(main_path)):
         continue
     if os.path.exists(respath):
         with open(respath) as f:
-            mr_reasonable = float(f.readline())
+            mr_reasonable = float(f.readline()) / 100
         if mr_reasonable < best_mr_reasonable:
             print('New best test MR with model {} : {} -> {}'.format(f, best_mr_reasonable, mr_reasonable))
             best_mr_reasonable = mr_reasonable
