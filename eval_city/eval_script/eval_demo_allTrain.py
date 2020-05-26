@@ -69,7 +69,7 @@ for f in sorted(os.listdir(main_path)):
                 res = float(f.readline())
                 if ci==0:
                     mr_reasonable = res / 100
-            print('{}: {:.4f}%'.format(config,res))
+                print('\t{}: {:.4f}%'.format(config,res))
         if mr_reasonable < best_mr_reasonable:
             print('New best test MR with model {} : {} -> {}'.format(f, best_mr_reasonable, mr_reasonable))
             best_mr_reasonable = mr_reasonable
