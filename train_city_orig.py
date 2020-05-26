@@ -17,10 +17,13 @@ C.gpu_ids = '0,1,2,3,4,5,6,7'
 C.onegpu = 4
 C.size_train = (640, 1280)
 # we need to increase the learning rate as we use more GPUs (was 4) and bigger batch size (was 2 per GPU)
-lr_mult = int((len(C.gpu_ids) / 4) * (C.onegpu / 2))
+ngpu_mult = int(len(C.gpu_ids) / 4)
+bs_mult = int(C.onegpu / 2)
+lr_mult = ngpu_mult * bs_mult
 C.init_lr = 2e-4 * lr_mult
 C.num_epochs = 150 * lr_mult
-print('lr_mult: {}, C.init_lr: {}, C.num_epochs: {}'.format(lr_mult, C.init_lr, C.num_epochs))
+print('ngpu_mult: {}, bs_mult: {}, lr_mult: {}, C.init_lr: {}, C.num_epochs: {}'.format(ngpu_mult, bs_mult, lr_mult,
+                                                                                        C.init_lr, C.num_epochs))
 C.offset = True
 
 num_gpu = len(C.gpu_ids.split(','))
@@ -64,7 +67,7 @@ model_tea.load_weights(weight_path, by_name=True)
 print 'load weights from {}'.format(weight_path)
 
 if C.offset:
-    out_path = 'output/valmodels/city/{}/off_trnval_lr{}_{}'.format(C.scale, C.init_lr,data_type)
+    out_path = 'output/valmodels/city/{}/off_trnval_lr{}_{}'.format(C.scale, C.init_lr, data_type)
 else:
     out_path = 'output/valmodels/city/%s/nooff' % (C.scale)
 if not os.path.exists(out_path):
