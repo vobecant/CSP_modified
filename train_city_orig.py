@@ -16,19 +16,22 @@ C = config.Config()
 C.gpu_ids = '0,1,2,3,4,5,6,7'
 C.onegpu = 4
 C.size_train = (640, 1280)
-# we need to increase the learning rate as we use more GPUs and bigger batch size
-lr_mult = int(len(C.gpu_ids) // 4 * (C.onegpu // 2))
+# we need to increase the learning rate as we use more GPUs (was 4) and bigger batch size (was 2 per GPU)
+lr_mult = int((len(C.gpu_ids) / 4) * (C.onegpu / 2))
 C.init_lr = 2e-4 * lr_mult
-print('lr_mult: {}, C.init_lr: {}'.format(lr_mult, C.init_lr))
-C.num_epochs = 150
+C.num_epochs = 150 * lr_mult
+print('lr_mult: {}, C.init_lr: {}, C.num_epochs: {}'.format(lr_mult, C.init_lr, C.num_epochs))
 C.offset = True
 
 num_gpu = len(C.gpu_ids.split(','))
 batchsize = C.onegpu * num_gpu
+print('Batch size: {}'.format(batchsize))
 os.environ["CUDA_VISIBLE_DEVICES"] = C.gpu_ids
 
+data_type = sys.argv[1]
+
 # get the training data
-cache_path = 'data/cache/cityperson_trainValTest/trainval_h50_1P'
+cache_path = 'data/cache/cityperson_trainValTest/train_h50_{}'.format(data_type)
 with open(cache_path, 'rb') as fid:
     train_data = cPickle.load(fid)
 num_imgs_train = len(train_data)
@@ -61,7 +64,7 @@ model_tea.load_weights(weight_path, by_name=True)
 print 'load weights from {}'.format(weight_path)
 
 if C.offset:
-    out_path = 'output/valmodels/city/{}/off_trnval_lr{}'.format(C.scale, C.init_lr)
+    out_path = 'output/valmodels/city/{}/off_trnval_lr{}_{}'.format(C.scale, C.init_lr,data_type)
 else:
     out_path = 'output/valmodels/city/%s/nooff' % (C.scale)
 if not os.path.exists(out_path):
