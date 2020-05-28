@@ -4,12 +4,12 @@ import numpy as np
 # import cv2
 import os
 import random
-# from . import data_augment
-import data_augment
-# from .bbox_transform import *
-from bbox_transform import *
+from . import data_augment
+# import data_augment
+from .bbox_transform import *
+# from bbox_transform import *
 import cv2
-import config
+#import config
 
 
 def calc_gt_center(C, img_data, r=2, down=4, scale='h', offset=True):
