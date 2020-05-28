@@ -35,7 +35,7 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=None):
         cv2.putText(img, label, (c1[0], c1[1] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
 
 
-def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, label='', color=(255,255,255)):
+def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, label='', color=(255, 255, 255)):
     boxes = np.asarray(boxes).reshape((-1, 4))
     boxes[:, 2:] += boxes[:, :2]
     tl = 3  # line thickness
@@ -110,7 +110,7 @@ for dt in dets2:
     dets2_byImg[dt['image_id']]['scores'].append(dt['score'])
 
 for ann in gts['annotations']:
-    if ann['category_id'] != 1 or ann['ignore'] or ann['iscrowd'] or ann['vis_ratio'] < 0.65 or ann['height'] < 50:
+    if ann['category_id'] != 1 or ann['ignore'] or ann['iscrowd'] or ann['height'] < 50:  # or ann['vis_ratio'] < 0.65
         continue
     image_id = ann['image_id']
     bbs_gt_all[image_id].append(ann['bbox'])
