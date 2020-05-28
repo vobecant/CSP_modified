@@ -49,8 +49,8 @@ def calc_gt_center(C, img_data, r=2, down=4, scale='h', offset=True):
             seman_map[c_y, c_x, 2] = 1
 
             if scale == 'h':
-                print('gts: {}, shape: {}'.format(gts, gts.shape))
-                print('gts[ind, 3] - gts[ind, 1]: {},'.format(gts[ind, 3] - gts[ind, 1]))
+                # print('gts: {}, shape: {}'.format(gts, gts.shape))
+                # print('gts[ind, 3] - gts[ind, 1]: {},'.format(gts[ind, 3] - gts[ind, 1]))
                 scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 0] = np.log(gts[ind, 3] - gts[ind, 1])
                 scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 1] = 1
             elif scale == 'w':
@@ -164,7 +164,7 @@ def get_data(ped_data, C, batchsize=8, exp_name=''):
             img_data['filepath'] = img_data['filepath'].replace('images/', images_dir_name)
             if ('blurred' in images_dir_name) or ('anonymized' in images_dir_name):
                 img_data['filepath'] = img_data['filepath'].replace('.png', '_blurred.jpg')
-            if True:  # not sample_filepath_printed:
+            if not sample_filepath_printed:
                 print('Sample filepath: {}'.format(img_data['filepath']))
                 sample_filepath_printed = True
             assert (exp_name in img_data['filepath']) or 'baseline' in exp_name
