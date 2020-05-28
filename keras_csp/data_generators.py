@@ -48,9 +48,9 @@ def calc_gt_center(C, img_data, r=2, down=4, scale='h', offset=True):
                 seman_map[y1:y2, x1:x2, 0] = np.maximum(seman_map[y1:y2, x1:x2, 0], gau_map)
             except:
                 print('x1: {}, y1: {}, x2: {}, y2: {}'.format(x1, y1, x2, y2))
-                print ('dx: {}'.format(dx))
-                print ('dy: {}'.format(dy))
-                print ('gau_map: {}'.format(gau_map))
+                print ('dx.shape: {}'.format(dx.shape))
+                print ('dy.shape: {}'.format(dy.shape))
+                print ('gau_map.shape: {}'.format(gau_map.shape))
                 print('seman_map[y1:y2, x1:x2, 0].shape: {}'.format(seman_map[y1:y2, x1:x2, 0].shape))
                 print('np.maximum(seman_map[y1:y2, x1:x2, 0], gau_map): {}'.format(
                     np.maximum(seman_map[y1:y2, x1:x2, 0], gau_map)))
