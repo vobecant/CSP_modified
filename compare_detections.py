@@ -35,7 +35,7 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=None):
         cv2.putText(img, label, (c1[0], c1[1] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
 
 
-def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False):
+def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, label=''):
     boxes = np.asarray(boxes).reshape((-1,4))
     boxes[:,2:] += boxes[:,:2]
     tl = 3  # line thickness
@@ -59,7 +59,6 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False):
         for j, box in enumerate(boxes):
             color = color_lut[0]
             if gt or confs[j] > 0.3:  # 0.3 conf thresh
-                label = '{:.3f}'.format(confs[j])
                 plot_one_box(box, img, label=label, color=color, line_thickness=tl)
 
     # Draw image filename labels
@@ -114,10 +113,13 @@ for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
     image = cv2.cvtColor(cv2.imread(image_name), cv2.COLOR_BGR2RGB)
 
     bbs1, scores1 = dt1['boxes'], dt1['scores']
-    img_dt1 = plot_images(image.copy(), bbs1, scores1, image_name)
+    img_dt1 = plot_images(image.copy(), bbs1, scores1, image_name, label='ours')
 
     bbs2, scores2 = dt2['boxes'], dt2['scores']
-    img_dt2 = plot_images(image.copy(), bbs2, scores2, image_name)
+    img_dt2 = plot_images(img_dt1, bbs2, scores2, image_name, label='paper')
+
+    bbs_gt = None
+    img_dt2 = plot_images(img_dt2, bbs_gt, None, image_name, label='GT', gt=True)
 
     plt.imsave(os.path.join(save_dir,'im{}_det1.png'.format(i+1)), img_dt1)
     plt.imsave(os.path.join(save_dir,'im{}_det2.png'.format(i+1)), img_dt2)
