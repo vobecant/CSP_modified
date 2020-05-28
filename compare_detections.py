@@ -35,7 +35,7 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=None):
         cv2.putText(img, label, (c1[0], c1[1] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
 
 
-def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, label=''):
+def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, label='', color=(255,255,255)):
     boxes = np.asarray(boxes).reshape((-1, 4))
     boxes[:, 2:] += boxes[:, :2]
     tl = 3  # line thickness
@@ -55,9 +55,7 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, labe
 
     if len(boxes) > 0:
         classes = [1]
-
         for j, box in enumerate(boxes):
-            color = color_lut[0]
             if gt or confs[j] > 0.3:  # 0.3 conf thresh
                 plot_one_box(box, img, label=label, color=color, line_thickness=tl)
 
@@ -99,6 +97,10 @@ dets1_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, 501)}
 dets2_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, 501)}
 bbs_gt_all = {i: [] for i in range(1, 501)}
 
+color_ours = (31, 119, 180)
+color_paper = (255, 127, 14)
+color_gt = (44, 160, 44)
+
 for dt in dets1:
     dets1_byImg[dt['image_id']]['boxes'].append(dt['bbox'])
     dets1_byImg[dt['image_id']]['scores'].append(dt['score'])
@@ -108,7 +110,7 @@ for dt in dets2:
     dets2_byImg[dt['image_id']]['scores'].append(dt['score'])
 
 for ann in gts['annotations']:
-    if ann['category_id']!=1 or ann['ignore'] or ann['iscrowd'] or ann['vis_ratio']<0.65 or ann['height']<50:
+    if ann['category_id'] != 1 or ann['ignore'] or ann['iscrowd'] or ann['vis_ratio'] < 0.65 or ann['height'] < 50:
         continue
     image_id = ann['image_id']
     bbs_gt_all[image_id].append(ann['bbox'])
@@ -120,12 +122,12 @@ for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
     image = cv2.cvtColor(cv2.imread(image_name), cv2.COLOR_BGR2RGB)
 
     bbs1, scores1 = dt1['boxes'], dt1['scores']
-    img_dt1 = plot_images(image.copy(), bbs1, scores1, image_name, label='ours')
+    img_dt1 = plot_images(image.copy(), bbs1, scores1, image_name, label='ours', color=color_ours)
 
     bbs2, scores2 = dt2['boxes'], dt2['scores']
-    img_dt2 = plot_images(img_dt1, bbs2, scores2, image_name, label='paper')
+    img_dt2 = plot_images(img_dt1, bbs2, scores2, image_name, label='paper', color=color_paper)
 
-    bbs_gt = bbs_gt_all[i+1]
-    img_dts = plot_images(img_dt2, bbs_gt, None, image_name, label='GT', gt=True)
+    bbs_gt = bbs_gt_all[i + 1]
+    img_dts = plot_images(img_dt2, bbs_gt, None, image_name, label='GT', gt=True, color=color_gt)
 
     plt.imsave(os.path.join(save_dir, 'im{}_dets.png'.format(i + 1)), img_dts)
