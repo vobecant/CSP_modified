@@ -15,7 +15,7 @@ if not os.path.exists(out_path):
 
 C = config.Config()
 C.offset = True
-cache_path = 'data/cache/nightowls/val_h50_all_xyxy'
+cache_path = 'data/cache/nightowls/val_h50_nightowls_xyxy'
 with open(cache_path, 'rb') as fid:
     val_data = cPickle.load(fid)
 num_imgs = len(val_data)
