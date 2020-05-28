@@ -39,8 +39,6 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', names=None, ma
     boxes = np.asarray(boxes)
     tl = 3  # line thickness
     tf = max(tl - 1, 1)  # font thickness
-    if os.path.isfile(fname):  # do not overwrite
-        return None
 
     # un-normalise
     if np.max(img[0]) <= 1:
