@@ -109,7 +109,7 @@ for dt in dets2:
 
 for ann in gts['annotations']:
     image_id = ann['image_id']
-    bbs_gt_all[image_id].append(ann['boxes'])
+    bbs_gt_all[image_id].append(ann['bbox'])
 
 for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
     image_name = gts['images'][i]['im_name']
@@ -126,5 +126,4 @@ for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
     bbs_gt = bbs_gt_all[i]
     img_dt2 = plot_images(img_dt2, bbs_gt, None, image_name, label='GT', gt=True)
 
-    plt.imsave(os.path.join(save_dir, 'im{}_det1.png'.format(i + 1)), img_dt1)
-    plt.imsave(os.path.join(save_dir, 'im{}_det2.png'.format(i + 1)), img_dt2)
+    plt.imsave(os.path.join(save_dir, 'im{}_dets.png'.format(i + 1)), img_dt1)
