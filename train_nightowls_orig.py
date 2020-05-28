@@ -16,7 +16,7 @@ C = config.Config()
 C.gpu_ids = '0,1,2,3,4,5,6,7'
 num_gpu = len(C.gpu_ids.split(','))
 C.onegpu = 4
-C.size_train = (640, 1280)
+C.size_train = (640, 1024)
 # we need to increase the learning rate as we use more GPUs (was 4) and bigger batch size (was 2 per GPU)
 ngpu_mult = int(num_gpu / 4)
 bs_mult = int(C.onegpu / 2)
