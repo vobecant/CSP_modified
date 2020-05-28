@@ -33,7 +33,7 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=None, gt=False, 
         if gt:
             c2 = c1[0] + t_size[0], c1[1] - t_size[1] - 3
         elif paper:
-            c1 = c2[1] - t_size[0], c2[0] - t_size[1] - 3
+            c1 = c2[0] - t_size[0], c2[1] - t_size[1] - 3
         else:
             c2 = c1[0] + t_size[0], c1[1] - t_size[1] - 3
         cv2.rectangle(img, c1, c2, color, -1)  # filled
