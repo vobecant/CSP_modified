@@ -35,7 +35,7 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=None):
         cv2.putText(img, label, (c1[0], c1[1] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
 
 
-def plot_images(img, boxes, confs, path=None, fname='images.jpg', names=None, max_size=640, max_subplots=16):
+def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False):
     boxes = np.asarray(boxes).reshape((-1,4))
     boxes[:,2:] += boxes[:,:2]
     tl = 3  # line thickness
