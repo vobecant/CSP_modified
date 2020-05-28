@@ -21,7 +21,7 @@ def xywh2xyxy(x):
     return y
 
 
-def plot_one_box(x, img, color=None, label=None, line_thickness=None):
+def plot_one_box(x, img, color=None, label=None, line_thickness=None, gt=False,paper=False):
     # Plots one bounding box on image img
     tl = line_thickness or round(0.002 * (img.shape[0] + img.shape[1]) / 2) + 1  # line/font thickness
     color = color or [random.randint(0, 255) for _ in range(3)]
@@ -32,13 +32,18 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=None):
         t_size = cv2.getTextSize(label, 0, fontScale=tl / 3, thickness=tf)[0]
         c2 = c1[0] + t_size[0], c1[1] - t_size[1] - 3
         cv2.rectangle(img, c1, c2, color, -1)  # filled
-        cv2.putText(img, label, (c1[0], c1[1] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
+        if gt:
+            cv2.putText(img, label, (c1[0], c1[0] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
+        if paper:
+            cv2.putText(img, label, (c1[1], c1[1] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
+        else:
+            cv2.putText(img, label, (c1[0], c1[1] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
 
 
 def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, label='', color=(255, 255, 255)):
     boxes = np.asarray(boxes).reshape((-1, 4))
     boxes[:, 2:] += boxes[:, :2]
-    tl = 1 #3  # line thickness
+    tl = 1  # 3  # line thickness
     tf = max(tl - 1, 1)  # font thickness
 
     # un-normalise
@@ -57,7 +62,7 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, labe
         classes = [1]
         for j, box in enumerate(boxes):
             if gt or confs[j] > 0.3:  # 0.3 conf thresh
-                plot_one_box(box, img, label=label, color=color, line_thickness=tl)
+                plot_one_box(box, img, label=label, color=color, line_thickness=tl, gt=gt,paper=label=='paper')
 
     # Draw image filename labels
     if path is not None:
