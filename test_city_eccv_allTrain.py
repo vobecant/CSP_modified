@@ -43,7 +43,7 @@ max_epoch = int(sys.argv[2])
 for w_ind in range(min_epoch, max_epoch + 1):
     net_found = False
     for f in files:
-        if f.split('_')[0] == 'net' and int(f.split('_')[1][1:]) == w_ind:
+        if 'net' in f.split('_')[0] and int(f.split('_')[1][1:]) == w_ind:
             cur_file = f
             net_found = True
             break
