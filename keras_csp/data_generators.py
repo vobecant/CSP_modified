@@ -7,6 +7,7 @@ import random
 from . import data_augment
 from .bbox_transform import *
 import cv2
+import config
 
 
 def calc_gt_center(C, img_data, r=2, down=4, scale='h', offset=True):
@@ -493,3 +494,18 @@ def get_data_wider(ped_data, C, batchsize=8):
             yield np.copy(x_img_batch), [np.copy(y_seman_batch), np.copy(y_height_batch), np.copy(y_offset_batch)]
         else:
             yield np.copy(x_img_batch), [np.copy(y_seman_batch), np.copy(y_height_batch)]
+
+
+if __name__ == '__main__':
+    C = config.Config()
+    C.gpu_ids = '0,1,2,3,4,5,6,7'
+    num_gpu = len(C.gpu_ids.split(','))
+    C.onegpu = 4
+    C.size_train = (640, 1024)
+    cache_path = 'data/cache/nightowls/train_h50_nonempty'
+    with open(cache_path, 'rb') as fid:
+        train_data = cPickle.load(fid)
+    num_imgs_train = len(train_data)
+    random.shuffle(train_data)
+    print 'num of training samples: {}'.format(num_imgs_train)
+    data_gen_train = get_data(train_data, C, batchsize=2)
