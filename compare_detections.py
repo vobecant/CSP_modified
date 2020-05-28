@@ -55,7 +55,7 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', names=None, ma
     if len(boxes) > 0:
         classes = [1]
 
-        for j, box in enumerate(boxes.T):
+        for j, box in enumerate(boxes):
             cls = 1
             color = color_lut[cls % len(color_lut)]
             cls = names[cls] if names else cls
