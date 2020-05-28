@@ -123,7 +123,7 @@ for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
     bbs2, scores2 = dt2['boxes'], dt2['scores']
     img_dt2 = plot_images(img_dt1, bbs2, scores2, image_name, label='paper')
 
-    bbs_gt = bbs_gt_all[i]
+    bbs_gt = bbs_gt_all[i+1]
     img_dts = plot_images(img_dt2, bbs_gt, None, image_name, label='GT', gt=True)
 
     plt.imsave(os.path.join(save_dir, 'im{}_dets.png'.format(i + 1)), img_dts)
