@@ -44,7 +44,16 @@ def calc_gt_center(C, img_data, r=2, down=4, scale='h', offset=True):
             dx = gaussian(x2 - x1)
             dy = gaussian(y2 - y1)
             gau_map = np.multiply(dy, np.transpose(dx))
-            seman_map[y1:y2, x1:x2, 0] = np.maximum(seman_map[y1:y2, x1:x2, 0], gau_map)
+            try:
+                seman_map[y1:y2, x1:x2, 0] = np.maximum(seman_map[y1:y2, x1:x2, 0], gau_map)
+            except:
+                print('x1: {}, y1: {}, x2: {}, y2: {}'.format(x1, y1, x2, y2))
+                print ('dx: {}'.format(dx))
+                print ('dy: {}'.format(dy))
+                print ('gau_map: {}'.format(gau_map))
+                print('seman_map[y1:y2, x1:x2, 0].shape: {}'.format(seman_map[y1:y2, x1:x2, 0].shape))
+                print('np.maximum(seman_map[y1:y2, x1:x2, 0], gau_map): {}'.format(
+                    np.maximum(seman_map[y1:y2, x1:x2, 0], gau_map)))
             seman_map[y1:y2, x1:x2, 1] = 1
             seman_map[c_y, c_x, 2] = 1
 
