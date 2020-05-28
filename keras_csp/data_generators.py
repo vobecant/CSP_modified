@@ -4,9 +4,9 @@ import numpy as np
 # import cv2
 import os
 import random
-#from . import data_augment
+# from . import data_augment
 import data_augment
-#from .bbox_transform import *
+# from .bbox_transform import *
 from bbox_transform import *
 import cv2
 import config
@@ -51,11 +51,11 @@ def calc_gt_center(C, img_data, r=2, down=4, scale='h', offset=True):
                 scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 0] = np.log(np.max(gts[ind, 3] - gts[ind, 1], 1))
                 scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 1] = 1
             elif scale == 'w':
-                scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 0] = np.log(max([gts[ind, 2] - gts[ind, 0],1]))
+                scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 0] = np.log(max([gts[ind, 2] - gts[ind, 0], 1]))
                 scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 1] = 1
             elif scale == 'hw':
-                scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 0] = np.log(max([gts[ind, 3] - gts[ind, 1],1]))
-                scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 1] = np.log(max([gts[ind, 2] - gts[ind, 0],1]))
+                scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 0] = np.log(max([gts[ind, 3] - gts[ind, 1], 1]))
+                scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 1] = np.log(max([gts[ind, 2] - gts[ind, 0], 1]))
                 scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 2] = 1
             if offset:
                 offset_map[c_y, c_x, 0] = (gts[ind, 1] + gts[ind, 3]) / 2 - c_y - 0.5
@@ -500,6 +500,7 @@ def get_data_wider(ped_data, C, batchsize=8):
 
 if __name__ == '__main__':
     import pickle as cPickle
+
     C = config.Config()
     C.gpu_ids = '0,1,2,3,4,5,6,7'
     num_gpu = len(C.gpu_ids.split(','))
