@@ -513,3 +513,6 @@ if __name__ == '__main__':
     random.shuffle(train_data)
     print('num of training samples: {}'.format(num_imgs_train))
     data_gen_train = get_data(train_data, C, batchsize=2)
+    while True:
+        try:
+            X, Y = next(data_gen_train)
