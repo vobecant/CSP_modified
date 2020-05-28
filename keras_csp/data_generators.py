@@ -44,14 +44,14 @@ def calc_gt_center(C, img_data, r=2, down=4, scale='h', offset=True):
             seman_map[c_y, c_x, 2] = 1
 
             if scale == 'h':
-                scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 0] = np.log(gts[ind, 3] - gts[ind, 1])
+                scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 0] = np.log(max([gts[ind, 3] - gts[ind, 1], 1]))
                 scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 1] = 1
             elif scale == 'w':
-                scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 0] = np.log(gts[ind, 2] - gts[ind, 0])
+                scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 0] = np.log(max([gts[ind, 2] - gts[ind, 0],1]))
                 scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 1] = 1
             elif scale == 'hw':
-                scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 0] = np.log(gts[ind, 3] - gts[ind, 1])
-                scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 1] = np.log(gts[ind, 2] - gts[ind, 0])
+                scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 0] = np.log(max([gts[ind, 3] - gts[ind, 1],1]))
+                scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 1] = np.log(max([gts[ind, 2] - gts[ind, 0],1]))
                 scale_map[c_y - r:c_y + r + 1, c_x - r:c_x + r + 1, 2] = 1
             if offset:
                 offset_map[c_y, c_x, 0] = (gts[ind, 1] + gts[ind, 3]) / 2 - c_y - 0.5
