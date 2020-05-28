@@ -18,7 +18,7 @@ num_gpu = len(C.gpu_ids.split(','))
 C.onegpu = 4
 C.size_train = (640, 1024)
 # image channel-wise mean to subtract, the order is BGR!!!
-C.img_channel_mean = [103.939, 116.779, 123.68]
+C.img_channel_mean = [62.22632229, 76.71838384, 78.05682094]  # [103.939, 116.779, 123.68]
 # we need to increase the learning rate as we use more GPUs (was 4) and bigger batch size (was 2 per GPU)
 ngpu_mult = int(num_gpu / 4)
 bs_mult = int(C.onegpu / 2)
