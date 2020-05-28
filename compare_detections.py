@@ -57,10 +57,9 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', names=None, ma
         classes = [1]
 
         for j, box in enumerate(boxes):
-            cls = confs[j]
-            color = color_lut[cls % len(color_lut)]
+            color = color_lut[0]
             if gt or confs[j] > 0.3:  # 0.3 conf thresh
-                label = '{:.3f}'.format(cls)
+                label = '{:.3f}'.format(confs[j])
                 plot_one_box(box, img, label=label, color=color, line_thickness=tl)
 
     # Draw image filename labels
