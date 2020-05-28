@@ -36,6 +36,7 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=None):
 
 
 def plot_images(img, boxes, confs, path=None, fname='images.jpg', names=None, max_size=640, max_subplots=16):
+    boxes = np.asarray(boxes)
     tl = 3  # line thickness
     tf = max(tl - 1, 1)  # font thickness
     if os.path.isfile(fname):  # do not overwrite
@@ -46,12 +47,6 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', names=None, ma
         img *= 255
 
     h, w, _ = img.shape  # height, width, channels
-
-    # Check if we should resize
-    scale_factor = max_size / max(h, w)
-    if scale_factor < 1:
-        h = math.ceil(scale_factor * h)
-        w = math.ceil(scale_factor * w)
 
     # Fix class - colour map
     prop_cycle = plt.rcParams['axes.prop_cycle']
