@@ -11,6 +11,8 @@ from keras.models import Model
 from keras_csp import config, data_generators
 from keras_csp import losses as losses
 
+specif = sys.argv[1]
+
 # get the config parameters
 C = config.Config()
 C.gpu_ids = '0,1,2,3,4,5,6,7'
@@ -67,7 +69,7 @@ model_tea.load_weights(weight_path, by_name=True)
 print 'load weights from {}'.format(weight_path)
 
 if C.offset:
-    out_path = 'output/valmodels/nightowls/{}/off_orig_lr{}'.format(C.scale, C.init_lr)
+    out_path = 'output/valmodels/nightowls/{}/off_orig_lr{}{}'.format(C.scale, C.init_lr,'_{}'.format(specif))
 else:
     out_path = 'output/valmodels/city/%s/nooff' % (C.scale)
 if not os.path.exists(out_path):
