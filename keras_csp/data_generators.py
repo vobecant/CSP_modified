@@ -506,7 +506,7 @@ if __name__ == '__main__':
     num_gpu = len(C.gpu_ids.split(','))
     C.onegpu = 4
     C.size_train = (640, 1024)
-    cache_path = 'data/cache/nightowls/train_h50_nonempty'
+    cache_path = '/home/vobecant/PhD/CSP/data/cache/nightowls/train_h50_nonempty'
     with open(cache_path, 'rb') as fid:
         train_data = cPickle.load(fid)
     num_imgs_train = len(train_data)
