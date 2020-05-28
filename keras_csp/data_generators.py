@@ -4,7 +4,7 @@ import numpy as np
 # import cv2
 import os
 import random
-from . import data_augment
+#from . import data_augment
 import data_augment
 #from .bbox_transform import *
 from bbox_transform import *
