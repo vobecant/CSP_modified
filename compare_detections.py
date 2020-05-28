@@ -31,7 +31,7 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=None, gt=False, 
         tf = max(tl - 1, 1)  # font thickness
         t_size = cv2.getTextSize(label, 0, fontScale=tl / 3, thickness=tf)[0]
         if gt:
-            c1 = c2[0] - t_size[0], c1[1] + t_size[1] + 3
+            c1 = c2[0] - t_size[0], c2[1] + t_size[1] + 3
             cv2.putText(img, label, (c1[0], c1[1] -2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
         elif paper:
             c1 = c2[0] - t_size[0], c2[1] - t_size[1] - 3
