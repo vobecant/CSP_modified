@@ -94,7 +94,7 @@ with open(dt_file2, 'r') as f:
     dets2 = json.load(f)
 
 with open(dt_gt_file, 'r') as f:
-    gt = json.load(f)
+    gts = json.load(f)
 
 dets1_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, 501)}
 dets2_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, 501)}
@@ -108,7 +108,7 @@ for dt in dets2:
     dets2_byImg[dt['image_id']]['scores'].append(dt['score'])
 
 for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
-    image_name = gt['images'][i]['im_name']
+    image_name = gts['images'][i]['im_name']
     city = image_name.split('_')[0]
     image_name = os.path.join(val_img_dir, city, image_name)
     image = cv2.cvtColor(cv2.imread(image_name), cv2.COLOR_BGR2RGB)
