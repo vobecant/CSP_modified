@@ -119,7 +119,7 @@ for dt in dets2:
     dets2_byImg[dt['image_id']]['scores'].append(dt['score'])
 
 for ann in gts['annotations']:
-    if ann['category_id'] != 1 or ann['ignore'] or ann['iscrowd'] or ann['height'] < 50:  # or ann['vis_ratio'] < 0.65
+    if ann['category_id'] != 1 or ann['ignore'] or ann['iscrowd']:  # or ann['vis_ratio'] < 0.65 or ann['height'] < 50
         continue
     image_id = ann['image_id']
     bbs_gt_all[image_id].append(ann['bbox'])
