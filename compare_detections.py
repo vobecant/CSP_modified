@@ -60,7 +60,7 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', names=None, ma
         boxes[[0, 2]] *= w
         boxes[[1, 3]] *= h
         for j, box in enumerate(boxes.T):
-            cls = int(classes[j])
+            cls = 1
             color = color_lut[cls % len(color_lut)]
             cls = names[cls] if names else cls
             if gt or confs[j] > 0.3:  # 0.3 conf thresh
