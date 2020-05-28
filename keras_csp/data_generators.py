@@ -54,6 +54,7 @@ def calc_gt_center(C, img_data, r=2, down=4, scale='h', offset=True):
                 print('seman_map[y1:y2, x1:x2, 0].shape: {}'.format(seman_map[y1:y2, x1:x2, 0].shape))
                 print('np.maximum(seman_map[y1:y2, x1:x2, 0], gau_map): {}'.format(
                     np.maximum(seman_map[y1:y2, x1:x2, 0], gau_map)))
+                print('filepath: {}'.format(img_data['filepath']))
             seman_map[y1:y2, x1:x2, 1] = 1
             seman_map[c_y, c_x, 2] = 1
 
