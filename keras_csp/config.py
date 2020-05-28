@@ -14,9 +14,9 @@ class Config(object):
 		self.point = 'center' # or 'top', 'bottom
 		self.scale = 'h' # or 'w', 'hw'
 		self.num_scale = 1 # 1 for height (or width) prediction, 2 for height+width prediction
-		self.offset = False # append offset prediction or not
-		self.down = 4 # downsampling rate of the feature map for detection
-		self.radius = 2 # surrounding areas of positives for the scale map
+		self.offset = False  # append offset prediction or not
+		self.down = 4  # downsampling rate of the feature map for detection
+		self.radius = 2  # surrounding areas of positives for the scale map
 
 		# setting for data augmentation
 		self.use_horizontal_flips = True
