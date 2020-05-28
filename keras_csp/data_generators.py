@@ -516,3 +516,6 @@ if __name__ == '__main__':
     while True:
         try:
             X, Y = next(data_gen_train)
+        except Exception as e:
+            print ('Exception: {}'.format(e))
+            continue
