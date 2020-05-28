@@ -36,8 +36,8 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=None):
 
 
 def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, label=''):
-    boxes = np.asarray(boxes).reshape((-1,4))
-    boxes[:,2:] += boxes[:,:2]
+    boxes = np.asarray(boxes).reshape((-1, 4))
+    boxes[:, 2:] += boxes[:, :2]
     tl = 3  # line thickness
     tf = max(tl - 1, 1)  # font thickness
 
@@ -97,6 +97,7 @@ with open(dt_gt_file, 'r') as f:
 
 dets1_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, 501)}
 dets2_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, 501)}
+bbs_gt_all = {i: [] for i in range(1, 501)}
 
 for dt in dets1:
     dets1_byImg[dt['image_id']]['boxes'].append(dt['bbox'])
@@ -105,6 +106,10 @@ for dt in dets1:
 for dt in dets2:
     dets2_byImg[dt['image_id']]['boxes'].append(dt['bbox'])
     dets2_byImg[dt['image_id']]['scores'].append(dt['score'])
+
+for ann in gts['annotations']:
+    image_id = ann['image_id']
+    bbs_gt_all[image_id].append(ann['boxes'])
 
 for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
     image_name = gts['images'][i]['im_name']
@@ -118,8 +123,8 @@ for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
     bbs2, scores2 = dt2['boxes'], dt2['scores']
     img_dt2 = plot_images(img_dt1, bbs2, scores2, image_name, label='paper')
 
-    bbs_gt = None
+    bbs_gt = bbs_gt_all[i]
     img_dt2 = plot_images(img_dt2, bbs_gt, None, image_name, label='GT', gt=True)
 
-    plt.imsave(os.path.join(save_dir,'im{}_det1.png'.format(i+1)), img_dt1)
-    plt.imsave(os.path.join(save_dir,'im{}_det2.png'.format(i+1)), img_dt2)
+    plt.imsave(os.path.join(save_dir, 'im{}_det1.png'.format(i + 1)), img_dt1)
+    plt.imsave(os.path.join(save_dir, 'im{}_det2.png'.format(i + 1)), img_dt2)
