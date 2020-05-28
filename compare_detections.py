@@ -90,7 +90,7 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', names=None, ma
 
 dt_file1 = sys.argv[1]
 dt_file2 = sys.argv[2]
-val_img_dir = sys.argv[3] # /home/vobecant/datasets/cityscapes/leftImg8bit/val
+val_img_dir = sys.argv[3]  # /home/vobecant/datasets/cityscapes/leftImg8bit/val
 dt_gt_file = 'eval_city/val_gt.json'
 
 with open(dt_file1, 'r') as f:
@@ -102,8 +102,8 @@ with open(dt_file2, 'r') as f:
 with open(dt_gt_file, 'r') as f:
     gt = json.load(f)
 
-dets1_byImg = {i: {'boxes': [], 'scores': []} for i in range(500)}
-dets2_byImg = {i: {'boxes': [], 'scores': []} for i in range(500)}
+dets1_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, 501)}
+dets2_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, 501)}
 
 for dt in dets1:
     dets1_byImg[dt['image_id']]['boxes'].append(dt['bbox'])
@@ -116,7 +116,7 @@ for dt in dets2:
 for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
     image_name = gt['images'][i]['im_name']
     city = image_name.split('_')[0]
-    image_name = os.path.join(val_img_dir,city,image_name)
+    image_name = os.path.join(val_img_dir, city, image_name)
     image = cv2.cvtColor(cv2.imread(image_name), cv2.COLOR_BGR2RGB)
 
     bbs1, scores1 = dt1['boxes'], dt1['scores']
