@@ -153,38 +153,35 @@ def get_data(ped_data, C, batchsize=8, exp_name=''):
             random.shuffle(ped_data)
             current_ped = 0
         for img_data in ped_data[current_ped:current_ped + batchsize]:
-            try:
-                images_dir_name = 'images{}/'.format(exp_name if 'base' not in exp_name else '')
-                img_data['filepath'] = img_data['filepath'].replace('images/', images_dir_name)
-                if ('blurred' in images_dir_name) or ('anonymized' in images_dir_name):
-                    img_data['filepath'] = img_data['filepath'].replace('.png', '_blurred.jpg')
-                if not sample_filepath_printed:
-                    print('Sample filepath: {}'.format(img_data['filepath']))
-                    sample_filepath_printed = True
-                assert (exp_name in img_data['filepath']) or 'baseline' in exp_name
-                img_data, x_img = data_augment.augment(img_data, C)
-                if C.offset:
-                    y_seman, y_height, y_offset = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=True)
+            images_dir_name = 'images{}/'.format(exp_name if 'base' not in exp_name else '')
+            img_data['filepath'] = img_data['filepath'].replace('images/', images_dir_name)
+            if ('blurred' in images_dir_name) or ('anonymized' in images_dir_name):
+                img_data['filepath'] = img_data['filepath'].replace('.png', '_blurred.jpg')
+            if not sample_filepath_printed:
+                print('Sample filepath: {}'.format(img_data['filepath']))
+                sample_filepath_printed = True
+            assert (exp_name in img_data['filepath']) or 'baseline' in exp_name
+            img_data, x_img = data_augment.augment(img_data, C)
+            if C.offset:
+                y_seman, y_height, y_offset = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=True)
+            else:
+                if C.point == 'top':
+                    y_seman, y_height = calc_gt_top(C, img_data)
+                elif C.point == 'bottom':
+                    y_seman, y_height = calc_gt_bottom(C, img_data)
                 else:
-                    if C.point == 'top':
-                        y_seman, y_height = calc_gt_top(C, img_data)
-                    elif C.point == 'bottom':
-                        y_seman, y_height = calc_gt_bottom(C, img_data)
-                    else:
-                        y_seman, y_height = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=False)
+                    y_seman, y_height = calc_gt_center(C, img_data, down=C.down, scale=C.scale, offset=False)
 
-                x_img = x_img.astype(np.float32)
-                x_img[:, :, 0] -= C.img_channel_mean[0]
-                x_img[:, :, 1] -= C.img_channel_mean[1]
-                x_img[:, :, 2] -= C.img_channel_mean[2]
+            x_img = x_img.astype(np.float32)
+            x_img[:, :, 0] -= C.img_channel_mean[0]
+            x_img[:, :, 1] -= C.img_channel_mean[1]
+            x_img[:, :, 2] -= C.img_channel_mean[2]
 
-                x_img_batch.append(np.expand_dims(x_img, axis=0))
-                y_seman_batch.append(np.expand_dims(y_seman, axis=0))
-                y_height_batch.append(np.expand_dims(y_height, axis=0))
-                if C.offset:
-                    y_offset_batch.append(np.expand_dims(y_offset, axis=0))
-            except Exception as e:
-                print('get_batch_gt:', e)
+            x_img_batch.append(np.expand_dims(x_img, axis=0))
+            y_seman_batch.append(np.expand_dims(y_seman, axis=0))
+            y_height_batch.append(np.expand_dims(y_height, axis=0))
+            if C.offset:
+                y_offset_batch.append(np.expand_dims(y_offset, axis=0))
         x_img_batch = np.concatenate(x_img_batch, axis=0)
         y_seman_batch = np.concatenate(y_seman_batch, axis=0)
         y_height_batch = np.concatenate(y_height_batch, axis=0)
