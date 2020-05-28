@@ -1,11 +1,13 @@
 from __future__ import absolute_import
 from __future__ import division
-# import numpy as np
+import numpy as np
 # import cv2
 import os
 import random
+from . import data_augment
 import data_augment
-from .bbox_transform import *
+#from .bbox_transform import *
+from bbox_transform import *
 import cv2
 import config
 
@@ -497,6 +499,7 @@ def get_data_wider(ped_data, C, batchsize=8):
 
 
 if __name__ == '__main__':
+    import pickle as cPickle
     C = config.Config()
     C.gpu_ids = '0,1,2,3,4,5,6,7'
     num_gpu = len(C.gpu_ids.split(','))
@@ -507,5 +510,5 @@ if __name__ == '__main__':
         train_data = cPickle.load(fid)
     num_imgs_train = len(train_data)
     random.shuffle(train_data)
-    print 'num of training samples: {}'.format(num_imgs_train)
+    print('num of training samples: {}'.format(num_imgs_train))
     data_gen_train = get_data(train_data, C, batchsize=2)
