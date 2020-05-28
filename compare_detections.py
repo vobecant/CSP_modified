@@ -57,11 +57,10 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', names=None, ma
         classes = [1]
 
         for j, box in enumerate(boxes):
-            cls = 1
+            cls = confs[j]
             color = color_lut[cls % len(color_lut)]
-            cls = names[cls] if names else cls
             if gt or confs[j] > 0.3:  # 0.3 conf thresh
-                label = '%s' % cls if gt else '%s %.1f' % (cls, confs[j])
+                label = '{:.3f}'.format(cls)
                 plot_one_box(box, img, label=label, color=color, line_thickness=tl)
 
     # Draw image filename labels
@@ -83,7 +82,11 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', names=None, ma
 dt_file1 = sys.argv[1]
 dt_file2 = sys.argv[2]
 val_img_dir = sys.argv[3]  # /home/vobecant/datasets/cityscapes/leftImg8bit/val
+save_dir = sys.argv[4]
 dt_gt_file = 'eval_city/val_gt.json'
+
+if not os.path.exists(save_dir):
+    os.makedirs(save_dir)
 
 with open(dt_file1, 'r') as f:
     dets1 = json.load(f)
@@ -117,5 +120,5 @@ for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
     bbs2, scores2 = dt2['boxes'], dt2['scores']
     img_dt2 = plot_images(image.copy(), bbs2, scores2, image_name)
 
-    plt.imsave('det1.png', img_dt1)
-    plt.imsave('det2.png', img_dt2)
+    plt.imsave(os.path.join(save_dir,'im{}_det1.png'.format(i+1)), img_dt1)
+    plt.imsave(os.path.join(save_dir,'im{}_det2.png'.format(i+1)), img_dt2)
