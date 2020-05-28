@@ -108,6 +108,8 @@ for dt in dets2:
     dets2_byImg[dt['image_id']]['scores'].append(dt['score'])
 
 for ann in gts['annotations']:
+    if ann['category_id']!=1:
+        continue
     image_id = ann['image_id']
     bbs_gt_all[image_id].append(ann['bbox'])
 
