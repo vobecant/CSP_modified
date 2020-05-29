@@ -36,7 +36,10 @@ print('Batch size: {}'.format(batchsize))
 os.environ["CUDA_VISIBLE_DEVICES"] = C.gpu_ids
 
 # get the training data
-cache_path = 'data/cache/nightowls/train_h50_nonempty_xyxy'
+if 'all' in specif:
+    cache_path = 'data/cache/nightowls/train_h50_all_xyxy'
+else:
+    cache_path = 'data/cache/nightowls/train_h50_nonempty_xyxy'
 with open(cache_path, 'rb') as fid:
     train_data = cPickle.load(fid)
 num_imgs_train = len(train_data)
