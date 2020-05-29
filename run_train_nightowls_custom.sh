@@ -7,7 +7,7 @@ JOB_FILE="./jobs/${EXPNAME}.job"
 
 echo "#!/bin/bash
 #SBATCH --job-name=no_all
-#SBATCH --output=csp_nightowls_all.err
+#SBATCH --output=csp_nightowls_${SPECIF}.err
 #SBATCH --time=3-00:00:00
 #SBATCH --mem=40GB
 #SBATCH --gres=gpu:Volta100:8
@@ -17,7 +17,7 @@ echo "#!/bin/bash
 #SBATCH --mail-user=a.vobecky@gmail.com
 
 # train the detector on Nightowls
-python -u train_nightowls_custom.py ${SPECIF} ${CACHE} > csp_nightowls_all.out" >${JOB_FILE}
+python -u train_nightowls_custom.py ${SPECIF} ${CACHE} > csp_nightowls_${SPECIF}.out" >${JOB_FILE}
 echo "run job ${JOB_FILE}"
 sbatch ${JOB_FILE}
 echo ""
