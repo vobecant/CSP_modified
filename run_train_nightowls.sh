@@ -13,5 +13,5 @@
 #   CITYPERSON   #
 ##################
 # train the detector on Cityperson
-SPECIF='baseline'
+SPECIF='all'
 python -u train_nightowls_orig.py ${SPECIF} >csp_nightowls.out
