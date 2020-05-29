@@ -65,7 +65,7 @@ for f in sorted(os.listdir(main_path)):
             configs = ['Reasonable', 'Reasonable_small', 'bare', 'partial', 'heavy', 'All']
             for ci, config in enumerate(configs):
                 line = fl.readline()
-                perc = line.split(' ')[-1][:-1]
+                perc = line.split(' ')[-1][:-2]
                 res = float(perc)
                 if ci == 0:
                     mr_reasonable = res / 100
