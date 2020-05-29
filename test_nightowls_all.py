@@ -15,7 +15,7 @@ if not os.path.exists(out_path):
 
 C = config.Config()
 C.offset = True
-cache_path = 'data/cache/nightowls/val_h50_nonempty_xyxy'
+cache_path = 'data/cache/nightowls/val_h50_all_xyxy'
 with open(cache_path, 'rb') as fid:
     val_data = cPickle.load(fid)
 num_imgs = len(val_data)
@@ -67,7 +67,6 @@ for w_ind in range(min_epoch, max_epoch + 1):
     start_time = time.time()
     for f in range(num_imgs):
         filepath = val_data[f]['filepath']
-        print(val_data[f])
         image_id = val_data[f]['image_id']
         img = cv2.imread(filepath)
         x_rcnn = format_img(img, C)

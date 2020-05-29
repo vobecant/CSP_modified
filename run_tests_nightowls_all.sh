@@ -17,7 +17,7 @@ echo "#!/bin/bash -l
 #SBATCH --mem=20GB
 #SBATCH --time=2-00:00:00
 
-python -u test_nightowls.py ${MINEP} ${MAXEP} ${SPECIF} > ${EXPNAME}.out
+python -u test_nightowls_all.py ${MINEP} ${MAXEP} ${SPECIF} > ${EXPNAME}.out
 python -u /home/vobecant/PhD/CSP/eval_city/dt_txt2json.py ${RESDIR}
 python -u /home/vobecant/PhD/CSP/eval_nightowls/eval.py ${RESDIR}" >${JOB_FILE}
 echo "run job ${JOB_FILE}"
