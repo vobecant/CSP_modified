@@ -67,6 +67,7 @@ for w_ind in range(min_epoch, max_epoch + 1):
     start_time = time.time()
     for f in range(num_imgs):
         filepath = val_data[f]['filepath']
+        image_id = val_data[f]['image_id']
         img = cv2.imread(filepath)
         x_rcnn = format_img(img, C)
         Y = model.predict(x_rcnn)
@@ -76,7 +77,7 @@ for w_ind in range(min_epoch, max_epoch + 1):
         else:
             boxes = bbox_process.parse_det(Y, C, score=0.1, down=4, scale=C.scale)
         if len(boxes) > 0:
-            f_res = np.repeat(f + 1, len(boxes), axis=0).reshape((-1, 1))
+            f_res = np.repeat(image_id, len(boxes), axis=0).reshape((-1, 1))
             boxes[:, [2, 3]] -= boxes[:, [0, 1]]
             res_all += np.concatenate((f_res, boxes), axis=-1).tolist()
     np.savetxt(res_file, np.array(res_all), fmt='%6f')

@@ -17,7 +17,7 @@ Usage:
 """
 
 
-def txt2jsonFile(res):
+def txt2jsonFile(res, test_imgs):
     out_arr = []
     for det in res:
         det = det.rstrip("\n\r").split(' ')
@@ -29,15 +29,16 @@ def txt2jsonFile(res):
                     'bbox': bbox,
                     'score': score}
         out_arr.append(det_dict)
+
     return out_arr
 
 
-def convert_file(dt_path):
+def convert_file(dt_path, test_imgs):
     with open(dt_path, 'r') as f:
         res = f.readlines()
     dt_folder = os.path.split(dt_path)[0]
     out_path = os.path.join(dt_folder, 'val_dt.json')
-    res_json = txt2jsonFile(res)
+    res_json = txt2jsonFile(res, test_imgs)
     with open(out_path, 'w') as f:
         json.dump(res_json, f)
     return out_path
@@ -50,6 +51,11 @@ if __name__ == '__main__':
     else:
         main_path = '../output/valresults/city/h/off'
         print('Use default path "{}"'.format(main_path))
+    if len(sys.argv) > 2:
+        test_imgs = int(sys.argv[2])
+        print('There are {} test images.'.format(test_imgs))
+    else:
+        test_imgs = None
 
     start_t = time.time()
 
@@ -64,7 +70,7 @@ if __name__ == '__main__':
         dt_coco = {}
         dt_path = os.path.join(d, 'val_det.txt')
         print('Processing detections from file {}'.format(dt_path))
-        out_path = convert_file(dt_path)
+        out_path = convert_file(dt_path, test_imgs=test_imgs)
         print('Saved detections to {}\n'.format(out_path))
 
     elapsed_t = time.time() - start_t
