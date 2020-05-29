@@ -62,7 +62,7 @@ for f in sorted(os.listdir(main_path)):
         continue
     if os.path.exists(respath):
         with open(respath) as fl:
-            configs = ['Reasonable', 'Reasonable_small', 'bare', 'partial', 'heavy', 'All']
+            configs = ['Reasonable', 'Reasonable_small', 'heavy', 'All']
             for ci, config in enumerate(configs):
                 line = fl.readline()
                 perc = line.split(' ')[-1][:-2]
