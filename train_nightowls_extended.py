@@ -12,7 +12,7 @@ from keras_csp import config, data_generators
 from keras_csp import losses as losses
 
 specif = sys.argv[1]
-cache_path = sys.argv[2]
+cache_path = sys.argv[2] # data/cache/nightowls/train_h50_nonempty_xyxy_extended
 
 # get the config parameters
 C = config.Config()
@@ -37,7 +37,6 @@ print('Batch size: {}'.format(batchsize))
 os.environ["CUDA_VISIBLE_DEVICES"] = C.gpu_ids
 
 # get the training data
-# cache_path = 'data/cache/nightowls/train_h50_nonempty_xyxy'
 with open(cache_path, 'rb') as fid:
     train_data = cPickle.load(fid)
 num_imgs_train = len(train_data)
