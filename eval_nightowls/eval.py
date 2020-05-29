@@ -64,7 +64,9 @@ for f in sorted(os.listdir(main_path)):
         with open(respath) as fl:
             configs = ['Reasonable', 'Reasonable_small', 'bare', 'partial', 'heavy', 'All']
             for ci, config in enumerate(configs):
-                res = float(fl.readline())
+                line = fl.readline()
+                perc = line.split(' ')[-1][:-1]
+                res = float(perc)
                 if ci == 0:
                     mr_reasonable = res / 100
                 print('\t{}: {:.4f}%'.format(config, res))
