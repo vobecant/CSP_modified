@@ -29,7 +29,6 @@ def txt2jsonFile(res, test_imgs):
                     'bbox': bbox,
                     'score': score}
         out_arr.append(det_dict)
-
     return out_arr
 
 
