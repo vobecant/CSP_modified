@@ -35,12 +35,18 @@ def txt2jsonFile(res, test_imgs):
 def convert_file(dt_path, test_imgs):
     with open(dt_path, 'r') as f:
         res = f.readlines()
-    dt_folder = os.path.split(dt_path)[0]
-    out_path = os.path.join(dt_folder, 'val_dt.json')
+    out_path = dt_path.replace('.txt','.json')
     res_json = txt2jsonFile(res, test_imgs)
     with open(out_path, 'w') as f:
         json.dump(res_json, f)
     return out_path
+
+
+def find_txt_det_file(d):
+    files = os.listdir(d)
+    for tmp in files:
+        if 'det' in tmp and 'txt' in tmp:
+            return os.path.join(d, tmp)
 
 
 if __name__ == '__main__':
@@ -67,7 +73,7 @@ if __name__ == '__main__':
             continue
         ndt = 0
         dt_coco = {}
-        dt_path = os.path.join(d, 'val_det.txt')
+        dt_path = find_txt_det_file(d)
         print('Processing detections from file {}'.format(dt_path))
         out_path = convert_file(dt_path, test_imgs=test_imgs)
         print('Saved detections to {}\n'.format(out_path))
