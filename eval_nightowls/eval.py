@@ -6,7 +6,8 @@ from eval_MR_multisetup import COCOeval
 import numpy as np
 
 # Ground truth
-annFile = '/home/vobecant/datasets/nightowls/nightowls_validation.json'
+#annFile = '/home/vobecant/datasets/nightowls/nightowls_validation.json'
+annFile = '/home/vobecant/datasets/nightowls/nightowls_validation_reasonable_nonempty.json'
 main_path = sys.argv[1]
 print('Looking for detections in {}'.format(main_path))
 best_mr_reasonable = np.inf
