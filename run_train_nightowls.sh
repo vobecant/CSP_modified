@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH --job-name=csp_nightowls
-#SBATCH --output=csp_nightowls.err
+#SBATCH --job-name=no_all
+#SBATCH --output=csp_nightowls_all.err
 #SBATCH --time=3-00:00:00
 #SBATCH --mem=40GB
 #SBATCH --gres=gpu:Volta100:8
