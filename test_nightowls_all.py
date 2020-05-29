@@ -56,7 +56,7 @@ for w_ind in range(min_epoch, max_epoch + 1):
     if not os.path.exists(res_path):
         os.makedirs(res_path)
     print(res_path)
-    res_file = os.path.join(res_path, 'val_det.txt')
+    res_file = os.path.join(res_path, 'val_det_all.txt')
     if os.path.exists(res_file):
         print('{} already exists... Skipping...'.format(res_file))
         continue
