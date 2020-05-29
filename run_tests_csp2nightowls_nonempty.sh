@@ -4,7 +4,7 @@ WDIR=${1}
 SPECIF=${2}
 EXPNAME="test_csp2nightowls_nonempty_${SPECIF}"
 JOB_FILE="./jobs/${EXPNAME}.job"
-RESDIR="/home/vobecant/PhD/CSP/output/valresults/nightowls/h/${SPECIF}"
+RESDIR="/home/vobecant/PhD/CSP/output/valresults/city/h/${SPECIF}"
 
 echo "#!/bin/bash -l
 #SBATCH --job-name=${EXPNAME}

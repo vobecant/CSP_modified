@@ -6,7 +6,7 @@ from eval_MR_multisetup import COCOeval
 import numpy as np
 
 # Ground truth
-#annFile = '/home/vobecant/datasets/nightowls/nightowls_validation.json'
+# annFile = '/home/vobecant/datasets/nightowls/nightowls_validation.json'
 annFile = '/home/vobecant/datasets/nightowls/nightowls_validation_reasonable_nonempty.json'
 main_path = sys.argv[1]
 print('Looking for detections in {}'.format(main_path))
@@ -38,11 +38,18 @@ def txt2jsonFile(res):
     return out_arr
 
 
+def find_txt_det_file(d):
+    files = os.listdir(d)
+    for tmp in files:
+        if 'det' in tmp and 'txt' in tmp:
+            return os.path.join(d, tmp)
+
+
 for f in sorted(os.listdir(main_path)):
     print('file: {}'.format(f))
     # Detections
     dt_path = os.path.join(main_path, f)
-    resFile_txt = os.path.join(dt_path, 'val_det.txt')
+    resFile_txt = find_txt_det_file(dt_path)
     resFile = os.path.join(dt_path, 'val_dt.json')
     respath = os.path.join(dt_path, 'results.txt')
 
