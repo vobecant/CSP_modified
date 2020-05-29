@@ -49,6 +49,8 @@ for f in sorted(os.listdir(main_path)):
     # Detections
     dt_path = os.path.join(main_path, f)
     resFile_txt = find_txt_det_file(dt_path)
+    if resFile_txt is None:
+        continue
     resFile = os.path.join(dt_path, 'val_dt_all.json')
     respath = os.path.join(dt_path, 'results_all.txt')
 
@@ -60,7 +62,7 @@ for f in sorted(os.listdir(main_path)):
         print("The file is empty: {}. No detections. Skipping".format(resFile_txt))
         continue
     if os.path.exists(respath):
-        with open(respath) as fl:
+        with open(respath,'r') as fl:
             configs = ['Reasonable', 'Reasonable_small', 'heavy', 'All']
             for ci, config in enumerate(configs):
                 line = fl.readline()
