@@ -1,9 +1,8 @@
 #!/bin/bash
 
-MINEP=${1}
-MAXEP=${2}
-SPECIF=${3}
-EXPNAME="test_nightowls_nonempty_ep${MINEP}-${MAXEP}_${SPECIF}"
+WDIR=${1}
+SPECIF=${2}
+EXPNAME="test_csp2nightowls_nonempty_${SPECIF}"
 JOB_FILE="./jobs/${EXPNAME}.job"
 RESDIR="/home/vobecant/PhD/CSP/output/valresults/nightowls/h/${SPECIF}"
 
@@ -17,7 +16,7 @@ echo "#!/bin/bash -l
 #SBATCH --mem=20GB
 #SBATCH --time=2-00:00:00
 
-python -u test_nightowls_nonempty.py ${MINEP} ${MAXEP} ${SPECIF} > ${EXPNAME}.out
+python -u test_csp2nightowls_nonempty.py ${WDIR} > ${EXPNAME}.out
 python -u /home/vobecant/PhD/CSP/eval_city/dt_txt2json.py ${RESDIR}
 python -u /home/vobecant/PhD/CSP/eval_nightowls/eval.py ${RESDIR}" >${JOB_FILE}
 echo "run job ${JOB_FILE}"
