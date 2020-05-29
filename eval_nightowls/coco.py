@@ -305,7 +305,7 @@ class COCO:
         res = COCO()
         res.dataset['images'] = [img for img in self.dataset['images']]
 
-        print('Loading and preparing results...')
+        if self.verbose: print('Loading and preparing results...')
         tic = time.time()
         if type(resFile) == str or type(resFile) == unicode:
             anns = json.load(open(resFile))
