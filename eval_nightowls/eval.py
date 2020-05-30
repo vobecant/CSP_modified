@@ -106,7 +106,6 @@ for f in sorted(os.listdir(main_path)):
 print('best_mr_name: {}'.format(best_mr_name))
 print('Best overall MR with model {} : {}'.format(best_mr_name, best_mr_reasonable))
 print('10 best models:')
-for i, (mr,name) in enumerate(best_ordered):
-    if i==10:
-        break
+for i in range(10):
+    mr, name = heapq.heappop(best_ordered)
     print('{}: {}'.format(name, mr))
