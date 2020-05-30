@@ -44,6 +44,7 @@ def find_txt_det_file(d):
         if 'det' in tmp and 'txt' in tmp:
             return os.path.join(d, tmp)
 
+best_ordered = []
 
 for f in sorted(os.listdir(main_path)):
     print('file: {}'.format(f))
@@ -94,8 +95,12 @@ for f in sorted(os.listdir(main_path)):
                 print('New best test MR with model {} : {} -> {}'.format(f, best_mr_reasonable, mr_reasonable))
                 best_mr_reasonable = mr_reasonable
                 best_mr_name = f
+                best_ordered = [(f, mr_reasonable)] + best_ordered
     print('')
     res_file.close()
 
 print('best_mr_name: {}'.format(best_mr_name))
 print('Best overall MR with model {} : {}'.format(best_mr_name, best_mr_reasonable))
+print('10 best models:')
+for name, mr in best_ordered:
+    print('{}: {}'.format(name, mr))
