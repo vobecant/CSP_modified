@@ -6,7 +6,7 @@ EXPNAME="train_nightowls_${SPECIF}"
 JOB_FILE="./jobs/${EXPNAME}.job"
 
 echo "#!/bin/bash
-#SBATCH --job-name=no_all
+#SBATCH --job-name=no_${SPECIF}
 #SBATCH --output=csp_nightowls_${SPECIF}.err
 #SBATCH --time=3-00:00:00
 #SBATCH --mem=40GB
