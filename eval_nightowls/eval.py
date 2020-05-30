@@ -4,6 +4,7 @@ import os
 from coco import COCO
 from eval_MR_multisetup import COCOeval
 import numpy as np
+import heapq
 
 # Ground truth
 # annFile = '/home/vobecant/datasets/nightowls/nightowls_validation.json'
@@ -72,6 +73,7 @@ for f in sorted(os.listdir(main_path)):
                 res = float(perc)
                 if ci == 0:
                     mr_reasonable = res / 100
+                    heapq.heappush(best_ordered, (mr_reasonable, f))
                 print('\t{}: {:.4f}%'.format(config, res))
         if mr_reasonable < best_mr_reasonable:
             print('New best test MR with model {} : {} -> {}'.format(f, best_mr_reasonable, mr_reasonable))
@@ -93,16 +95,18 @@ for f in sorted(os.listdir(main_path)):
         if id_setup == 0:
             # reasonable setup
             mr_reasonable = mean_mr
+            heapq.heappush(best_ordered, (mr_reasonable, f))
             if mr_reasonable < best_mr_reasonable:
                 print('New best test MR with model {} : {} -> {}'.format(f, best_mr_reasonable, mr_reasonable))
                 best_mr_reasonable = mr_reasonable
                 best_mr_name = f
-                best_ordered = [(f, mr_reasonable)] + best_ordered
     print('')
     res_file.close()
 
 print('best_mr_name: {}'.format(best_mr_name))
 print('Best overall MR with model {} : {}'.format(best_mr_name, best_mr_reasonable))
 print('10 best models:')
-for name, mr in best_ordered:
+for i, (mr,name) in enumerate(best_ordered):
+    if i==10:
+        break
     print('{}: {}'.format(name, mr))
