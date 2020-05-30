@@ -51,6 +51,8 @@ for f in sorted(os.listdir(main_path)):
     # Detections
     dt_path = os.path.join(main_path, f)
     resFile_txt = find_txt_det_file(dt_path)
+    if resFile_txt is None:
+        print('Didn\'t find detections for ep {}.'.format(f))
     resFile = os.path.join(dt_path, 'val_dt.json')
     respath = os.path.join(dt_path, 'results.txt')
 
