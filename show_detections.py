@@ -103,8 +103,7 @@ with open(dt_file1, 'r') as f:
 with open(dt_gt_file, 'rb') as f:
     gts = pickle.load(f)
 
-dets1_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, 501)}
-bbs_gt_all = {i: [] for i in range(1, 501)}
+dets1_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, len(gts) + 1)}
 
 color_ours = (31, 119, 180)
 color_paper = (255, 127, 14)
