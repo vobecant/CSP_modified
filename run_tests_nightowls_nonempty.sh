@@ -11,7 +11,7 @@ echo "#!/bin/bash -l
 #SBATCH --job-name=${EXPNAME}
 #SBATCH --output=${EXPNAME}.out
 #SBATCH --cpus-per-task=10
-#SBATCH --gres=gpu:Volta100:1
+#SBATCH --gres=gpu:1
 #SBATCH --partition gpu
 #SBATCH --exclude=node-10,node-12,node-01,node-16
 #SBATCH --mem=20GB
