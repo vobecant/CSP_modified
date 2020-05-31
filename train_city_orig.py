@@ -21,7 +21,7 @@ C.size_train = (640, 1280)
 ngpu_mult = int(num_gpu / 4)
 bs_mult = int(C.onegpu / 2)
 lr_mult = ngpu_mult * bs_mult
-C.init_lr = 2e-4 * lr_mult
+C.init_lr = 2e-4 * lr_mult if len(sys.argv)<3 else float(sys.argv[2])
 C.num_epochs = 150 * lr_mult
 print('ngpu_mult: {}, bs_mult: {}, lr_mult: {}, C.init_lr: {}, C.num_epochs: {}'.format(ngpu_mult, bs_mult, lr_mult,
                                                                                         C.init_lr, C.num_epochs))

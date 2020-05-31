@@ -14,4 +14,5 @@
 ##################
 # train the detector on Cityperson
 SPECIF=eccv_1P_hard_allTrain
-python -u train_city_orig.py ${SPECIF} >csp_hard.out
+LR=0.0006
+python -u train_city_orig.py ${SPECIF} ${LR} >csp_hard.out
