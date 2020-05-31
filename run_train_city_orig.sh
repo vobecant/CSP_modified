@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH --job-name=csp_2P_hard
-#SBATCH --output=csp_hard_2P.err
+#SBATCH --job-name=csp_1P_run2
+#SBATCH --output=csp_hard_1P_run2.err
 #SBATCH --time=3-00:00:00
 #SBATCH --mem=40GB
 #SBATCH --gres=gpu:Volta100:8
@@ -13,6 +13,7 @@
 #   CITYPERSON   #
 ##################
 # train the detector on Cityperson
-SPECIF=eccv_2P_hard_allTrain
+SPECIF=eccv_1P_hard_allTrain
 LR=0.0008
-python -u train_city_orig.py ${SPECIF} ${LR} >csp_hard_2P.out
+ORDINAL=2
+python -u train_city_orig.py ${SPECIF} ${LR} ${ORDINAL} >csp_hard_1P_run2.out

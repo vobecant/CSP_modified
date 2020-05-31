@@ -68,6 +68,8 @@ print 'load weights from {}'.format(weight_path)
 
 if C.offset:
     out_path = 'output/valmodels/city/{}/off_trnval_lr{}_{}'.format(C.scale, C.init_lr, data_type)
+    if len(sys.argv)==4:
+        out_path += '_run{}'.format(sys.argv[3])
 else:
     out_path = 'output/valmodels/city/%s/nooff' % (C.scale)
 assert not os.path.exists(out_path)
