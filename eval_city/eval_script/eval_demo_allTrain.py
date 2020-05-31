@@ -54,6 +54,8 @@ for f in sorted(os.listdir(main_path)):
     dt_path = os.path.join(main_path, f)
     resFile_txt = os.path.join(dt_path, 'val_det.txt')
     resFile = os.path.join(dt_path, 'val_dt.json')
+    if not os.path.isfile(resFile):
+        resFile = os.path.join(dt_path, 'val_det.json')
     respath = os.path.join(dt_path, 'results.txt')
     # if os.path.exists(respath):
     #     continue
@@ -65,11 +67,11 @@ for f in sorted(os.listdir(main_path)):
     if os.path.exists(respath):
         with open(respath) as f:
             configs = ['Reasonable', 'Reasonable_small', 'bare', 'partial', 'heavy', 'All']
-            for ci,config in enumerate(configs):
+            for ci, config in enumerate(configs):
                 res = float(f.readline())
-                if ci==0:
+                if ci == 0:
                     mr_reasonable = res / 100
-                print('\t{}: {:.4f}%'.format(config,res))
+                print('\t{}: {:.4f}%'.format(config, res))
         if mr_reasonable < best_mr_reasonable:
             print('New best test MR with model {} : {} -> {}'.format(f, best_mr_reasonable, mr_reasonable))
             best_mr_reasonable = mr_reasonable
