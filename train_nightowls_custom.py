@@ -12,7 +12,7 @@ from keras_csp import config, data_generators
 from keras_csp import losses as losses
 
 specif = sys.argv[1]
-cache_path = sys.argv[2] # data/cache/nightowls/train_h50_nonempty_xyxy_extended
+cache_path = sys.argv[2]  # data/cache/nightowls/train_h50_nonempty_xyxy_extended
 
 # get the config parameters
 C = config.Config()
@@ -26,7 +26,7 @@ C.img_channel_mean = [62.22632229, 76.71838384, 78.05682094]  # [103.939, 116.77
 ngpu_mult = int(num_gpu / 4)
 bs_mult = int(C.onegpu / 2)
 lr_mult = ngpu_mult * bs_mult
-C.init_lr = 2e-4 * lr_mult
+C.init_lr = 2e-4 * lr_mult if len(sys.argv) < 4 else float(sys.argv[3])
 C.num_epochs = 150 * lr_mult
 print('ngpu_mult: {}, bs_mult: {}, lr_mult: {}, C.init_lr: {}, C.num_epochs: {}'.format(ngpu_mult, bs_mult, lr_mult,
                                                                                         C.init_lr, C.num_epochs))
