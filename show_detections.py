@@ -114,7 +114,7 @@ for dt in dets1:
     dets1_byImg[dt['image_id']]['scores'].append(dt['score'])
 
 start = time.time()
-for i, dt1 in enumerate(dets1_byImg.values(), 1):
+for i, dt1 in enumerate(dets1_byImg.values()):
     image_path = gts[i]['filepath']
     _, image_name = os.path.split(image_path)
     image = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB)
