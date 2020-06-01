@@ -16,4 +16,4 @@
 CACHEPATH="/home/vobecant/PhD/CSP/data/cache/cityperson_trainValTest/train_h50_eccv_1P_hard_resized"
 SPECIF=newInsertion
 LR=0.0008
-python -u train_city_orig.py ${CACHEPATH} ${SPECIF} ${LR} >csp_${SPECIF}.out
+python -u train_city_custom.py ${CACHEPATH} ${SPECIF} ${LR} >csp_${SPECIF}.out
