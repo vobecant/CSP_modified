@@ -14,7 +14,7 @@ echo "#!/bin/bash -l
 #SBATCH --cpus-per-task=10
 #SBATCH --gres=gpu:1
 #SBATCH --partition gpu
-#SBATCH --exclude=node-10,node-12,node-01,dgx-2,dgx-3,dgx-4,dgx-5
+#SBATCH --exclude=node-10,node-12
 #SBATCH --mem=20GB
 #SBATCH --time=2-00:00:00
 
