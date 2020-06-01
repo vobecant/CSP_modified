@@ -74,6 +74,8 @@ if __name__ == '__main__':
         ndt = 0
         dt_coco = {}
         dt_path = find_txt_det_file(d)
+        if dt_path is None:
+            continue
         print('Processing detections from file {}'.format(dt_path))
         out_path = convert_file(dt_path, test_imgs=test_imgs)
         print('Saved detections to {}\n'.format(out_path))
