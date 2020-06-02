@@ -138,12 +138,16 @@ for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
 
     bbs1, scores1 = dt1['boxes'], dt1['scores']
     img_dts_ours = plot_images(image.copy(), bbs1, scores1, None, label=None, color=color_ours)
+    img_dts_ours_gt = plot_images(img_dts_ours.copy(), bbs_gt, None, None, label=None, color=color_gt, tlg=1.5)
     img_dts_all = plot_images(image.copy(), bbs1, scores1, image_name, label='paper', color=color_ours, tlg=1)
     plt.imsave(os.path.join(save_dir, 'im{}_dets_ours.png'.format(i + 1)), img_dts_ours)
+    plt.imsave(os.path.join(save_dir, 'im{}_dets_ours_wGT.png'.format(i + 1)), img_dts_ours_gt)
 
     bbs2, scores2 = dt2['boxes'], dt2['scores']
     img_dts_paper = plot_images(image.copy(), bbs2, scores2, None, label=None, color=color_paper)
+    img_dts_paper_gt = plot_images(img_dts_paper.copy(), bbs_gt, None, None, label=None, color=color_gt, tlg=1.5)
     plt.imsave(os.path.join(save_dir, 'im{}_dets_paper.png'.format(i + 1)), img_dts_paper)
+    plt.imsave(os.path.join(save_dir, 'im{}_dets_paper_wGT.png'.format(i + 1)), img_dts_paper_gt)
     img_dts_all = plot_images(img_dts_all, bbs2, scores2, image_name, label='paper', color=color_paper, tlg=1)
 
     bbs_gt = bbs_gt_all[i + 1]
