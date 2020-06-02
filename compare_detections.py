@@ -37,17 +37,19 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=None, gt=False, 
         elif paper:
             c1 = c2[0] - t_size[0], c2[1] - t_size[1] - 3
             cv2.rectangle(img, c1, c2, color, -1)  # filled
-            cv2.putText(img, label, (c1[0], c1[1] + t_size[1]), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
+            cv2.putText(img, label, (c1[0], c1[1] + t_size[1]), 0, tl / 3, [225, 255, 255], thickness=tf,
+                        lineType=cv2.LINE_AA)
         else:
             c2 = c1[0] + t_size[0], c1[1] - t_size[1] - 3
             cv2.rectangle(img, c1, c2, color, -1)  # filled
             cv2.putText(img, label, (c1[0], c1[1] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
 
 
-def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, label='', color=(255, 255, 255)):
+def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, label=None, color=(255, 255, 255),
+                tlg=None):
     boxes = np.asarray(boxes).reshape((-1, 4))
     boxes[:, 2:] += boxes[:, :2]
-    tl = 3  # line thickness
+    tl = tlg if tlg is not None else 3  # line thickness
     tf = max(tl - 1, 1)  # font thickness
 
     # un-normalise
@@ -131,15 +133,16 @@ for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
     image = cv2.cvtColor(cv2.imread(image_name), cv2.COLOR_BGR2RGB)
 
     bbs1, scores1 = dt1['boxes'], dt1['scores']
-    img_dts_ours = plot_images(image.copy(), bbs1, scores1, image_name, label='ours', color=color_ours)
+    img_dts_ours = plot_images(image.copy(), bbs1, scores1, None, label=None, color=color_ours)
+    img_dts_all = plot_images(image.copy(), bbs1, scores1, image_name, label='paper', color=color_ours, tlg=1)
     plt.imsave(os.path.join(save_dir, 'im{}_dets_ours.jpg'.format(i + 1)), img_dts_ours)
 
     bbs2, scores2 = dt2['boxes'], dt2['scores']
-    img_dts_paper = plot_images(image.copy(), bbs2, scores2, image_name, label='paper', color=color_paper)
+    img_dts_paper = plot_images(image.copy(), bbs2, scores2, None, label=None, color=color_paper)
     plt.imsave(os.path.join(save_dir, 'im{}_dets_paper.jpg'.format(i + 1)), img_dts_paper)
-    img_dts_all = plot_images(img_dts_ours, bbs2, scores2, image_name, label='paper', color=color_paper)
+    img_dts_all = plot_images(img_dts_all, bbs2, scores2, image_name, label='paper', color=color_paper, tlg=1)
 
     bbs_gt = bbs_gt_all[i + 1]
-    img_dts_all = plot_images(img_dts_all, bbs_gt, None, image_name, label='GT', gt=True, color=color_gt)
+    img_dts_all = plot_images(img_dts_all, bbs_gt, None, image_name, label='GT', gt=True, color=color_gt, tlg=1)
 
     plt.imsave(os.path.join(save_dir, 'im{}_dets.jpg'.format(i + 1)), img_dts_all)
