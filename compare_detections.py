@@ -114,7 +114,7 @@ bbs_gt_all = {i: [] for i in range(1, 501)}
 color_ours = (144, 238, 144)
 color_paper = (255, 127, 14)
 color_gt = (100, 149, 237)  # (44, 160, 44)
-GT_TL = 2
+GT_TL = 1
 
 for dt in dets1:
     dets1_byImg[dt['image_id']]['boxes'].append(dt['bbox'])
