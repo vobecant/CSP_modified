@@ -47,7 +47,7 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=None, gt=False, 
 def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, label='', color=(255, 255, 255)):
     boxes = np.asarray(boxes).reshape((-1, 4))
     boxes[:, 2:] += boxes[:, :2]
-    tl = 1  # 3  # line thickness
+    tl = 3  # line thickness
     tf = max(tl - 1, 1)  # font thickness
 
     # un-normalise
