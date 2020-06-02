@@ -155,7 +155,7 @@ for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
                                    gt=True)
     plt.imsave(os.path.join(save_dir, 'im{}_dets_paper.png'.format(i + 1)), img_dts_paper)
     plt.imsave(os.path.join(save_dir, 'im{}_dets_paper_wGT_tl{}.png'.format(i + 1, GT_TL)), img_dts_paper_gt)
-    img_dts_all = plot_images(img_dts_all, bbs2, scores2, image_name, label='paper', color=color_paper, tlg=1)
+    img_dts_all = plot_images(img_dts_all, bbs2, scores2, image_name, label='paper', color=color_ours, tlg=1)
 
     img_dts_all = plot_images(img_dts_all, bbs_gt, None, image_name, label='GT', gt=True, color=color_gt, tlg=1)
 
