@@ -10,6 +10,7 @@ import random
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
+CHOOSEN_IDS=[234,475]
 
 def xywh2xyxy(x):
     # Convert nx4 boxes from [x, y, w, h] to [x1, y1, x2, y2] where xy1=top-left, xy2=bottom-right
@@ -49,7 +50,7 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, labe
                 tlg=None):
     boxes = np.asarray(boxes).reshape((-1, 4))
     boxes[:, 2:] += boxes[:, :2]
-    tl = tlg if tlg is not None else 3  # line thickness
+    tl = tlg if tlg is not None else 2  # line thickness
     tf = max(tl - 1, 1)  # font thickness
 
     # un-normalise
@@ -108,7 +109,8 @@ dets1_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, 501)}
 dets2_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, 501)}
 bbs_gt_all = {i: [] for i in range(1, 501)}
 
-color_ours = (31, 119, 180)
+#color_ours = (31, 119, 180)
+color_ours = (144, 238, 144)
 color_paper = (255, 127, 14)
 color_gt = (44, 160, 44)
 
@@ -127,6 +129,8 @@ for ann in gts['annotations']:
     bbs_gt_all[image_id].append(ann['bbox'])
 
 for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
+    if len(CHOOSEN_IDS) and (i+1) not in CHOOSEN_IDS:
+        continue
     image_name = gts['images'][i]['im_name']
     city = image_name.split('_')[0]
     image_name = os.path.join(val_img_dir, city, image_name)
@@ -135,14 +139,14 @@ for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
     bbs1, scores1 = dt1['boxes'], dt1['scores']
     img_dts_ours = plot_images(image.copy(), bbs1, scores1, None, label=None, color=color_ours)
     img_dts_all = plot_images(image.copy(), bbs1, scores1, image_name, label='paper', color=color_ours, tlg=1)
-    plt.imsave(os.path.join(save_dir, 'im{}_dets_ours.jpg'.format(i + 1)), img_dts_ours)
+    plt.imsave(os.path.join(save_dir, 'im{}_dets_ours.png'.format(i + 1)), img_dts_ours)
 
     bbs2, scores2 = dt2['boxes'], dt2['scores']
     img_dts_paper = plot_images(image.copy(), bbs2, scores2, None, label=None, color=color_paper)
-    plt.imsave(os.path.join(save_dir, 'im{}_dets_paper.jpg'.format(i + 1)), img_dts_paper)
+    plt.imsave(os.path.join(save_dir, 'im{}_dets_paper.png'.format(i + 1)), img_dts_paper)
     img_dts_all = plot_images(img_dts_all, bbs2, scores2, image_name, label='paper', color=color_paper, tlg=1)
 
     bbs_gt = bbs_gt_all[i + 1]
     img_dts_all = plot_images(img_dts_all, bbs_gt, None, image_name, label='GT', gt=True, color=color_gt, tlg=1)
 
-    plt.imsave(os.path.join(save_dir, 'im{}_dets.jpg'.format(i + 1)), img_dts_all)
+    plt.imsave(os.path.join(save_dir, 'im{}_dets.png'.format(i + 1)), img_dts_all)
