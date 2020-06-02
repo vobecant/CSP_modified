@@ -10,7 +10,8 @@ import random
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-CHOOSEN_IDS=[234,475]
+CHOOSEN_IDS = [234, 475]
+
 
 def xywh2xyxy(x):
     # Convert nx4 boxes from [x, y, w, h] to [x1, y1, x2, y2] where xy1=top-left, xy2=bottom-right
@@ -109,7 +110,7 @@ dets1_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, 501)}
 dets2_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, 501)}
 bbs_gt_all = {i: [] for i in range(1, 501)}
 
-#color_ours = (31, 119, 180)
+# color_ours = (31, 119, 180)
 color_ours = (144, 238, 144)
 color_paper = (255, 127, 14)
 color_gt = (44, 160, 44)
@@ -129,8 +130,11 @@ for ann in gts['annotations']:
     bbs_gt_all[image_id].append(ann['bbox'])
 
 for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
-    if len(CHOOSEN_IDS) and (i+1) not in CHOOSEN_IDS:
+    if len(CHOOSEN_IDS) and (i + 1) not in CHOOSEN_IDS:
         continue
+
+    bbs_gt = bbs_gt_all[i + 1]
+
     image_name = gts['images'][i]['im_name']
     city = image_name.split('_')[0]
     image_name = os.path.join(val_img_dir, city, image_name)
@@ -150,7 +154,6 @@ for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
     plt.imsave(os.path.join(save_dir, 'im{}_dets_paper_wGT.png'.format(i + 1)), img_dts_paper_gt)
     img_dts_all = plot_images(img_dts_all, bbs2, scores2, image_name, label='paper', color=color_paper, tlg=1)
 
-    bbs_gt = bbs_gt_all[i + 1]
     img_dts_all = plot_images(img_dts_all, bbs_gt, None, image_name, label='GT', gt=True, color=color_gt, tlg=1)
 
     plt.imsave(os.path.join(save_dir, 'im{}_dets.png'.format(i + 1)), img_dts_all)
