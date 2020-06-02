@@ -28,7 +28,6 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=None, gt=False, 
     tl = line_thickness or round(0.002 * (img.shape[0] + img.shape[1]) / 2) + 1  # line/font thickness
     color = color or [random.randint(0, 255) for _ in range(3)]
     c1, c2 = (int(x[0]), int(x[1])), (int(x[2]), int(x[3]))
-    print(c1,c2,color,tl)
     cv2.rectangle(img, c1, c2, color, thickness=tl)
     if label:
         tf = max(tl - 1, 1)  # font thickness
@@ -143,14 +142,14 @@ for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
 
     bbs1, scores1 = dt1['boxes'], dt1['scores']
     img_dts_ours = plot_images(image.copy(), bbs1, scores1, None, label=None, color=color_ours)
-    img_dts_ours_gt = plot_images(img_dts_ours.copy(), bbs_gt, None, None, label=None, color=color_gt, tlg=1.5, gt=True)
+    img_dts_ours_gt = plot_images(img_dts_ours.copy(), bbs_gt, None, None, label=None, color=color_gt, tlg=1, gt=True)
     img_dts_all = plot_images(image.copy(), bbs1, scores1, image_name, label='paper', color=color_ours, tlg=1)
     plt.imsave(os.path.join(save_dir, 'im{}_dets_ours.png'.format(i + 1)), img_dts_ours)
     plt.imsave(os.path.join(save_dir, 'im{}_dets_ours_wGT.png'.format(i + 1)), img_dts_ours_gt)
 
     bbs2, scores2 = dt2['boxes'], dt2['scores']
     img_dts_paper = plot_images(image.copy(), bbs2, scores2, None, label=None, color=color_paper)
-    img_dts_paper_gt = plot_images(img_dts_paper.copy(), bbs_gt, None, None, label=None, color=color_gt, tlg=1.5, gt=True)
+    img_dts_paper_gt = plot_images(img_dts_paper.copy(), bbs_gt, None, None, label=None, color=color_gt, tlg=1, gt=True)
     plt.imsave(os.path.join(save_dir, 'im{}_dets_paper.png'.format(i + 1)), img_dts_paper)
     plt.imsave(os.path.join(save_dir, 'im{}_dets_paper_wGT.png'.format(i + 1)), img_dts_paper_gt)
     img_dts_all = plot_images(img_dts_all, bbs2, scores2, image_name, label='paper', color=color_paper, tlg=1)
