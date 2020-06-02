@@ -137,6 +137,7 @@ for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
     bbs_gt = bbs_gt_all[i + 1]
 
     image_name = gts['images'][i]['im_name']
+    print('{} {}'.format(i+1, image_name))
     city = image_name.split('_')[0]
     image_name = os.path.join(val_img_dir, city, image_name)
     image = cv2.cvtColor(cv2.imread(image_name), cv2.COLOR_BGR2RGB)
