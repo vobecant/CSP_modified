@@ -147,6 +147,10 @@ for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
     for tl in [1, 2]:
         img_dts_ours = plot_images(image.copy(), bbs1, scores1, None, label=None, color=color_ours, tlg=tl)
         plt.imsave(os.path.join(save_dir, 'im{}_dets_ours_tl{}.png'.format(i + 1, tl)), img_dts_ours)
+
+    # TODO: remove
+    continue
+
     img_dts_ours_gt = plot_images(img_dts_ours.copy(), bbs_gt, None, None, label=None, color=color_gt, tlg=GT_TL,
                                   gt=True)
     img_dts_all = plot_images(image.copy(), bbs1, scores1, image_name, label='paper', color=color_ours, tlg=2)
