@@ -11,7 +11,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 CHOOSEN_IDS = [234, 475, 41, 46, 69, 75, 84, 131, 135, 144, 145, 147, 152, 155, 162, 186, 189, 194, 204, 231, 253, 292, 328, 351, 375, 412, 471, 481]  # [234, 475]
-CONF_THRES = 0.1
+CONF_THRES = 0.3
 
 def xywh2xyxy(x):
     # Convert nx4 boxes from [x, y, w, h] to [x1, y1, x2, y2] where xy1=top-left, xy2=bottom-right
@@ -147,6 +147,8 @@ for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
     for tl in [1, 2]:
         img_dts_ours = plot_images(image.copy(), bbs1, scores1, None, label=None, color=color_ours, tlg=tl)
         plt.imsave(os.path.join(save_dir, 'im{}_dets_ours_tl{}.png'.format(i + 1, tl)), img_dts_ours)
+
+    continue
 
     img_dts_ours_gt = plot_images(img_dts_ours.copy(), bbs_gt, None, None, label=None, color=color_gt, tlg=GT_TL,
                                   gt=True)
