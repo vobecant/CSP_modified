@@ -143,7 +143,7 @@ for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
     image = cv2.cvtColor(cv2.imread(image_name), cv2.COLOR_BGR2RGB)
 
     bbs1, scores1 = dt1['boxes'], dt1['scores']
-    img_dts_ours = plot_images(image.copy(), bbs1, scores1, None, label=None, color=color_ours, tlg=2)
+    img_dts_ours = plot_images(image.copy(), bbs1, scores1, None, label=None, color=color_ours, tlg=1)
     img_dts_ours_gt = plot_images(img_dts_ours.copy(), bbs_gt, None, None, label=None, color=color_gt, tlg=GT_TL,
                                   gt=True)
     img_dts_all = plot_images(image.copy(), bbs1, scores1, image_name, label='paper', color=color_ours, tlg=2)
