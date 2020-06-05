@@ -10,7 +10,7 @@ import random
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-CHOOSEN_IDS = [144]#[234, 475]
+CHOOSEN_IDS = [41, 46, 69, 75, 84, 131, 135, 144, 145, 147, 152, 155, 162, 186, 189, 194, 204, 231, 253, 292, 328, 351, 375, 412, 471, 481]  # [234, 475]
 
 
 def xywh2xyxy(x):
@@ -137,13 +137,16 @@ for i, (dt1, dt2) in enumerate(zip(dets1_byImg.values(), dets2_byImg.values())):
     bbs_gt = bbs_gt_all[i + 1]
 
     image_name = gts['images'][i]['im_name']
-    print('{} {}'.format(i+1, image_name))
+    print('{} {}'.format(i + 1, image_name))
     city = image_name.split('_')[0]
     image_name = os.path.join(val_img_dir, city, image_name)
     image = cv2.cvtColor(cv2.imread(image_name), cv2.COLOR_BGR2RGB)
 
     bbs1, scores1 = dt1['boxes'], dt1['scores']
-    img_dts_ours = plot_images(image.copy(), bbs1, scores1, None, label=None, color=color_ours, tlg=1)
+
+    for tl in [1, 2]:
+        img_dts_ours = plot_images(image.copy(), bbs1, scores1, None, label=None, color=color_ours, tlg=tl)
+        plt.imsave(os.path.join(save_dir, 'im{}_dets_ours_tl{}.png'.format(i + 1, tl)), img_dts_ours)
     img_dts_ours_gt = plot_images(img_dts_ours.copy(), bbs_gt, None, None, label=None, color=color_gt, tlg=GT_TL,
                                   gt=True)
     img_dts_all = plot_images(image.copy(), bbs1, scores1, image_name, label='paper', color=color_ours, tlg=2)
