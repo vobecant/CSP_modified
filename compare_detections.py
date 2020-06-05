@@ -10,7 +10,7 @@ import random
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-CHOOSEN_IDS = [234, 475]
+CHOOSEN_IDS = [144]#[234, 475]
 
 
 def xywh2xyxy(x):
