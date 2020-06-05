@@ -11,7 +11,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 CHOOSEN_IDS = [41, 46, 69, 75, 84, 131, 135, 144, 145, 147, 152, 155, 162, 186, 189, 194, 204, 231, 253, 292, 328, 351, 375, 412, 471, 481]  # [234, 475]
-
+CONF_THRES = 0.1
 
 def xywh2xyxy(x):
     # Convert nx4 boxes from [x, y, w, h] to [x1, y1, x2, y2] where xy1=top-left, xy2=bottom-right
@@ -69,7 +69,7 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, labe
     if len(boxes) > 0:
         classes = [1]
         for j, box in enumerate(boxes):
-            if gt or confs[j] > 0.3:  # 0.3 conf thresh
+            if gt or confs[j] > CONF_THRES:  # 0.3 conf thresh
                 plot_one_box(box, img, label=label, color=color, line_thickness=tl, gt=gt, paper=label == 'paper')
 
     # Draw image filename labels
