@@ -63,6 +63,9 @@ for type in types:
         annotation['ignoreareas'] = ig_boxes
         image_data.append(annotation)
     if not os.path.exists(res_path):
+        d,_ = os.path.split(res_path)
+        if not os.path.exists(d):
+            os.makedirs(d)
         with open(res_path, 'wb') as fid:
             cPickle.dump(image_data, fid, cPickle.HIGHEST_PROTOCOL)
     print('{} has {} images and {} valid images, {} valid gt and {} ignored gt'.format(type, len(annos[index][0]),
