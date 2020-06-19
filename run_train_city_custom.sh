@@ -13,7 +13,7 @@
 #   CITYPERSON   #
 ##################
 # train the detector on Cityperson
-CACHEPATH="/home/vobecant/PhD/CSP/data/cache/cityperson_trainValTest/train_h50_eccv_1P_hard_resized"
-SPECIF=newInsertion
+CACHEPATH="/home/vobecant/PhD/CSP/data/cache/cityperson_trainValTest/train_h50_occluded_1P_occluded"
+SPECIF=1P_occluded
 LR=0.0008
 python -u train_city_custom.py ${CACHEPATH} ${SPECIF} ${LR} >csp_${SPECIF}.out
