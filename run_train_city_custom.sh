@@ -1,6 +1,6 @@
 #!/bin/bash
-#SBATCH --job-name=csp_newInsertion
-#SBATCH --output=csp_newInsertion.err
+#SBATCH --job-name=csp_occluded
+#SBATCH --output=csp_1P_occluded.err
 #SBATCH --time=3-00:00:00
 #SBATCH --mem=40GB
 #SBATCH --gres=gpu:Volta100:8
