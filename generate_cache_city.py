@@ -9,14 +9,14 @@ import matplotlib.pyplot as plt
 import re
 
 root_dir = 'data/cityperson'
-all_img_path = os.path.join(root_dir, 'images')
+all_img_path = '/home/vobecant/datasets/cityscapes/leftImg8bit' #os.path.join(root_dir, 'images')
 all_anno_path = os.path.join(root_dir, 'annotations')
 types = ['train']
 rows, cols = 1024, 2048
 
 for type in types:
 	anno_path = os.path.join(all_anno_path, 'anno_'+type+'.mat')
-	res_path = os.path.join('data/cache/cityperson', type)
+	res_path = os.path.join('data/cache/cityperson_new', type)
 	image_data = []
 	annos = scio.loadmat(anno_path)
 	index = 'anno_'+type+'_aligned'
@@ -65,4 +65,4 @@ for type in types:
 	if not os.path.exists(res_path):
 		with open(res_path, 'wb') as fid:
 			cPickle.dump(image_data, fid, cPickle.HIGHEST_PROTOCOL)
-	print '{} has {} images and {} valid images, {} valid gt and {} ignored gt'.format(type, len(annos[index][0]), valid_count, box_count, iggt_count)
+	print('{} has {} images and {} valid images, {} valid gt and {} ignored gt'.format(type, len(annos[index][0]), valid_count, box_count, iggt_count))
