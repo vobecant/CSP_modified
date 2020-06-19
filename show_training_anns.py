@@ -11,7 +11,7 @@ import pickle
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-CHOOSEN_IDS = [i for i in range(20)]
+CHOOSEN_IDS = [i for i in range(1000,1020)]
 
 
 def xywh2xyxy(x):
