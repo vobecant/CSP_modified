@@ -23,6 +23,8 @@ for type in types:
     valid_count = 0
     iggt_count = 0
     box_count = 0
+    occluded = 0
+
     for l in range(len(annos[index][0])):
         anno = annos[index][0][l]
         cityname = anno[0][0][0][0].encode()
@@ -32,7 +34,6 @@ for type in types:
         boxes = []
         ig_boxes = []
         vis_boxes = []
-        occluded = 0
 
         for i in range(len(gts)):
             label, x1, y1, w, h = gts[i, :5]
