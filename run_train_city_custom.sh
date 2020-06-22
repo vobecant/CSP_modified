@@ -2,7 +2,7 @@
 #SBATCH --job-name=csp_baseline_reasonable
 #SBATCH --output=csp_baseline_reasonable.err
 #SBATCH --time=3-00:00:00
-#SBATCH --mem=40GB
+#SBATCH --mem=60GB
 #SBATCH --gres=gpu:Volta100:8
 #SBATCH --cpus-per-task=16
 #SBATCH --partition=gpu
