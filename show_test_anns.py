@@ -113,7 +113,7 @@ for ann in gts['annotations']:
         continue
     image_id = ann['image_id']
     _, _, w, h = ann['bbox']
-    _, _, vw, vh = ann['bboxVis']
+    _, _, vw, vh = ann['vis_bbox']
 
     if h < 50:
         continue
