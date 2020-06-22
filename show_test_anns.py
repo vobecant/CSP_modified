@@ -139,4 +139,7 @@ for i in range(len(bbs_gt_all)):
                               tlg=1)
     img_dts_all = plot_images(img_dts_all, bbs_gt_rest, None, image_name, label='rest', gt=True, color=rest, tlg=1)
 
-    plt.imsave(os.path.join(save_dir, 'im{}_gt.png'.format(i + 1)), img_dts_all)
+    fname = os.path.join(save_dir, 'im{}_gt.png'.format(i + 1))
+    plt.imsave(fname, img_dts_all)
+
+    print('{}/{} Saved to {}'.format(i+1, len(bbs_gt_all), fname))
