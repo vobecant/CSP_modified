@@ -40,7 +40,8 @@ with open(cache_path, 'rb') as fid:
     train_data = cPickle.load(fid)
 num_imgs_train = len(train_data)
 random.shuffle(train_data)
-print 'num of training samples: {}'.format(num_imgs_train)
+print
+'num of training samples: {}'.format(num_imgs_train)
 data_gen_train = data_generators.get_data(train_data, C, batchsize=batchsize)
 
 # define the base network (resnet here, can be MobileNet, etc)
@@ -65,13 +66,14 @@ model_tea = Model(img_input, preds_tea)
 
 model.load_weights(weight_path, by_name=True)
 model_tea.load_weights(weight_path, by_name=True)
-print 'load weights from {}'.format(weight_path)
+print
+'load weights from {}'.format(weight_path)
 
 if C.offset:
     out_path = 'output/valmodels/city/{}/off_trnval_lr{}_{}'.format(C.scale, C.init_lr, specif)
 else:
     out_path = 'output/valmodels/city/%s/nooff' % (C.scale)
-assert not os.path.exists(out_path)
+assert not os.path.exists(out_path), "output path {} already exists!".format(out_path)
 if not os.path.exists(out_path):
     os.makedirs(out_path)
 res_file = os.path.join(out_path, 'records.txt')
@@ -148,7 +150,7 @@ for epoch_num in range(C.num_epochs):
                     os.path.join(out_path, 'net_e{}_l{}.hdf5'.format(epoch_num + 1 + add_epoch, total_loss)))
                 break
         except Exception as e:
-            print ('Exception: {}'.format(e))
+            print('Exception: {}'.format(e))
             continue
     records = np.concatenate((np.asarray(total_loss_r).reshape((-1, 1)),
                               np.asarray(cls_loss_r1).reshape((-1, 1)),
