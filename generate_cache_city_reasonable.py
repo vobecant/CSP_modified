@@ -11,12 +11,12 @@ import re
 root_dir = 'data/cityperson'
 all_img_path = '/home/vobecant/datasets/cityscapes/leftImg8bit'  # os.path.join(root_dir, 'images')
 all_anno_path = '/home/vobecant/datasets/citypersons/annotations'  # os.path.join(root_dir, 'annotations')
-types = ['train_reasonable']
+types = ['train']
 rows, cols = 1024, 2048
 
 for type in types:
     anno_path = os.path.join(all_anno_path, 'anno_' + type + '.mat')
-    res_path = os.path.join('data/cache/cityperson', type)
+    res_path = os.path.join('data/cache/cityperson', '{}_reasonable'.format(type))
     image_data = []
     annos = scio.loadmat(anno_path)
     index = 'anno_' + type + '_aligned'
