@@ -88,10 +88,8 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, labe
     return img
 
 
-dt_file1 = sys.argv[1]
-dt_file2 = sys.argv[2]
-val_img_dir = sys.argv[3]  # /home/vobecant/datasets/cityscapes/leftImg8bit/val
-save_dir = sys.argv[4]
+val_img_dir = sys.argv[1]  # /home/vobecant/datasets/cityscapes/leftImg8bit/val
+save_dir = sys.argv[2]
 dt_gt_file = 'eval_city/val_gt.json'
 
 if not os.path.exists(save_dir):
