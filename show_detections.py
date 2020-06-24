@@ -140,8 +140,8 @@ for i, dt1 in enumerate(dets1_byImg.values()):
     img_dt1 = plot_images(image.copy(), bbs1, scores1, image_name, label='ours', color=color_ours)
 
     bbs_gt_reasonable, bbs_gt_occluded = bbs_gt_all[i + 1]
-    img_dts = plot_images(img_dt1, bbs_gt_reasonable, None, image_name, label='GT', gt=True, color=color_gt_reasonable)
-    img_dts = plot_images(img_dts, bbs_gt_occluded, None, image_name, label='GT', gt=True, color=color_gt_occluded)
+    img_dts = plot_images(img_dt1, bbs_gt_reasonable, None, image_name, label='GT_reason', gt=True, color=color_gt_reasonable)
+    img_dts = plot_images(img_dts, bbs_gt_occluded, None, image_name, label='GT_occ', gt=True, color=color_gt_occluded)
 
     plt.imshow(img_dts)
     plt.show()
