@@ -407,6 +407,12 @@ class COCOeval:
                     except:
                         pass
                     ys[t, :, k, m] = np.array(q)
+
+                    mr = 1 - q
+                    mean_s = np.log(mr)
+                    mean_s = np.mean(mean_s)
+                    mean_s = np.exp(mean_s)
+
                     plt.figure()
                     plt.plot(recall, precision)
                     plt.xlabel('recall')
@@ -416,14 +422,14 @@ class COCOeval:
                     plt.savefig('/home/vobecant/PhD/CSP/PR_{}.jpg'.format(p.SetupLbl[self.current_id_setup]))
                     plt.close()
                     idx = np.where(fppi < 1)[-1][-1]
-                    print(idx)
+
                     fig = plt.figure()
                     ax = fig.add_subplot(1, 1, 1)
                     ax.semilogx(fppi[:idx], recall[:idx])
                     # ax.set_yscale('log')
                     ax.set_xlabel('FPPI')
                     ax.set_ylabel('recall')
-                    ax.set_title('reasonable')
+                    ax.set_title('reasonable, MR-2: {:.2f}%'.format(mean_s*100))
                     ax.set_xticks(p.fppiThrs)
                     # ax.set_yticks(q)
                     for f, rec in zip(p.fppiThrs, q):
