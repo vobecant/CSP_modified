@@ -449,8 +449,9 @@ class COCOeval:
                 mean_s = np.exp(mean_s)
             print(iStr.format(titleStr, typeStr, setupStr, iouStr, heightStr, occlStr, mean_s * 100))
             # res_file.write(iStr.format(titleStr, typeStr,setupStr, iouStr, heightStr, occlStr, mean_s*100))
-            res_file.write(str(mean_s * 100))
-            res_file.write('\n')
+            if res_file is not None:
+                res_file.write(str(mean_s * 100))
+                res_file.write('\n')
             return mean_s
 
         if not self.eval:
