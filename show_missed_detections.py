@@ -120,12 +120,13 @@ for ann in gts['annotations']:
     image_id = ann['image_id']
 
     bbox = ann['bbox']
-    reasonable = ann['vis_ratio'] >= 0.65
+    vis_ratio = ann['vis_ratio']
+    reasonable = vis_ratio >= 0.65
 
     if reasonable:
-        bbs_gt_all[image_id][0].append(bbox)
+        bbs_gt_all[image_id][0].append((bbox, vis_ratio))
     else:
-        bbs_gt_all[image_id][1].append(bbox)
+        bbs_gt_all[image_id][1].append((bbox, vis_ratio))
 
 image_paths = {im['id']: im['im_name'] for im in gts['images']}
 
@@ -157,11 +158,12 @@ def get_missed(detections, gts, iou_thr=0.5):
     for gt in gts:
         detected = False
         for dt in detections:
-            if overlap(dt, gt) >= iou_thr:
+            if overlap(dt, gt[0]) >= iou_thr:
                 detected = True
                 break
         if not detected:
-            missed.append(gt)
+            print('h={}, visibility={}'.format(gt[0][-1], gt[1]))
+            missed.append(gt[0])
     return missed
 
 
