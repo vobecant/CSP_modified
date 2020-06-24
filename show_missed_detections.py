@@ -155,16 +155,21 @@ def intersect1d(box1, box2):
 
 def get_missed(detections, gts, iou_thr=0.5):
     missed = []
+    heights = []
+    visibilities=[]
     for gt in gts:
+        if gt[-1]<50:
+            continue
         detected = False
         for dt in detections:
             if overlap(dt, gt[0]) >= iou_thr:
                 detected = True
                 break
         if not detected:
-            print('h={}, visibility={}'.format(gt[0][-1], gt[1]))
+            heights.append(gt[0][-1])
+            visibilities.append(gt[1])
             missed.append(gt[0])
-    return missed
+    return missed, heights,visibilities
 
 
 for i, dt1 in enumerate(dets1_byImg.values()):
@@ -176,15 +181,21 @@ for i, dt1 in enumerate(dets1_byImg.values()):
     bbs1, scores1 = dt1['boxes'], dt1['scores']
     bbs_gt_reasonable, bbs_gt_occluded = bbs_gt_all[i + 1]
     bbs_gt_both = bbs_gt_reasonable + bbs_gt_occluded
-    missed_reasonable = get_missed(bbs1, bbs_gt_reasonable)
-    missed_occluded = get_missed(bbs1, bbs_gt_occluded)
+    missed_reasonable, h_r, v_r = get_missed(bbs1, bbs_gt_reasonable)
+    missed_occluded, h_o, v_o = get_missed(bbs1, bbs_gt_occluded)
 
     image = image.copy()
     if len(missed_reasonable) or len(missed_occluded):
         if len(missed_reasonable):
+            print('In {} missed reasonable:')
+            for h, o in zip(h_r, v_r):
+                print('h={}, vis={:.3f}'.format(h,o))
             image = plot_images(image.copy(), missed_reasonable, None, image_name, label='reason', gt=True,
                                 color=color_gt_reasonable)
         if len(missed_occluded):
+            print('In {} missed occluded:')
+            for h, o in zip(h_o, v_o):
+                print('h={}, vis={:.3f}'.format(h,o))
             image = plot_images(image, missed_occluded, None, image_name, label='occ', gt=True, color=color_gt_occluded)
 
         plt.imsave(os.path.join(save_dir, '{}_missed_dets.jpg'.format(image_name)), image)
