@@ -132,6 +132,7 @@ class COCOeval:
         self.params = p
 
         self._prepare(id_setup)
+        self.current_id_setup = id_setup
         # loop through images, area range, max detection number
         catIds = p.catIds if p.useCats else [-1]
 
@@ -374,7 +375,7 @@ class COCOeval:
                 npig = np.count_nonzero(gtIg == 0)
                 if npig == 0:
                     continue
-                tps = np.logical_and(dtm, np.logical_not(dtIg)) # boolean array of true possitives
+                tps = np.logical_and(dtm, np.logical_not(dtIg))  # boolean array of true possitives
                 fps = np.logical_and(np.logical_not(dtm), np.logical_not(dtIg))
                 inds = np.where(dtIg == 0)[1]
                 tps = tps[:, inds]
@@ -386,7 +387,7 @@ class COCOeval:
                     tp = np.array(tp)
                     fppi = np.array(fp) / I0
                     nd = len(tp)
-                    precision = [t/i for i,t in enumerate(tp,1)]
+                    precision = [t / i for i, t in enumerate(tp, 1)]
                     recall = tp / npig
                     q = np.zeros((R,))
 
@@ -412,9 +413,8 @@ class COCOeval:
                     plt.ylabel('precision')
                     plt.title('reasonable')
                     plt.grid()
-                    plt.savefig('/home/vobecant/PhD/CSP/PR_reasonable.jpg')
+                    plt.savefig('/home/vobecant/PhD/CSP/PR_{}.jpg'.format(p.SetupLbl[self.current_id_setup]))
                     plt.close()
-
                     idx = np.where(fppi < 1)[-1][-1]
                     print(idx)
                     fig = plt.figure()
@@ -427,9 +427,10 @@ class COCOeval:
                     ax.set_xticks(p.fppiThrs)
                     # ax.set_yticks(q)
                     for f, rec in zip(p.fppiThrs, q):
-                        ax.text(f, rec, '{:.3f}'.format(rec))
+                        plt.semilogx(f, rec, "rD")
+                        ax.text(f, rec - 0.05, '{:.3f}'.format(rec))
                     ax.grid()
-                    plt.savefig('/home/vobecant/PhD/CSP/FPPI_recall_reasonable.jpg')
+                    plt.savefig('/home/vobecant/PhD/CSP/FPPI_recall_{}.jpg'.format(p.SetupLbl[self.current_id_setup]))
                     plt.close(fig)
         self.eval = {
             'params': p,
