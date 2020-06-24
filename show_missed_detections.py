@@ -110,6 +110,7 @@ with open(dt_gt_file, 'r') as f:
 
 dets1_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, 501)}
 bbs_gt_all = {i: [[], []] for i in range(1, 501)}
+bbs_gt_all_ignore = {i: [] for i in range(1, 501)}
 
 color_detected_reasonable = (0, 100, 0)
 color_detected_occluded = (0, 128, 0)
@@ -123,6 +124,7 @@ for dt in dets1:
 
 for ann in gts['annotations']:
     if ann['category_id'] != 1 or ann['ignore'] or ann['iscrowd']:  # or ann['vis_ratio'] < 0.65 or ann['height'] < 50
+        bbs_gt_all_ignore[image_id].append(ann['bbox'])
         continue
     image_id = ann['image_id']
 
@@ -187,14 +189,13 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
 
     bbs1, scores1 = dt1['boxes'], dt1['scores']
     bbs_gt_reasonable, bbs_gt_occluded = bbs_gt_all[i + 1]
+    bbs_ignore = bbs_gt_all_ignore[i + 1]
     bbs_gt_both = bbs_gt_reasonable + bbs_gt_occluded
 
     # TODO: missed/detected reasonable
     detected_reasonable, detected_reasonable_scores = [], []
     missed_reasonable, h_r, v_r = [], [], []
     for gt in bbs_gt_reasonable:
-        if gt[0][-1] < 50:
-            continue
         detected = False
         for i, (dt, conf) in enumerate(zip(bbs1, scores1)):
             if overlap(dt, gt[0]) >= 0.5:
@@ -205,6 +206,9 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
                 del scores1[i]
                 break
         if not detected:
+            if gt[0][-1] < 50:
+                # if it was not detected but is too small, do not report
+                continue
             h_r.append(gt[0][-1])
             v_r.append(gt[1])
             missed_reasonable.append(gt[0])
@@ -213,8 +217,6 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
     detected_occluded, detected_occluded_scores = [], []
     missed_occluded, h_o, v_o = [], [], []
     for gt in bbs_gt_occluded:
-        if gt[0][-1] < 50:
-            continue
         detected = False
         for i, (dt, conf) in enumerate(zip(bbs1, scores1)):
             if overlap(dt, gt[0]) >= 0.5:
@@ -225,9 +227,26 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
                 del scores1[i]
                 break
         if not detected:
+            if gt[0][-1] < 50:
+                # if it was not detected but is too small, do not report
+                continue
             h_o.append(gt[0][-1])
             v_o.append(gt[1])
             missed_occluded.append(gt[0])
+
+    # TODO: get false positives; do it by deleting the remaining detections and scores that are in ignore areas or contain non-pedestrian instances
+    idx = 0
+    while idx < len(bbs1):
+        bb = bbs1[idx]
+        for ig in bbs_ignore:
+            ignored = False
+            if overlap(bb, ig):
+                ignored = True
+                del bbs1[idx]
+                del scores1[idx]
+                break
+        if not ignored:
+            idx += 1
 
     image = image.copy()
 
