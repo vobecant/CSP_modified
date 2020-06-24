@@ -103,7 +103,7 @@ with open(dt_file1, 'r') as f:
 with open(dt_gt_file, 'r') as f:
     gts = json.load(f)
 
-dets1_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, len(gts) + 1)}
+dets1_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, 501)}
 bbs_gt_all = {i: [[], []] for i in range(1, 501)}
 
 color_ours = (31, 119, 180)
