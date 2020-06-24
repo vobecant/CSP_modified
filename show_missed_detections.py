@@ -70,9 +70,13 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, labe
     if len(boxes) > 0:
         classes = [1]
         for j, box in enumerate(boxes):
-            if gt or confs[j] > 0.3:  # 0.3 conf thresh
-                plot_one_box(box, img, label=label + ' {:.3f}'.format(confs[j]), color=color, line_thickness=tl, gt=gt,
-                             paper=label == 'paper')
+            if gt or confs[j] > 0.0:  # 0.3 conf thresh
+                if gt:
+                    plot_one_box(box, img, label=label + ' v{:.3f}'.format(confs[j]), color=color, line_thickness=tl,
+                                 gt=gt, paper=label == 'paper')
+                else:
+                    plot_one_box(box, img, label=label + ' c{:.3f}'.format(confs[j]), color=color, line_thickness=tl,
+                                 gt=gt, paper=label == 'paper')
 
     # Draw image filename labels
     if path is not None:
@@ -107,9 +111,11 @@ with open(dt_gt_file, 'r') as f:
 dets1_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, 501)}
 bbs_gt_all = {i: [[], []] for i in range(1, 501)}
 
-color_ours = (31, 119, 180)
-color_gt_reasonable = (44, 160, 44)
-color_gt_occluded = (255, 127, 14)
+color_detected_reasonable = (0, 100, 0)
+color_detected_occluded = (0, 128, 0)
+color_missed_reasonable = (255, 0, 0)
+color_missed_occluded = (255, 69, 0)
+color_fp = (255, 140, 0)
 
 for dt in dets1:
     dets1_byImg[dt['image_id']]['boxes'].append(dt['bbox'])
@@ -182,23 +188,73 @@ for i, dt1 in enumerate(dets1_byImg.values()):
     bbs1, scores1 = dt1['boxes'], dt1['scores']
     bbs_gt_reasonable, bbs_gt_occluded = bbs_gt_all[i + 1]
     bbs_gt_both = bbs_gt_reasonable + bbs_gt_occluded
-    missed_reasonable, h_r, v_r = get_missed(bbs1, bbs_gt_reasonable)
-    missed_occluded, h_o, v_o = get_missed(bbs1, bbs_gt_occluded)
+
+    # TODO: missed/detected reasonable
+    detected_reasonable, detected_reasonable_scores = [], []
+    missed_reasonable, h_r, v_r = [], [], []
+    for gt in bbs_gt_reasonable:
+        if gt[0][-1] < 50:
+            continue
+        detected = False
+        for i, (dt, conf) in enumerate(zip(bbs1, scores1)):
+            if overlap(dt, gt[0]) >= 0.5:
+                detected = True
+                detected_reasonable.append(dt)
+                del bbs1[i]
+                detected_reasonable_scores.append(conf)
+                del scores1[i]
+                break
+        if not detected:
+            h_r.append(gt[0][-1])
+            v_r.append(gt[1])
+            missed_reasonable.append(gt[0])
+
+    # TODO: missed/detected occluded
+    detected_occluded, detected_occluded_scores = [], []
+    missed_occluded, h_o, v_o = [], [], []
+    for gt in bbs_gt_occluded:
+        if gt[0][-1] < 50:
+            continue
+        detected = False
+        for i, (dt, conf) in enumerate(zip(bbs1, scores1)):
+            if overlap(dt, gt[0]) >= 0.5:
+                detected = True
+                detected_occluded.append(dt)
+                del bbs1[i]
+                detected_occluded_scores.append(conf)
+                del scores1[i]
+                break
+        if not detected:
+            h_o.append(gt[0][-1])
+            v_o.append(gt[1])
+            missed_occluded.append(gt[0])
 
     image = image.copy()
+
+    # TODO: plot correct detections
+    image = plot_images(image, detected_reasonable, detected_reasonable_scores, image_name, label='det R', gt=False,
+                        color=color_detected_reasonable)
+    image = plot_images(image, detected_occluded, detected_occluded_scores, image_name, label='det O', gt=False,
+                        color=color_detected_occluded)
+
+    # TODO: plot missed detections
     if len(missed_reasonable) or len(missed_occluded):
         if len(missed_reasonable):
             print('In {} missed reasonable:'.format(image_name))
             for h, o in zip(h_r, v_r):
                 print('h={}, vis={:.3f}'.format(h, o))
-            image = plot_images(image.copy(), missed_reasonable, v_r, image_name, label='reason', gt=True,
-                                color=color_gt_reasonable)
+            image = plot_images(image, missed_reasonable, v_r, image_name, label='miss R', gt=True,
+                                color=color_missed_reasonable)
         if len(missed_occluded):
             print('In {} missed occluded:'.format(image_name))
             for h, o in zip(h_o, v_o):
                 print('h={}, vis={:.3f}'.format(h, o))
-            image = plot_images(image, missed_occluded, v_o, image_name, label='occ', gt=True, color=color_gt_occluded)
+            image = plot_images(image, missed_occluded, v_o, image_name, label='miss O', gt=True,
+                                color=color_missed_occluded)
 
-        plt.imsave(os.path.join(save_dir, '{}_missed_dets.jpg'.format(image_name)), image)
+    # TODO: plot false positives
+    image = plot_images(image, bbs1, scores1, None, label='FP', gt=False, color=color_fp)
+
+    plt.imsave(os.path.join(save_dir, '{}_sorted_dets.jpg'.format(image_name)), image)
     if i % 50 == 0:
         print('{}/{} in {:.1f}s'.format(i, len(dets1_byImg), time.time() - start))
