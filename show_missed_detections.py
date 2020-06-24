@@ -174,14 +174,17 @@ for i, dt1 in enumerate(dets1_byImg.values()):
     bbs1, scores1 = dt1['boxes'], dt1['scores']
     bbs_gt_reasonable, bbs_gt_occluded = bbs_gt_all[i + 1]
     bbs_gt_both = bbs_gt_reasonable + bbs_gt_occluded
-    missed = get_missed(bbs1, bbs_gt_both)
+    missed_reasonable = get_missed(bbs1, bbs_gt_reasonable)
+    missed_occluded = get_missed(bbs1, bbs_gt_occluded)
 
-    img_dt1 = plot_images(image.copy(), bbs1, scores1, image_name, label='ours', color=color_ours)
+    image = image.copy()
+    if len(missed_reasonable) or len(missed_occluded):
+        if len(missed_reasonable):
+            image = plot_images(image.copy(), missed_reasonable, None, image_name, label='reason', gt=True,
+                                color=color_gt_reasonable)
+        if len(missed_occluded):
+            image = plot_images(image, missed_occluded, None, image_name, label='occ', gt=True, color=color_gt_occluded)
 
-    img_dts = plot_images(img_dt1, bbs_gt_reasonable, None, image_name, label='GT_reason', gt=True,
-                          color=color_gt_reasonable)
-    img_dts = plot_images(img_dts, bbs_gt_occluded, None, image_name, label='GT_occ', gt=True, color=color_gt_occluded)
-
-    plt.imsave(os.path.join(save_dir, '{}_dets.jpg'.format(image_name)), img_dts)
+        plt.imsave(os.path.join(save_dir, '{}_missed_dets.jpg'.format(image_name)), image)
     if i % 50 == 0:
         print('{}/{} in {:.1f}s'.format(i, len(dets1_byImg), time.time() - start))
