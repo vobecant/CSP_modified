@@ -97,10 +97,12 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, labe
 dt_file1 = sys.argv[1]
 img_dir = sys.argv[2]  # /home/vobecant/datasets/DummyGAN_cityscapes_hard/1P/images
 save_dir = sys.argv[3]
+save_dir_missed = os.path.join(save_dir, 'missed')
 dt_gt_file = sys.argv[4]  # /home/vobecant/PhD/CSP/data/cache/cityperson_trainValTest/train_h50_eccv_1P_hard_allTrain
 
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
+    os.makedirs(save_dir_missed)
 
 with open(dt_file1, 'r') as f:
     dets1 = json.load(f)
@@ -235,7 +237,7 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
             missed_occluded.append(gt[0])
 
     # TODO: get false positives; do it by deleting the remaining detections and scores that are in ignore areas or contain non-pedestrian instances
-    '''
+
     idx = 0
     while idx < len(bbs1):
         bb = bbs1[idx]
@@ -248,7 +250,6 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
                 break
         if not ignored:
             idx += 1
-    '''
 
     image = image.copy()
 
@@ -257,6 +258,9 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
                         color=color_detected_reasonable)
     image = plot_images(image, detected_occluded, detected_occluded_scores, image_name, label='det O', gt=False,
                         color=color_detected_occluded)
+
+    # TODO: plot false positives
+    image = plot_images(image, bbs1, scores1, None, label='FP', gt=False, color=color_fp)
 
     # TODO: plot missed detections
     if len(missed_reasonable) or len(missed_occluded):
@@ -272,9 +276,7 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
                 print('h={}, vis={:.3f}'.format(h, o))
             image = plot_images(image, missed_occluded, v_o, image_name, label='miss O', gt=True,
                                 color=color_missed_occluded)
-
-    # TODO: plot false positives
-    image = plot_images(image, bbs1, scores1, None, label='FP', gt=False, color=color_fp)
+        plt.imsave(os.path.join(save_dir_missed, '{}_missed_dets.jpg'.format(image_name)), image)
 
     plt.imsave(os.path.join(save_dir, '{}_sorted_dets.jpg'.format(image_name)), image)
     if im_num % 50 == 0:
