@@ -102,6 +102,7 @@ dt_gt_file = sys.argv[4]  # /home/vobecant/PhD/CSP/data/cache/cityperson_trainVa
 
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
+if not os.path.exists(save_dir_missed):
     os.makedirs(save_dir_missed)
 
 with open(dt_file1, 'r') as f:
