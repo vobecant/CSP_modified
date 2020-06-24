@@ -100,8 +100,8 @@ if not os.path.exists(save_dir):
 with open(dt_file1, 'r') as f:
     dets1 = json.load(f)
 
-with open(dt_gt_file, 'rb') as f:
-    gts = pickle.load(f)
+with open(dt_gt_file, 'r') as f:
+    gts = json.load(f)
 
 dets1_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, len(gts) + 1)}
 bbs_gt_all = {i: [[], []] for i in range(1, 501)}
