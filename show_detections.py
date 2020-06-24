@@ -143,8 +143,8 @@ for i, dt1 in enumerate(dets1_byImg.values()):
     img_dts = plot_images(img_dt1, bbs_gt_reasonable, None, image_name, label='GT_reason', gt=True, color=color_gt_reasonable)
     img_dts = plot_images(img_dts, bbs_gt_occluded, None, image_name, label='GT_occ', gt=True, color=color_gt_occluded)
 
-    plt.imshow(img_dts)
-    plt.show()
+    #plt.imshow(img_dts)
+    #plt.show()
     plt.imsave(os.path.join(save_dir, '{}_dets.jpg'.format(image_name)), img_dts)
     if i % 50 == 0:
         print('{}/{} in {:.1f}s'.format(i, len(dets1_byImg), time.time() - start))
