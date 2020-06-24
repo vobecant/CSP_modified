@@ -71,7 +71,8 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, labe
         classes = [1]
         for j, box in enumerate(boxes):
             if gt or confs[j] > 0.3:  # 0.3 conf thresh
-                plot_one_box(box, img, label=label, color=color, line_thickness=tl, gt=gt, paper=label == 'paper')
+                plot_one_box(box, img, label=label + ' {:.3f}'.format(confs[j]), color=color, line_thickness=tl, gt=gt,
+                             paper=label == 'paper')
 
     # Draw image filename labels
     if path is not None:
@@ -156,9 +157,9 @@ def intersect1d(box1, box2):
 def get_missed(detections, gts, iou_thr=0.5):
     missed = []
     heights = []
-    visibilities=[]
+    visibilities = []
     for gt in gts:
-        if gt[0][-1]<50:
+        if gt[0][-1] < 50:
             continue
         detected = False
         for dt in detections:
@@ -169,7 +170,7 @@ def get_missed(detections, gts, iou_thr=0.5):
             heights.append(gt[0][-1])
             visibilities.append(gt[1])
             missed.append(gt[0])
-    return missed, heights,visibilities
+    return missed, heights, visibilities
 
 
 for i, dt1 in enumerate(dets1_byImg.values()):
@@ -189,14 +190,14 @@ for i, dt1 in enumerate(dets1_byImg.values()):
         if len(missed_reasonable):
             print('In {} missed reasonable:'.format(image_name))
             for h, o in zip(h_r, v_r):
-                print('h={}, vis={:.3f}'.format(h,o))
+                print('h={}, vis={:.3f}'.format(h, o))
             image = plot_images(image.copy(), missed_reasonable, v_r, image_name, label='reason', gt=True,
                                 color=color_gt_reasonable)
         if len(missed_occluded):
             print('In {} missed occluded:'.format(image_name))
             for h, o in zip(h_o, v_o):
-                print('h={}, vis={:.3f}'.format(h,o))
-            image = plot_images(image, missed_occluded,v_o, image_name, label='occ', gt=True, color=color_gt_occluded)
+                print('h={}, vis={:.3f}'.format(h, o))
+            image = plot_images(image, missed_occluded, v_o, image_name, label='occ', gt=True, color=color_gt_occluded)
 
         plt.imsave(os.path.join(save_dir, '{}_missed_dets.jpg'.format(image_name)), image)
     if i % 50 == 0:
