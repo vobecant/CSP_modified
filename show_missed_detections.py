@@ -182,7 +182,7 @@ def get_missed(detections, gts, iou_thr=0.5):
 
 
 for im_num, dt1 in enumerate(dets1_byImg.values()):
-    image_name = image_paths[im_num+ 1]
+    image_name = image_paths[im_num + 1]
     city = image_name.split('_')[0]
     image_path = os.path.join(img_dir, city, image_name)
     image = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB)
@@ -235,6 +235,7 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
             missed_occluded.append(gt[0])
 
     # TODO: get false positives; do it by deleting the remaining detections and scores that are in ignore areas or contain non-pedestrian instances
+    '''
     idx = 0
     while idx < len(bbs1):
         bb = bbs1[idx]
@@ -247,6 +248,7 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
                 break
         if not ignored:
             idx += 1
+    '''
 
     image = image.copy()
 
