@@ -44,11 +44,8 @@ main_path = sys.argv[1]
 if os.path.isfile(main_path):
     print('Given file {} with detections'.format(main_path))
     res_file = None
-    dt_path = os.path.join(main_path)
-    resFile_txt = os.path.join(dt_path, 'val_det.txt')
-    resFile = os.path.join(dt_path, 'val_dt.json')
-    if not os.path.isfile(resFile):
-        resFile = os.path.join(dt_path, 'val_det.json')
+    resFile_txt = os.path.join(main_path)
+    resFile = os.path.join(main_path.replace('.txt', '.json'))
     for id_setup in range(6):
         cocoGt = COCO(annFile)
         cocoDt = cocoGt.loadRes(resFile)
