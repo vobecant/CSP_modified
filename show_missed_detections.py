@@ -189,7 +189,7 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
 
     bbs1, scores1 = dt1['boxes'], dt1['scores']
     bbs_gt_reasonable, bbs_gt_occluded = bbs_gt_all[im_num + 1]
-    bbs_ignore = bbs_gt_all_ignore[i + 1]
+    bbs_ignore = bbs_gt_all_ignore[im_num + 1]
     bbs_gt_both = bbs_gt_reasonable + bbs_gt_occluded
 
     # TODO: missed/detected reasonable
