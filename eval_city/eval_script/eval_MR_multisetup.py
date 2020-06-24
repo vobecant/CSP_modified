@@ -408,7 +408,7 @@ class COCOeval:
                         pass
                     ys[t, :, k, m] = np.array(q)
 
-                    mr = 1 - q
+                    mr = 1 - np.array(q)
                     mean_s = np.log(mr)
                     mean_s = np.mean(mean_s)
                     mean_s = np.exp(mean_s)
