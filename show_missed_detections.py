@@ -256,5 +256,5 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
     image = plot_images(image, bbs1, scores1, None, label='FP', gt=False, color=color_fp)
 
     plt.imsave(os.path.join(save_dir, '{}_sorted_dets.jpg'.format(image_name)), image)
-    if i_num % 50 == 0:
+    if im_num % 50 == 0:
         print('{}/{} in {:.1f}s'.format(i, len(dets1_byImg), time.time() - start))
