@@ -238,8 +238,8 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
     idx = 0
     while idx < len(bbs1):
         bb = bbs1[idx]
+        ignored = False
         for ig in bbs_ignore:
-            ignored = False
             if overlap(bb, ig):
                 ignored = True
                 del bbs1[idx]
