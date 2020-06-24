@@ -127,10 +127,13 @@ for ann in gts['annotations']:
     else:
         bbs_gt_all[image_id][1].append(bbox)
 
+image_paths = {im['id']: im['im_name'] for im in gts['images']}
+
 start = time.time()
 for i, dt1 in enumerate(dets1_byImg.values()):
-    image_path = gts[i]['filepath']
-    _, image_name = os.path.split(image_path)
+    image_name = image_paths[i+1]
+    city = image_name.split('_')[0]
+    image_path = os.path.split(img_dir,city,image_name)
     image = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB)
 
     bbs1, scores1 = dt1['boxes'], dt1['scores']
