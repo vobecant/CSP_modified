@@ -179,7 +179,7 @@ def get_missed(detections, gts, iou_thr=0.5):
     return missed, heights, visibilities
 
 
-for i, dt1 in enumerate(dets1_byImg.values()):
+for im_num, dt1 in enumerate(dets1_byImg.values()):
     image_name = image_paths[i + 1]
     city = image_name.split('_')[0]
     image_path = os.path.join(img_dir, city, image_name)
@@ -256,5 +256,5 @@ for i, dt1 in enumerate(dets1_byImg.values()):
     image = plot_images(image, bbs1, scores1, None, label='FP', gt=False, color=color_fp)
 
     plt.imsave(os.path.join(save_dir, '{}_sorted_dets.jpg'.format(image_name)), image)
-    if i % 50 == 0:
+    if i_num % 50 == 0:
         print('{}/{} in {:.1f}s'.format(i, len(dets1_byImg), time.time() - start))
