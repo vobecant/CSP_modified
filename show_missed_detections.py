@@ -182,13 +182,13 @@ def get_missed(detections, gts, iou_thr=0.5):
 
 
 for im_num, dt1 in enumerate(dets1_byImg.values()):
-    image_name = image_paths[i + 1]
+    image_name = image_paths[im_num+ 1]
     city = image_name.split('_')[0]
     image_path = os.path.join(img_dir, city, image_name)
     image = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB)
 
     bbs1, scores1 = dt1['boxes'], dt1['scores']
-    bbs_gt_reasonable, bbs_gt_occluded = bbs_gt_all[i + 1]
+    bbs_gt_reasonable, bbs_gt_occluded = bbs_gt_all[im_num + 1]
     bbs_ignore = bbs_gt_all_ignore[i + 1]
     bbs_gt_both = bbs_gt_reasonable + bbs_gt_occluded
 
