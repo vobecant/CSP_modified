@@ -406,6 +406,31 @@ class COCOeval:
                     except:
                         pass
                     ys[t, :, k, m] = np.array(q)
+                    plt.figure()
+                    plt.plot(recall, precision)
+                    plt.xlabel('recall')
+                    plt.ylabel('precision')
+                    plt.title('reasonable')
+                    plt.grid()
+                    plt.savefig('/home/vobecant/PhD/CSP/PR_reasonable.jpg')
+                    plt.close()
+
+                    idx = np.where(fppi < 1)[-1][-1]
+                    print(idx)
+                    fig = plt.figure()
+                    ax = fig.add_subplot(1, 1, 1)
+                    ax.semilogx(fppi[:idx], recall[:idx])
+                    # ax.set_yscale('log')
+                    ax.set_xlabel('FPPI')
+                    ax.set_ylabel('recall')
+                    ax.set_title('reasonable')
+                    ax.set_xticks(p.fppiThrs)
+                    # ax.set_yticks(q)
+                    for f, rec in zip(p.fppiThrs, q):
+                        ax.text(f, rec, '{:.3f}'.format(rec))
+                    ax.grid()
+                    plt.savefig('/home/vobecant/PhD/CSP/FPPI_recall_reasonable.jpg')
+                    plt.close(fig)
         self.eval = {
             'params': p,
             'counts': [T, R, K, M],
