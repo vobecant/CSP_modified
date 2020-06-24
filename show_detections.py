@@ -104,14 +104,28 @@ with open(dt_gt_file, 'rb') as f:
     gts = pickle.load(f)
 
 dets1_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, len(gts) + 1)}
+bbs_gt_all = {i: [[], []] for i in range(1, 501)}
 
 color_ours = (31, 119, 180)
-color_paper = (255, 127, 14)
-color_gt = (44, 160, 44)
+color_gt_reasonable = (44, 160, 44)
+color_gt_occluded = (255, 127, 14)
 
 for dt in dets1:
     dets1_byImg[dt['image_id']]['boxes'].append(dt['bbox'])
     dets1_byImg[dt['image_id']]['scores'].append(dt['score'])
+
+for ann in gts['annotations']:
+    if ann['category_id'] != 1 or ann['ignore'] or ann['iscrowd']:  # or ann['vis_ratio'] < 0.65 or ann['height'] < 50
+        continue
+    image_id = ann['image_id']
+
+    bbox = ann['bbox']
+    reasonable = ann['vis_ratio'] >= 0.65
+
+    if reasonable:
+        bbs_gt_all[image_id][0].append(bbox)
+    else:
+        bbs_gt_all[image_id][1].append(bbox)
 
 start = time.time()
 for i, dt1 in enumerate(dets1_byImg.values()):
@@ -122,9 +136,11 @@ for i, dt1 in enumerate(dets1_byImg.values()):
     bbs1, scores1 = dt1['boxes'], dt1['scores']
     img_dt1 = plot_images(image.copy(), bbs1, scores1, image_name, label='ours', color=color_ours)
 
-    # bbs_gt = bbs_gt_all[i + 1]
-    # img_dts = plot_images(img_dt2, bbs_gt, None, image_name, label='GT', gt=True, color=color_gt)
+    bbs_gt_reasonable, bbs_gt_occluded = bbs_gt_all[i + 1]
+    img_dts = plot_images(img_dt1, bbs_gt_reasonable, None, image_name, label='GT', gt=True, color=color_gt_reasonable)
+    img_dts = plot_images(img_dts, bbs_gt_occluded, None, image_name, label='GT', gt=True, color=color_gt_occluded)
 
-    plt.imsave(os.path.join(save_dir, '{}_dets.jpg'.format(image_name)), img_dt1)
+    plt.show(img_dts)
+    plt.imsave(os.path.join(save_dir, '{}_dets.jpg'.format(image_name)), img_dts)
     if i % 50 == 0:
         print('{}/{} in {:.1f}s'.format(i, len(dets1_byImg), time.time() - start))
