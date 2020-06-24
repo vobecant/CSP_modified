@@ -187,16 +187,16 @@ for i, dt1 in enumerate(dets1_byImg.values()):
     image = image.copy()
     if len(missed_reasonable) or len(missed_occluded):
         if len(missed_reasonable):
-            print('In {} missed reasonable:')
+            print('In {} missed reasonable:'.format(image_name))
             for h, o in zip(h_r, v_r):
                 print('h={}, vis={:.3f}'.format(h,o))
-            image = plot_images(image.copy(), missed_reasonable, None, image_name, label='reason', gt=True,
+            image = plot_images(image.copy(), missed_reasonable, v_r, image_name, label='reason', gt=True,
                                 color=color_gt_reasonable)
         if len(missed_occluded):
-            print('In {} missed occluded:')
+            print('In {} missed occluded:'.format(image_name))
             for h, o in zip(h_o, v_o):
                 print('h={}, vis={:.3f}'.format(h,o))
-            image = plot_images(image, missed_occluded, None, image_name, label='occ', gt=True, color=color_gt_occluded)
+            image = plot_images(image, missed_occluded,v_o, image_name, label='occ', gt=True, color=color_gt_occluded)
 
         plt.imsave(os.path.join(save_dir, '{}_missed_dets.jpg'.format(image_name)), image)
     if i % 50 == 0:
