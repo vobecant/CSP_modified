@@ -158,7 +158,7 @@ def get_missed(detections, gts, iou_thr=0.5):
     heights = []
     visibilities=[]
     for gt in gts:
-        if gt[-1]<50:
+        if gt[0][-1]<50:
             continue
         detected = False
         for dt in detections:
