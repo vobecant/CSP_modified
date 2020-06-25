@@ -116,7 +116,7 @@ for i, ann in enumerate(anns):
         heights.append(h)
         wv = vbb[2] - vbb[0]
         hv = vbb[3] - vbb[1]
-        visibility = (w * h) / (wv * hv)
+        visibility = (wv * hv) / (w * h)
         visibilities.append(visibility)
 
     if len(CHOOSEN_IDS) and i not in CHOOSEN_IDS:
