@@ -175,14 +175,18 @@ plt.savefig(os.path.join(save_dir_plots, 'height_hist.jpg'))
 plt.close()
 
 fig, ax = plt.subplots(tight_layout=True)
-hist = ax.hist2d(height_reasonable, vis_reasonable)
+hist = ax.hist2d(height_reasonable, vis_reasonable,
+                 bins=[np.arange(50, max(height_reasonable), 10), np.arange(0.65, 1.0, 0.05)])
 plt.title('Visibility and height of all reasonable.')
+plt.colorbar()
 plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_all_reasonable.jpg'))
 plt.close()
 
 fig, ax = plt.subplots(tight_layout=True)
-hist = ax.hist2d(height_occluded, vis_occluded)
+hist = ax.hist2d(height_occluded, vis_occluded,
+                 bins=[np.arange(50, max(height_occluded), 10), np.arange(0,0.65 0.05)])
 plt.title('Visibility and height of all occluded.')
+plt.colorbar()
 plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_all_occluded.jpg'))
 plt.close()
 
