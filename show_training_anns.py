@@ -139,7 +139,7 @@ plt.close()
 
 fig, axs = plt.subplots(1, 2, tight_layout=True)
 n_bins = 40
-axs[0].hist(heights, bins=n_bins, cumulative=True)
+axs[0].hist(heights, bins=n_bins, cumulative=True, normed=True)
 axs[0].set_title('training heights')
 axs[1].hist(visibilities, bins=n_bins, cumulative=True)
 axs[1].set_title('training visibilities')
