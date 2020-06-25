@@ -129,12 +129,21 @@ for i, ann in enumerate(anns):
     plt.imsave(pth, img_gts)
 
 fig, axs = plt.subplots(1, 2, tight_layout=True)
-n_bins = 20
+n_bins = 40
 axs[0].hist(heights, bins=n_bins)
 axs[0].set_title('training heights')
 axs[1].hist(visibilities, bins=n_bins)
 axs[1].set_title('training visibilities')
-plt.savefig(os.path.join(save_dir_plots, 'height_hist_missed.jpg'))
+plt.savefig(os.path.join(save_dir_plots, 'trn_hists_all.jpg'))
+plt.close()
+
+fig, axs = plt.subplots(1, 2, tight_layout=True)
+n_bins = 40
+axs[0].hist(heights, bins=n_bins, cumulative=True)
+axs[0].set_title('training heights')
+axs[1].hist(visibilities, bins=n_bins, cumulative=True)
+axs[1].set_title('training visibilities')
+plt.savefig(os.path.join(save_dir_plots, 'trn_hists_all_cumulative.jpg'))
 plt.close()
 
 fig, ax = plt.subplots(tight_layout=True)
