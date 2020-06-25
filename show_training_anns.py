@@ -110,6 +110,15 @@ visibilities = []
 for i, ann in enumerate(anns):
     bbs_gt = ann['bboxes']
     image_name = ann['filepath']
+    for bb, vbb in zip(ann['bboxes'], ann['vis_bboxes']):
+        w = bb[2] - bb[0]
+        h = bb[3] - bb[1]
+        heights.append(h)
+        wv = vbb[2] - vbb[0]
+        hv = vbb[3] - vbb[1]
+        visibility = (w * h) / (wv * hv)
+        visibilities.append(visibility)
+
     if len(CHOOSEN_IDS) and i not in CHOOSEN_IDS:
         print('Skip {}'.format(i))
         continue
