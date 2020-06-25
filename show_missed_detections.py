@@ -129,10 +129,12 @@ for dt in dets1:
     dets1_byImg[dt['image_id']]['scores'].append(dt['score'])
 
 n_peds_reasonable, n_peds_occluded = 0, 0
+height_reasonable, height_occluded = [], []
 vis_reasonable, vis_occluded = [], []
 for ann in gts['annotations']:
     image_id = ann['image_id']
-    if ann['category_id'] != 1 or ann['ignore'] or ann['iscrowd'] or ann['height'] < 50:
+    height = ann['height']
+    if ann['category_id'] != 1 or ann['ignore'] or ann['iscrowd'] or height < 50:
         bbs_gt_all_ignore[image_id].append(ann['bbox'])
         continue
     bbox = ann['bbox']
@@ -143,15 +145,16 @@ for ann in gts['annotations']:
         bbs_gt_all[image_id][0].append((bbox, vis_ratio))
         n_peds_reasonable += 1
         vis_reasonable.append(vis_ratio)
+        height_reasonable.append(height)
     else:
         bbs_gt_all[image_id][1].append((bbox, vis_ratio))
         n_peds_occluded += 1
         vis_occluded.append(vis_ratio)
+        height_occluded.append(height)
 
 # TODO: plot the distribution of occlusion levels in the reasonable and occluded subsets
 print('Number of pedestrians > 50px:\n\treasonable: {}\n\toccluded: {}'.format(n_peds_reasonable, n_peds_occluded))
 fig, axs = plt.subplots(1, 2, sharey=True, tight_layout=True)
-# We can set the number of bins with the `bins` kwarg
 n_bins = 20
 axs[0].hist(vis_reasonable, bins=n_bins)
 axs[0].set_title('reasonable')
@@ -159,6 +162,28 @@ axs[1].hist(vis_occluded, bins=n_bins)
 axs[1].set_title('occluded')
 fig.suptitle('Visibility ratio')
 plt.savefig(os.path.join(save_dir_plots, 'visibility_hist.jpg'))
+plt.close()
+
+fig, axs = plt.subplots(1, 2, sharey=True, tight_layout=True)
+n_bins = 20
+axs[0].hist(height_reasonable, bins=n_bins)
+axs[0].set_title('reasonable')
+axs[1].hist(height_occluded, bins=n_bins)
+axs[1].set_title('occluded')
+fig.suptitle('Visibility ratio')
+plt.savefig(os.path.join(save_dir_plots, 'height_hist.jpg'))
+plt.close()
+
+fig, ax = plt.subplots(tight_layout=True)
+hist = ax.hist2d(height_reasonable, vis_occluded)
+plt.title('Visibility and height of all reasonable.')
+plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_all_reasonable.jpg'))
+plt.close()
+
+fig, ax = plt.subplots(tight_layout=True)
+hist = ax.hist2d(height_occluded, vis_occluded)
+plt.title('Visibility and height of all occluded.')
+plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_all_occluded.jpg'))
 plt.close()
 
 image_paths = {im['id']: im['im_name'] for im in gts['images']}
