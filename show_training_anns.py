@@ -101,6 +101,8 @@ color_paper = (255, 127, 14)
 color_gt = (100, 149, 237)  # (44, 160, 44)
 GT_TL = 1
 
+heights = []
+visibilities = []
 for i, ann in enumerate(anns):
     if len(CHOOSEN_IDS) and i not in CHOOSEN_IDS:
         print('Skip {}'.format(i))
@@ -112,3 +114,20 @@ for i, ann in enumerate(anns):
     pth = os.path.join(save_dir, 'im{}_dets.png'.format(i + 1))
     print('Saved GTs to {}'.format(pth))
     plt.imsave(pth, img_gts)
+
+fig, axs = plt.subplots(1, 2, tight_layout=True)
+n_bins = 20
+axs[0].hist(heights, bins=n_bins)
+axs[0].set_title('training heights')
+axs[1].hist(visibilities, bins=n_bins)
+axs[1].set_title('training visibilities')
+plt.savefig(os.path.join(save_dir_plots, 'height_hist_missed.jpg'))
+plt.close()
+
+fig, ax = plt.subplots(tight_layout=True)
+hist = ax.hist2d(heights, visibilities,
+                 bins=[np.arange(50, max(heights), 10), np.arange(0, 1.0, 0.01)])
+plt.title('Visibility and height of training samples.')
+plt.colorbar(hist[3], ax=ax)
+plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_training.jpg'))
+plt.close()
