@@ -131,11 +131,10 @@ for dt in dets1:
 n_peds_reasonable, n_peds_occluded = 0, 0
 vis_reasonable, vis_occluded = [], []
 for ann in gts['annotations']:
+    image_id = ann['image_id']
     if ann['category_id'] != 1 or ann['ignore'] or ann['iscrowd'] or ann['height'] < 50:
         bbs_gt_all_ignore[image_id].append(ann['bbox'])
         continue
-    image_id = ann['image_id']
-
     bbox = ann['bbox']
     vis_ratio = ann['vis_ratio']
     reasonable = vis_ratio >= 0.65
