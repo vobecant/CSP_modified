@@ -98,12 +98,15 @@ dt_file1 = sys.argv[1]
 img_dir = sys.argv[2]  # /home/vobecant/datasets/DummyGAN_cityscapes_hard/1P/images
 save_dir = sys.argv[3]
 save_dir_missed = os.path.join(save_dir, 'missed')
+save_dir_plots = os.path.join(save_dir, 'plots')
 dt_gt_file = sys.argv[4]  # /home/vobecant/PhD/CSP/data/cache/cityperson_trainValTest/train_h50_eccv_1P_hard_allTrain
 
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
 if not os.path.exists(save_dir_missed):
     os.makedirs(save_dir_missed)
+if not os.path.exists(save_dir_plots):
+    os.makedirs(save_dir_plots)
 
 with open(dt_file1, 'r') as f:
     dets1 = json.load(f)
@@ -125,8 +128,10 @@ for dt in dets1:
     dets1_byImg[dt['image_id']]['boxes'].append(dt['bbox'])
     dets1_byImg[dt['image_id']]['scores'].append(dt['score'])
 
+n_peds_reasonable, n_peds_occluded = 0, 0
+vis_reasonable, vis_occluded = [], []
 for ann in gts['annotations']:
-    if ann['category_id'] != 1 or ann['ignore'] or ann['iscrowd']:  # or ann['vis_ratio'] < 0.65 or ann['height'] < 50
+    if ann['category_id'] != 1 or ann['ignore'] or ann['iscrowd'] or ann['height'] < 50:
         bbs_gt_all_ignore[image_id].append(ann['bbox'])
         continue
     image_id = ann['image_id']
@@ -137,8 +142,25 @@ for ann in gts['annotations']:
 
     if reasonable:
         bbs_gt_all[image_id][0].append((bbox, vis_ratio))
+        n_peds_reasonable += 1
+        vis_reasonable.append(vis_ratio)
     else:
         bbs_gt_all[image_id][1].append((bbox, vis_ratio))
+        n_peds_occluded += 1
+        vis_occluded.append(vis_ratio)
+
+# TODO: plot the distribution of occlusion levels in the reasonable and occluded subsets
+print('Number of pedestrians > 50px:\n\treasonable: {}\n\toccluded: {}'.format(n_peds_reasonable, n_peds_occluded))
+fig, axs = plt.subplots(1, 2, sharey=True, tight_layout=True)
+# We can set the number of bins with the `bins` kwarg
+n_bins = 20
+axs[0].hist(vis_reasonable, bins=n_bins)
+axs[0].set_title('reasonable')
+axs[1].hist(vis_occluded, bins=n_bins)
+axs[1].set_title('occluded')
+plt.title('Visibility ratio')
+plt.savefig(os.path.join(save_dir_plots, 'visibility_hist.jpg'))
+plt.close()
 
 image_paths = {im['id']: im['im_name'] for im in gts['images']}
 
@@ -184,6 +206,9 @@ def get_missed(detections, gts, iou_thr=0.5):
     return missed, heights, visibilities
 
 
+missed_reasonable_height, missed_reasonable_visibility = [], []
+missed_occluded_height, missed_occluded_visibility = [], []
+
 for im_num, dt1 in enumerate(dets1_byImg.values()):
     image_name = image_paths[im_num + 1]
     city = image_name.split('_')[0]
@@ -215,6 +240,8 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
             h_r.append(gt[0][-1])
             v_r.append(gt[1])
             missed_reasonable.append(gt[0])
+    missed_reasonable_height.extend(h_r)
+    missed_reasonable_visibility.extend(v_r)
 
     # TODO: missed/detected occluded
     detected_occluded, detected_occluded_scores = [], []
@@ -236,6 +263,8 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
             h_o.append(gt[0][-1])
             v_o.append(gt[1])
             missed_occluded.append(gt[0])
+    missed_occluded_height.extend(h_o)
+    missed_occluded_visibility.extend(v_o)
 
     # TODO: get false positives; do it by deleting the remaining detections and scores that are in ignore areas or contain non-pedestrian instances
 
@@ -266,15 +295,19 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
     # TODO: plot missed detections
     if len(missed_reasonable) or len(missed_occluded):
         if len(missed_reasonable):
+            '''
             print('In {} missed reasonable:'.format(image_name))
             for h, o in zip(h_r, v_r):
                 print('h={}, vis={:.3f}'.format(h, o))
+            '''
             image = plot_images(image, missed_reasonable, v_r, image_name, label='miss R', gt=True,
                                 color=color_missed_reasonable)
         if len(missed_occluded):
+            '''
             print('In {} missed occluded:'.format(image_name))
             for h, o in zip(h_o, v_o):
                 print('h={}, vis={:.3f}'.format(h, o))
+            '''
             image = plot_images(image, missed_occluded, v_o, image_name, label='miss O', gt=True,
                                 color=color_missed_occluded)
         plt.imsave(os.path.join(save_dir_missed, '{}_missed_dets.jpg'.format(image_name)), image)
@@ -282,3 +315,26 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
     plt.imsave(os.path.join(save_dir, '{}_sorted_dets.jpg'.format(image_name)), image)
     if im_num % 50 == 0:
         print('{}/{} in {:.1f}s'.format(im_num, len(dets1_byImg), time.time() - start))
+
+# TODO: plot statistics of the missed samples
+fig, axs = plt.subplots(1, 2, sharey=True, tight_layout=True)
+# We can set the number of bins with the `bins` kwarg
+n_bins = 20
+axs[0].hist(missed_reasonable_visibility, bins=n_bins)
+axs[0].set_title('reasonable')
+axs[1].hist(missed_occluded_visibility, bins=n_bins)
+axs[1].set_title('occluded')
+plt.title('Visibility ratio, misses.')
+plt.savefig(os.path.join(save_dir_plots, 'visibility_hist_missed.jpg'))
+plt.close()
+
+fig, axs = plt.subplots(1, 2, sharey=True, tight_layout=True)
+# We can set the number of bins with the `bins` kwarg
+n_bins = 20
+axs[0].hist(missed_reasonable_height, bins=n_bins)
+axs[0].set_title('reasonable')
+axs[1].hist(missed_occluded_height, bins=n_bins)
+axs[1].set_title('occluded')
+plt.title('Heights of misses.')
+plt.savefig(os.path.join(save_dir_plots, 'height_hist_missed.jpg'))
+plt.close()
