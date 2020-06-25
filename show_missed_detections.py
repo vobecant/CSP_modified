@@ -170,7 +170,7 @@ axs[0].hist(height_reasonable, bins=n_bins)
 axs[0].set_title('reasonable')
 axs[1].hist(height_occluded, bins=n_bins)
 axs[1].set_title('occluded')
-fig.suptitle('Visibility ratio')
+fig.suptitle('Heights')
 plt.savefig(os.path.join(save_dir_plots, 'height_hist.jpg'))
 plt.close()
 
@@ -178,7 +178,7 @@ fig, ax = plt.subplots(tight_layout=True)
 hist = ax.hist2d(height_reasonable, vis_reasonable,
                  bins=[np.arange(50, 500, 10), np.arange(0.65, 1.0, 0.01)])
 plt.title('Visibility and height of all reasonable.')
-plt.colorbar(hist[3],ax=ax)
+plt.colorbar(hist[3], ax=ax)
 plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_all_reasonable.jpg'))
 plt.close()
 
@@ -186,7 +186,7 @@ fig, ax = plt.subplots(tight_layout=True)
 hist = ax.hist2d(height_occluded, vis_occluded,
                  bins=[np.arange(50, 500, 10), np.arange(0, 0.65, 0.01)])
 plt.title('Visibility and height of all occluded.')
-plt.colorbar(hist[3],ax=ax)
+plt.colorbar(hist[3], ax=ax)
 plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_all_occluded.jpg'))
 plt.close()
 
@@ -368,13 +368,17 @@ plt.savefig(os.path.join(save_dir_plots, 'height_hist_missed.jpg'))
 plt.close()
 
 fig, ax = plt.subplots(tight_layout=True)
-hist = ax.hist2d(missed_reasonable_height, missed_reasonable_visibility)
+hist = ax.hist2d(missed_reasonable_height, missed_reasonable_visibility,
+                 bins=[np.arange(50, max(missed_reasonable_height), 10), np.arange(0.65, 1.0, 0.025)])
 plt.title('Visibility and height of missed reasonable.')
+plt.colorbar(hist[3], ax=ax)
 plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_missed_reasonable.jpg'))
 plt.close()
 
 fig, ax = plt.subplots(tight_layout=True)
-hist = ax.hist2d(missed_occluded_height, missed_occluded_visibility)
+hist = ax.hist2d(missed_occluded_height, missed_occluded_visibility,
+                 bins=[np.arange(50, max(missed_occluded_height), 10), np.arange(0, 0.65, 0.025)])
 plt.title('Visibility and height of missed occluded.')
+plt.colorbar(hist[3], ax=ax)
 plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_missed_occluded.jpg'))
 plt.close()
