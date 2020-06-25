@@ -104,11 +104,11 @@ GT_TL = 1
 heights = []
 visibilities = []
 for i, ann in enumerate(anns):
+    bbs_gt = ann['bboxes']
+    image_name = ann['filepath']
     if len(CHOOSEN_IDS) and i not in CHOOSEN_IDS:
         print('Skip {}'.format(i))
         continue
-    bbs_gt = ann['bboxes']
-    image_name = ann['filepath']
     image = cv2.cvtColor(cv2.imread(image_name), cv2.COLOR_BGR2RGB)
     img_gts = plot_images(image, bbs_gt, None, image_name, label='GT', gt=True, color=color_gt, tlg=1)
     pth = os.path.join(save_dir, 'im{}_dets.png'.format(i + 1))
