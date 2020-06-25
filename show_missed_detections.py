@@ -175,7 +175,7 @@ plt.savefig(os.path.join(save_dir_plots, 'height_hist.jpg'))
 plt.close()
 
 fig, ax = plt.subplots(tight_layout=True)
-hist = ax.hist2d(height_reasonable, vis_occluded)
+hist = ax.hist2d(height_reasonable, vis_reasonable)
 plt.title('Visibility and height of all reasonable.')
 plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_all_reasonable.jpg'))
 plt.close()
