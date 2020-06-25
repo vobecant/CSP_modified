@@ -182,6 +182,7 @@ axs[0].hist(height_reasonable, bins=n_bins)
 axs[0].set_title('reasonable')
 axs[1].hist(height_occluded, bins=n_bins)
 axs[1].set_title('occluded')
+axs[1].set_title('occluded')
 fig.suptitle('Heights')
 plt.savefig(os.path.join(save_dir_plots, 'height_hist.jpg'))
 plt.close()
@@ -191,7 +192,7 @@ n_bins = 40
 axs[0].hist(height_reasonable, bins=n_bins, cumulative=True, density=True)
 axs[0].set_title('reasonable')
 axs[0].grid()
-axs[1].hist(height_occluded, bins=n_bins, cumulative=True,density=True)
+axs[1].hist(height_occluded, bins=n_bins, cumulative=True, density=True)
 axs[1].set_title('occluded')
 axs[1].grid()
 fig.suptitle('Heights, cumulative.')
@@ -205,6 +206,13 @@ plt.title('Visibility and height of all reasonable.')
 plt.colorbar(hist[3], ax=ax)
 plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_all_reasonable.jpg'))
 plt.close()
+fig, ax = plt.subplots(tight_layout=True)
+hist = ax.hist2d(height_reasonable, vis_reasonable, density=True,
+                 bins=[np.arange(50, 500, 10), np.arange(0.65, 1.0, 0.025)])
+plt.title('Visibility and height of all reasonable.')
+plt.colorbar(hist[3], ax=ax)
+plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_all_reasonable_norm.jpg'))
+plt.close()
 
 fig, ax = plt.subplots(tight_layout=True)
 hist = ax.hist2d(height_occluded, vis_occluded,
@@ -212,6 +220,14 @@ hist = ax.hist2d(height_occluded, vis_occluded,
 plt.title('Visibility and height of all occluded.')
 plt.colorbar(hist[3], ax=ax)
 plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_all_occluded.jpg'))
+plt.close()
+
+fig, ax = plt.subplots(tight_layout=True)
+hist = ax.hist2d(height_occluded, vis_occluded, density=True,
+                 bins=[np.arange(50, 500, 10), np.arange(0, 0.65, 0.01)])
+plt.title('Visibility and height of all occluded.')
+plt.colorbar(hist[3], ax=ax)
+plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_all_occluded_norm.jpg'))
 plt.close()
 
 image_paths = {im['id']: im['im_name'] for im in gts['images']}
