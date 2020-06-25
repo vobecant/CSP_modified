@@ -144,3 +144,11 @@ plt.title('Visibility and height of training samples.')
 plt.colorbar(hist[3], ax=ax)
 plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_training.jpg'))
 plt.close()
+
+fig, ax = plt.subplots(tight_layout=True)
+hist = ax.hist2d(heights, visibilities,
+                 bins=[np.arange(50, 300, 10), np.arange(0, 1.0, 0.04)])
+plt.title('Visibility and height of training samples.')
+plt.colorbar(hist[3], ax=ax)
+plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_training_cutout.jpg'))
+plt.close()
