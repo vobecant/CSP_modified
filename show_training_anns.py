@@ -11,7 +11,7 @@ import pickle
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-CHOOSEN_IDS = [i for i in range(1000,1020)]
+CHOOSEN_IDS = [i for i in range(1000, 1020)]
 
 
 def xywh2xyxy(x):
@@ -51,7 +51,7 @@ def plot_one_box(x, img, color=None, label=None, line_thickness=None, gt=False, 
 def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, label=None, color=(255, 255, 255),
                 tlg=None):
     boxes = np.asarray(boxes).reshape((-1, 4))
-    #boxes[:, 2:] += boxes[:, :2]
+    # boxes[:, 2:] += boxes[:, :2]
     tl = tlg if tlg is not None else 2  # line thickness
     tf = max(tl - 1, 1)  # font thickness
 
@@ -85,12 +85,16 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, labe
     return img
 
 
-trn_anns = sys.argv[1]
-trn_img_dir = sys.argv[2]  # /home/vobecant/datasets/DummyGAN_cityscapes_occluded_final/1P
-save_dir = sys.argv[3]  # /home/vobecant/datasets/DummyGAN_cityscapes_occluded_final/1P/gts
+trn_anns = sys.argv[1]  # original /home/vobecant/PhD/CSP/data/cache/cityperson/train_h50
+# /home/vobecant/datasets/DummyGAN_cityscapes_occluded_final/1P # /home/vobecant/PhD/CSP/data/cityperson/images/train
+trn_img_dir = sys.argv[2]
+save_dir = sys.argv[3]  # /home/vobecant/datasets/DummyGAN_cityscapes_occluded_final/1P/gts # ./output/training_gts
 
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
+save_dir_plots = os.path.join(save_dir, 'plots')
+if not os.path.exists(save_dir_plots):
+    os.makedirs(save_dir_plots)
 
 with open(trn_anns, 'rb') as f:
     anns = pickle.load(f, encoding='latin1')
