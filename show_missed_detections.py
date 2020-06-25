@@ -166,9 +166,9 @@ plt.close()
 
 fig, axs = plt.subplots(1, 2, sharey=True, tight_layout=True)
 n_bins = 40
-axs[0].hist(-np.asarray(vis_reasonable), bins=n_bins, cumulative=True)
+axs[0].hist(-np.asarray(vis_reasonable), bins=n_bins, cumulative=True, density=True)
 axs[0].set_title('reasonable')
-axs[1].hist(-np.asarray(vis_occluded), bins=n_bins, cumulative=True)
+axs[1].hist(-np.asarray(vis_occluded), bins=n_bins, cumulative=True, density=True)
 axs[1].set_title('occluded')
 fig.suptitle('Visibility ratio, cumulative.')
 plt.savefig(os.path.join(save_dir_plots, 'visibility_hist_cumulative.jpg'))
@@ -186,9 +186,9 @@ plt.close()
 
 fig, axs = plt.subplots(1, 2, sharey=True, tight_layout=True)
 n_bins = 40
-axs[0].hist(height_reasonable, bins=n_bins, cumulative=True)
+axs[0].hist(height_reasonable, bins=n_bins, cumulative=True, density=True)
 axs[0].set_title('reasonable')
-axs[1].hist(height_occluded, bins=n_bins, cumulative=True)
+axs[1].hist(height_occluded, bins=n_bins, cumulative=True,density=True)
 axs[1].set_title('occluded')
 fig.suptitle('Heights, cumulative.')
 plt.savefig(os.path.join(save_dir_plots, 'height_hist_cumulative.jpg'))
