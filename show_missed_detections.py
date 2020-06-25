@@ -281,4 +281,4 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
 
     plt.imsave(os.path.join(save_dir, '{}_sorted_dets.jpg'.format(image_name)), image)
     if im_num % 50 == 0:
-        print('{}/{} in {:.1f}s'.format(i, len(dets1_byImg), time.time() - start))
+        print('{}/{} in {:.1f}s'.format(im_num, len(dets1_byImg), time.time() - start))

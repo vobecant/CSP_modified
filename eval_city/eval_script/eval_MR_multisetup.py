@@ -320,7 +320,7 @@ class COCOeval:
             'dtIgnore': dtIg,
         }
 
-    def accumulate(self, p=None):
+    def accumulate(self, p=None, plot=False):
         '''
         Accumulate per image evaluation results and store the result in self.eval
         :param p: input params for evaluation
@@ -408,36 +408,38 @@ class COCOeval:
                         pass
                     ys[t, :, k, m] = np.array(q)
 
-                    mr = 1 - np.array(q)
-                    mean_s = np.log(mr)
-                    mean_s = np.mean(mean_s)
-                    mean_s = np.exp(mean_s)
+                    if plot:
+                        mr = 1 - np.array(q)
+                        mean_s = np.log(mr)
+                        mean_s = np.mean(mean_s)
+                        mean_s = np.exp(mean_s)
 
-                    plt.figure()
-                    plt.plot(recall, precision)
-                    plt.xlabel('recall')
-                    plt.ylabel('precision')
-                    plt.title('reasonable')
-                    plt.grid()
-                    plt.savefig('/home/vobecant/PhD/CSP/PR_{}.jpg'.format(p.SetupLbl[self.current_id_setup]))
-                    plt.close()
-                    idx = np.where(fppi < 1)[-1][-1]
+                        plt.figure()
+                        plt.plot(recall, precision)
+                        plt.xlabel('recall')
+                        plt.ylabel('precision')
+                        plt.title('reasonable')
+                        plt.grid()
+                        plt.savefig('/home/vobecant/PhD/CSP/PR_{}.jpg'.format(p.SetupLbl[self.current_id_setup]))
+                        plt.close()
+                        idx = np.where(fppi < 1)[-1][-1]
 
-                    fig = plt.figure()
-                    ax = fig.add_subplot(1, 1, 1)
-                    ax.semilogx(fppi[:idx], recall[:idx])
-                    # ax.set_yscale('log')
-                    ax.set_xlabel('FPPI')
-                    ax.set_ylabel('recall')
-                    ax.set_title('reasonable, MR-2: {:.2f}%'.format(mean_s*100))
-                    ax.set_xticks(p.fppiThrs)
-                    # ax.set_yticks(q)
-                    for f, rec in zip(p.fppiThrs, q):
-                        plt.semilogx(f, rec, "rD")
-                        ax.text(f, rec - 0.05, '{:.3f}'.format(rec))
-                    ax.grid()
-                    plt.savefig('/home/vobecant/PhD/CSP/FPPI_recall_{}.jpg'.format(p.SetupLbl[self.current_id_setup]))
-                    plt.close(fig)
+                        fig = plt.figure()
+                        ax = fig.add_subplot(1, 1, 1)
+                        ax.semilogx(fppi[:idx], recall[:idx])
+                        # ax.set_yscale('log')
+                        ax.set_xlabel('FPPI')
+                        ax.set_ylabel('recall')
+                        ax.set_title('reasonable, MR-2: {:.2f}%'.format(mean_s * 100))
+                        ax.set_xticks(p.fppiThrs)
+                        # ax.set_yticks(q)
+                        for f, rec in zip(p.fppiThrs, q):
+                            plt.semilogx(f, rec, "rD")
+                            ax.text(f, rec - 0.05, '{:.3f}'.format(rec))
+                        ax.grid()
+                        plt.savefig(
+                            '/home/vobecant/PhD/CSP/FPPI_recall_{}.jpg'.format(p.SetupLbl[self.current_id_setup]))
+                        plt.close(fig)
         self.eval = {
             'params': p,
             'counts': [T, R, K, M],

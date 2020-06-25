@@ -52,7 +52,7 @@ if os.path.isfile(main_path):
         imgIds = sorted(cocoGt.getImgIds())
         cocoEval = COCOeval(cocoGt, cocoDt, annType)
         cocoEval.params.imgIds = imgIds
-        cocoEval.evaluate(id_setup)
+        cocoEval.evaluate(id_setup, plot=True)
         cocoEval.accumulate()
         mean_mr = cocoEval.summarize(id_setup, res_file)
         if id_setup == 0:
