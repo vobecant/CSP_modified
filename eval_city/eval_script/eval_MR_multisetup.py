@@ -18,7 +18,7 @@ def get_misses(E):
         print('',end='')
         for gtId, gtMatch, gtIgnore in zip(gtIds, gtMatches, gtIgnores):
             if gtIgnore == 1:
-                break
+                continue
             elif gtMatch < 1:
                 missed_ids.append(gtId)
         misses['image_id'] = missed_ids
