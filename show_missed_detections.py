@@ -253,8 +253,8 @@ start = time.time()
 
 
 def overlap(xywh1, xywh2):
-    boxA = xywh1 + [0, 0, xywh1[0], xywh1[1]]
-    boxB = xywh2 + [0, 0, xywh2[0], xywh2[1]]
+    boxA = np.asarray(xywh1) + [0, 0, xywh1[0], xywh1[1]]
+    boxB = np.asarray(xywh2) + [0, 0, xywh2[0], xywh2[1]]
     # determine the (x, y)-coordinates of the intersection rectangle
     xA = max(boxA[0], boxB[0])
     yA = max(boxA[1], boxB[1])
