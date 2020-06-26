@@ -439,7 +439,7 @@ class COCOeval:
                         plt.ylabel('precision')
                         plt.title('reasonable')
                         plt.grid()
-                        plt.savefig('/home/vobecant/PhD/CSP/PR_{}.jpg'.format(p.SetupLbl[self.current_id_setup]))
+                        plt.savefig('./PR_{}.jpg'.format(p.SetupLbl[self.current_id_setup]))
                         plt.close()
                         idx = np.where(fppi < 1)[-1][-1]
 
@@ -457,7 +457,7 @@ class COCOeval:
                             ax.text(f, rec - 0.05, '{:.3f}'.format(rec))
                         ax.grid()
                         plt.savefig(
-                            '/home/vobecant/PhD/CSP/FPPI_recall_{}.jpg'.format(p.SetupLbl[self.current_id_setup]))
+                            './FPPI_recall_{}.jpg'.format(p.SetupLbl[self.current_id_setup]))
                         plt.close(fig)
         self.eval = {
             'params': p,
