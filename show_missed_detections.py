@@ -294,25 +294,6 @@ def intersect1d(box1, box2):
     return box1[1] >= box2[0] and box2[1] >= box1[0]
 
 
-def get_missed(detections, gts, iou_thr=0.5):
-    missed = []
-    heights = []
-    visibilities = []
-    for gt in gts:
-        if gt[0][-1] < 50:
-            continue
-        detected = False
-        for dt in detections:
-            if overlap(dt, gt[0]) >= iou_thr:
-                detected = True
-                break
-        if not detected:
-            heights.append(gt[0][-1])
-            visibilities.append(gt[1])
-            missed.append(gt[0])
-    return missed, heights, visibilities
-
-
 missed_reasonable_height, missed_reasonable_visibility = [], []
 missed_occluded_height, missed_occluded_visibility = [], []
 
@@ -384,7 +365,6 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
     missed_occluded_visibility.extend(v_o)
 
     # TODO: get false positives; do it by deleting the remaining detections and scores that are in ignore areas or contain non-pedestrian instances
-
     idx = 0
     while idx < len(bbs1):
         bb = bbs1[idx]
