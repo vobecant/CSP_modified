@@ -100,7 +100,7 @@ save_dir = sys.argv[3]
 save_dir_missed = os.path.join(save_dir, 'missed')
 save_dir_plots = os.path.join(save_dir, 'plots')
 dt_gt_file = sys.argv[4]  # /home/vobecant/PhD/CSP/data/cache/cityperson_trainValTest/train_h50_eccv_1P_hard_allTrain
-NO_PLOT = len(sys.argv>5)
+NO_PLOT = len(sys.argv)>5
 
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
