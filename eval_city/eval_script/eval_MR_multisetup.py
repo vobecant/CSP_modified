@@ -8,6 +8,19 @@ import matplotlib.pyplot as plt
 import scipy.io as sio
 
 
+def get_misses(E):
+    misses = {}
+    for img_stat in E:
+        missed_ids = []
+        for gtId, gtMatch, gtIgnore in zip(img_stat['gtIds'], img_stat['gtMatches'], img_stat['gtIgnore']):
+            if gtIgnore == 1:
+                break
+            elif gtMatch < 1:
+                missed_ids.append(gtId)
+        misses['image_id'] = missed_ids
+    return misses
+
+
 class COCOeval:
     # Interface for evaluating detection on the Microsoft COCO dataset.
     #
@@ -320,7 +333,7 @@ class COCOeval:
             'dtIgnore': dtIg,
         }
 
-    def accumulate(self, p=None, plot=False):
+    def accumulate(self, p=None, plot=False, return_misses=False):
         '''
         Accumulate per image evaluation results and store the result in self.eval
         :param p: input params for evaluation
@@ -358,6 +371,8 @@ class COCOeval:
             Nk = k0 * I0
             for m, maxDet in enumerate(m_list):
                 E = [self.evalImgs[Nk + i] for i in i_list]
+                if return_misses:
+                    misses = get_misses(E)
                 E = [e for e in E if not e is None]
                 if len(E) == 0:
                     continue
@@ -448,6 +463,8 @@ class COCOeval:
         }
         toc = time.time()
         # print('DONE (t={:0.2f}s).'.format( toc-tic))
+        if return_misses:
+            return misses
 
     def summarize(self, id_setup, res_file):
         '''

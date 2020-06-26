@@ -53,7 +53,7 @@ if os.path.isfile(main_path):
         cocoEval = COCOeval(cocoGt, cocoDt, annType)
         cocoEval.params.imgIds = imgIds
         cocoEval.evaluate(id_setup)
-        cocoEval.accumulate(plot=True)
+        misses = cocoEval.accumulate(plot=True, return_misses=True)
         mean_mr = cocoEval.summarize(id_setup, res_file)
         if id_setup == 0:
             mr_reasonable = mean_mr
