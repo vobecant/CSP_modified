@@ -4,6 +4,28 @@ import time
 from collections import defaultdict
 # from . import mask as maskUtils
 import copy
+import matplotlib.pyplot as plt
+import scipy.io as sio
+
+
+def get_misses(E):
+    misses = {}
+    n_misses = 0
+    for img_stat in E:
+        img_id = img_stat['image_id']
+        missed_ids = []
+        gtIds = img_stat['gtIds']
+        gtMatches = img_stat['gtMatches'][0]
+        gtIgnores = img_stat['gtIgnore']
+        for gtId, gtMatch, gtIgnore in zip(gtIds, gtMatches, gtIgnores):
+            if gtIgnore == 1:
+                continue
+            elif gtMatch < 1:
+                missed_ids.append(gtId)
+                n_misses += 1
+        misses[img_id] = missed_ids
+    print('{} misses'.format(n_misses))
+    return misses
 
 
 class COCOeval:
@@ -135,6 +157,7 @@ class COCOeval:
         self.params = p
 
         self._prepare(id_setup)
+        self.current_id_setup = id_setup
         # loop through images, area range, max detection number
         catIds = p.catIds if p.useCats else [-1]
 
@@ -314,7 +337,7 @@ class COCOeval:
             'dtIgnore': dtIg,
         }
 
-    def accumulate(self, p=None):
+    def accumulate(self, p=None, plot=False, return_misses=False):
         '''
         Accumulate per image evaluation results and store the result in self.eval
         :param p: input params for evaluation
@@ -353,6 +376,8 @@ class COCOeval:
             for m, maxDet in enumerate(m_list):
                 E = [self.evalImgs[Nk + i] for i in i_list]
                 E = [e for e in E if not e is None]
+                if return_misses:
+                    misses = get_misses(E)
                 if len(E) == 0:
                     continue
 
@@ -381,6 +406,7 @@ class COCOeval:
                     tp = np.array(tp)
                     fppi = np.array(fp) / I0
                     nd = len(tp)
+                    precision = [t / i for i, t in enumerate(tp, 1)]
                     recall = tp / npig
                     q = np.zeros((R,))
 
@@ -400,6 +426,39 @@ class COCOeval:
                     except:
                         pass
                     ys[t, :, k, m] = np.array(q)
+
+                    if plot:
+                        mr = 1 - np.array(q)
+                        mean_s = np.log(mr)
+                        mean_s = np.mean(mean_s)
+                        mean_s = np.exp(mean_s)
+
+                        plt.figure()
+                        plt.plot(recall, precision)
+                        plt.xlabel('recall')
+                        plt.ylabel('precision')
+                        plt.title('reasonable')
+                        plt.grid()
+                        plt.savefig('/home/vobecant/PhD/CSP/PR_{}.jpg'.format(p.SetupLbl[self.current_id_setup]))
+                        plt.close()
+                        idx = np.where(fppi < 1)[-1][-1]
+
+                        fig = plt.figure()
+                        ax = fig.add_subplot(1, 1, 1)
+                        ax.semilogx(fppi[:idx], recall[:idx])
+                        # ax.set_yscale('log')
+                        ax.set_xlabel('FPPI')
+                        ax.set_ylabel('recall')
+                        ax.set_title('reasonable, MR-2: {:.2f}%'.format(mean_s * 100))
+                        ax.set_xticks(p.fppiThrs)
+                        # ax.set_yticks(q)
+                        for f, rec in zip(p.fppiThrs, q):
+                            plt.semilogx(f, rec, "rD")
+                            ax.text(f, rec - 0.05, '{:.3f}'.format(rec))
+                        ax.grid()
+                        plt.savefig(
+                            '/home/vobecant/PhD/CSP/FPPI_recall_{}.jpg'.format(p.SetupLbl[self.current_id_setup]))
+                        plt.close(fig)
         self.eval = {
             'params': p,
             'counts': [T, R, K, M],
@@ -407,7 +466,9 @@ class COCOeval:
             'TP': ys,
         }
         toc = time.time()
-        if self.verbose: print('DONE (t={:0.2f}s).'.format(toc - tic))
+        # print('DONE (t={:0.2f}s).'.format( toc-tic))
+        if return_misses:
+            return misses
 
     def summarize(self, id_setup, res_file):
         '''
@@ -443,8 +504,10 @@ class COCOeval:
                 mean_s = np.mean(mean_s)
                 mean_s = np.exp(mean_s)
             print(iStr.format(titleStr, typeStr, setupStr, iouStr, heightStr, occlStr, mean_s * 100))
-            res_file.write(iStr.format(titleStr, typeStr, setupStr, iouStr, heightStr, occlStr, mean_s * 100))
-            res_file.write('\n')
+            # res_file.write(iStr.format(titleStr, typeStr,setupStr, iouStr, heightStr, occlStr, mean_s*100))
+            if res_file is not None:
+                res_file.write(str(mean_s * 100))
+                res_file.write('\n')
             return mean_s
 
         if not self.eval:
