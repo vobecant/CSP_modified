@@ -429,7 +429,7 @@ plt.close()
 
 fig, ax = plt.subplots(tight_layout=True)
 hist = ax.hist2d(missed_reasonable_height, missed_reasonable_visibility,
-                 bins=[np.arange(50, max(missed_reasonable_height) + 10, 10), np.arange(0.64, 1.01, 0.025)])
+                 bins=[np.arange(50, max(missed_reasonable_height) + 10, 10), np.arange(0.64, 1.025, 0.025)])
 plt.title('Visibility and height of missed reasonable ({}).'.format(len(missed_reasonable_height)))
 plt.colorbar(hist[3], ax=ax)
 plt.savefig(os.path.join(save_dir_plots, 'test_heightVis_hist_missed_reasonable.jpg'))
