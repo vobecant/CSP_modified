@@ -367,7 +367,8 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
             idx += 1
 
     if NO_PLOT:
-        continue
+        pass
+        # continue
 
     image = image.copy()
 
