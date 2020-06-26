@@ -196,7 +196,7 @@ axs[1].hist(height_occluded, bins=n_bins, cumulative=True, density=True)
 axs[1].set_title('occluded')
 axs[1].grid()
 fig.suptitle('Heights, cumulative.')
-plt.savefig(os.path.join(save_dir_plots, 'height_hist_cumulative.jpg'))
+plt.savefig(os.path.join(save_dir_plots, 'test_height_hist_cumulative.jpg'))
 plt.close()
 
 fig, ax = plt.subplots(tight_layout=True)
@@ -204,14 +204,14 @@ hist = ax.hist2d(height_reasonable, vis_reasonable,
                  bins=[np.arange(50, 500, 10), np.arange(0.65, 1.0, 0.01)])
 plt.title('Visibility and height of all reasonable.')
 plt.colorbar(hist[3], ax=ax)
-plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_all_reasonable.jpg'))
+plt.savefig(os.path.join(save_dir_plots, 'test_heightVis_hist_all_reasonable.jpg'))
 plt.close()
 fig, ax = plt.subplots(tight_layout=True)
 hist = ax.hist2d(height_reasonable, vis_reasonable, density=True,
                  bins=[np.arange(50, 500, 10), np.arange(0.65, 1.0, 0.025)])
 plt.title('Visibility and height of all reasonable.')
 plt.colorbar(hist[3], ax=ax)
-plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_all_reasonable_norm.jpg'))
+plt.savefig(os.path.join(save_dir_plots, 'test_heightVis_hist_all_reasonable_norm.jpg'))
 plt.close()
 
 fig, ax = plt.subplots(tight_layout=True)
@@ -219,7 +219,7 @@ hist = ax.hist2d(height_occluded, vis_occluded,
                  bins=[np.arange(50, 500, 10), np.arange(0, 0.65, 0.01)])
 plt.title('Visibility and height of all occluded.')
 plt.colorbar(hist[3], ax=ax)
-plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_all_occluded.jpg'))
+plt.savefig(os.path.join(save_dir_plots, 'test_heightVis_hist_all_occluded.jpg'))
 plt.close()
 
 fig, ax = plt.subplots(tight_layout=True)
@@ -227,7 +227,23 @@ hist = ax.hist2d(height_occluded, vis_occluded, density=True,
                  bins=[np.arange(50, 500, 10), np.arange(0, 0.65, 0.01)])
 plt.title('Visibility and height of all occluded.')
 plt.colorbar(hist[3], ax=ax)
-plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_all_occluded_norm.jpg'))
+plt.savefig(os.path.join(save_dir_plots, 'test_heightVis_hist_all_occluded_norm.jpg'))
+plt.close()
+
+fig, ax = plt.subplots(tight_layout=True)
+hist = ax.hist2d(height_occluded+height_reasonable, vis_occluded+reasonable,
+                 bins=[np.arange(50, 500, 10), np.arange(0, 1.0, 0.01)])
+plt.title('Visibility and height of all occluded.')
+plt.colorbar(hist[3], ax=ax)
+plt.savefig(os.path.join(save_dir_plots, 'test_heightVis_hist_all_both.jpg'))
+plt.close()
+
+fig, ax = plt.subplots(tight_layout=True)
+hist = ax.hist2d(height_occluded+height_reasonable, vis_occluded+vis_reasonable, density=True,
+                 bins=[np.arange(50, 500, 10), np.arange(0, 1.0, 0.01)])
+plt.title('Visibility and height of all occluded.')
+plt.colorbar(hist[3], ax=ax)
+plt.savefig(os.path.join(save_dir_plots, 'test_heightVis_hist_all_both_norm.jpg'))
 plt.close()
 
 image_paths = {im['id']: im['im_name'] for im in gts['images']}
@@ -393,7 +409,7 @@ axs[0].set_title('reasonable ({})'.format(len(missed_reasonable_height)))
 axs[1].hist(missed_occluded_visibility, bins=n_bins)
 axs[1].set_title('occluded ({})'.format(len(missed_occluded_height)))
 fig.suptitle('Visibility ratio, misses.')
-plt.savefig(os.path.join(save_dir_plots, 'visibility_hist_missed.jpg'))
+plt.savefig(os.path.join(save_dir_plots, 'test_visibility_hist_missed.jpg'))
 plt.close()
 
 fig, axs = plt.subplots(1, 2, sharey=True, tight_layout=True)
@@ -404,7 +420,7 @@ axs[0].set_title('reasonable ({})'.format(len(missed_reasonable_height)))
 axs[1].hist(missed_occluded_height, bins=n_bins)
 axs[1].set_title('occluded ({})'.format(len(missed_occluded_height)))
 fig.suptitle('Heights of misses.')
-plt.savefig(os.path.join(save_dir_plots, 'height_hist_missed.jpg'))
+plt.savefig(os.path.join(save_dir_plots, 'test_height_hist_missed.jpg'))
 plt.close()
 
 fig, ax = plt.subplots(tight_layout=True)
@@ -412,7 +428,7 @@ hist = ax.hist2d(missed_reasonable_height, missed_reasonable_visibility,
                  bins=[np.arange(50, max(missed_reasonable_height), 10), np.arange(0.65, 1.0, 0.025)])
 plt.title('Visibility and height of missed reasonable.')
 plt.colorbar(hist[3], ax=ax)
-plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_missed_reasonable.jpg'))
+plt.savefig(os.path.join(save_dir_plots, 'test_heightVis_hist_missed_reasonable.jpg'))
 plt.close()
 
 fig, ax = plt.subplots(tight_layout=True)
@@ -420,5 +436,5 @@ hist = ax.hist2d(missed_occluded_height, missed_occluded_visibility,
                  bins=[np.arange(50, max(missed_occluded_height), 10), np.arange(0, 0.65, 0.025)])
 plt.title('Visibility and height of missed occluded.')
 plt.colorbar(hist[3], ax=ax)
-plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_missed_occluded.jpg'))
+plt.savefig(os.path.join(save_dir_plots, 'test_heightVis_hist_missed_occluded.jpg'))
 plt.close()
