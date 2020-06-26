@@ -332,15 +332,20 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
     missed_reasonable, h_r, v_r = [], [], []
     for gt in bbs_gt_reasonable:
         detected = False
+        max_iou = 0
+        best_idx = None
         for i, (dt, conf) in enumerate(zip(bbs1, scores1)):
-            if overlap(dt, gt[0]) >= 0.5:
+            iou = overlap(dt, gt[0])
+            if iou >= 0.5 and iou>max_iou:
+                max_iou = iou
+                best_idx = i
                 detected = True
-                detected_reasonable.append(dt)
-                del bbs1[i]
-                detected_reasonable_scores.append(conf)
-                del scores1[i]
-                break
-        if not detected:
+        if detected:
+            detected_reasonable.append(bbs1[best_idx])
+            del bbs1[best_idx]
+            detected_reasonable_scores.append(scores1[best_idx])
+            del scores1[best_idx]
+        else:
             if gt[0][-1] < 50:
                 # if it was not detected but is too small, do not report
                 continue
@@ -355,15 +360,20 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
     missed_occluded, h_o, v_o = [], [], []
     for gt in bbs_gt_occluded:
         detected = False
+        max_iou = 0
+        best_idx = None
         for i, (dt, conf) in enumerate(zip(bbs1, scores1)):
-            if overlap(dt, gt[0]) >= 0.5:
+            iou = overlap(dt, gt[0])
+            if iou >= 0.5 and iou > max_iou:
+                max_iou = iou
+                best_idx = i
                 detected = True
-                detected_occluded.append(dt)
-                del bbs1[i]
-                detected_occluded_scores.append(conf)
-                del scores1[i]
-                break
-        if not detected:
+        if detected:
+            detected_occluded.append(bbs1[best_idx])
+            del bbs1[best_idx]
+            detected_occluded_scores.append(scores1[best_idx])
+            del scores1[best_idx]
+        else:
             if gt[0][-1] < 50:
                 # if it was not detected but is too small, do not report
                 continue
