@@ -21,7 +21,7 @@ test_visibilities_reasonable = test_statistics['vis_reasonable']
 test_visibilities_all = test_heights_occluded + test_visibilities_reasonable
 
 fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+ax = fig.add_subplot(111, projection='3d', tight_layout=True)
 hist_trn, xedges_trn, yedges_trn = np.histogram2d(train_heights, train_visibilities, bins=[
     np.arange(50, max(max(train_heights), max(test_heights_all)), 10), np.arange(0, 1.0, 0.05)], density=True)
 hist_tst, xedges_tst, yedges_tst = np.histogram2d(test_heights_all, test_visibilities_all, bins=[
@@ -66,7 +66,7 @@ plt.savefig('./test_all_vs_train.jpg')
 plt.close()
 
 fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+ax = fig.add_subplot(111, projection='3d', tight_layout=True)
 hist_tst_r, xedges_tst_r, yedges_tst_r = np.histogram2d(test_heights_reasonable, test_visibilities_reasonable, bins=[
     np.arange(50, max(max(train_heights), max(test_heights_reasonable)), 10), np.arange(0, 1.0, 0.05)], density=True)
 ax.plot_wireframe(x_trn, y_trn, z_trn, color='blue', label='all train')
@@ -80,7 +80,7 @@ plt.savefig('./test_reason_vs_train.jpg')
 plt.close()
 
 fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+ax = fig.add_subplot(111, projection='3d', tight_layout=True)
 hist_tst_o, xedges_tst_o, yedges_tst_o = np.histogram2d(test_heights_occluded, test_visibilities_occluded, bins=[
     np.arange(50, max(max(train_heights), max(test_heights_occluded)), 10), np.arange(0, 1.0, 0.05)], density=True)
 ax.plot_wireframe(x_trn, y_trn, z_trn, color='blue', label='all train')
@@ -94,11 +94,11 @@ plt.savefig('./test_occ_vs_train.jpg')
 plt.close()
 
 # TODO: cropped versions with limited max height to 300
-MAX_HEIGHT=300
-keep_idx = xedges_trn[:-1]<=MAX_HEIGHT
+MAX_HEIGHT = 300
+keep_idx = xedges_trn[:-1] <= MAX_HEIGHT
 
 fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+ax = fig.add_subplot(111, projection='3d', tight_layout=True)
 hist_trn, xedges_trn, yedges_trn = np.histogram2d(train_heights, train_visibilities, bins=[
     np.arange(50, max(max(train_heights), max(test_heights_all)), 10), np.arange(0, 1.0, 0.05)], density=True)
 hist_tst, xedges_tst, yedges_tst = np.histogram2d(test_heights_all, test_visibilities_all, bins=[
@@ -119,7 +119,7 @@ plt.savefig('./test_all_vs_train_crop.jpg')
 plt.close()
 
 fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+ax = fig.add_subplot(111, projection='3d', tight_layout=True)
 hist_tst_r, xedges_tst_r, yedges_tst_r = np.histogram2d(test_heights_reasonable, test_visibilities_reasonable, bins=[
     np.arange(50, max(max(train_heights), max(test_heights_reasonable)), 10), np.arange(0, 1.0, 0.05)], density=True)
 ax.plot_wireframe(x_trn, y_trn, z_trn, color='blue', label='all train')
@@ -133,7 +133,7 @@ plt.savefig('./test_reason_vs_train_crop.jpg')
 plt.close()
 
 fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
+ax = fig.add_subplot(111, projection='3d', tight_layout=True)
 hist_tst_o, xedges_tst_o, yedges_tst_o = np.histogram2d(test_heights_occluded, test_visibilities_occluded, bins=[
     np.arange(50, max(max(train_heights), max(test_heights_occluded)), 10), np.arange(0, 1.0, 0.05)], density=True)
 ax.plot_wireframe(x_trn, y_trn, z_trn, color='blue', label='all train')
