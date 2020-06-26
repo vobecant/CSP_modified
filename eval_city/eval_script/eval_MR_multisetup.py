@@ -10,13 +10,13 @@ import scipy.io as sio
 
 def get_misses(E):
     misses = {}
+    n_misses = 0
     for img_stat in E:
         img_id = img_stat['image_id']
         missed_ids = []
         gtIds = img_stat['gtIds']
         gtMatches = img_stat['gtMatches'][0]
         gtIgnores = img_stat['gtIgnore']
-        n_misses = 0
         for gtId, gtMatch, gtIgnore in zip(gtIds, gtMatches, gtIgnores):
             if gtIgnore == 1:
                 continue
