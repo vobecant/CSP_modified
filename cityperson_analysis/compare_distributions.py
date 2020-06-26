@@ -60,7 +60,7 @@ z_tst = hist_tst
 ax.plot_wireframe(x_tst, y_tst, z_tst, color='red', label='all test')
 ax.legend()
 
-ax.add_title('All train vs all test')
+ax.set_title('All train vs all test')
 
 plt.savefig('./test_all_vs_train.jpg')
 plt.close()
@@ -75,7 +75,7 @@ x_tst, y_tst = np.meshgrid(xedges_tst_r[:-1], yedges_tst_r[:-1], indexing="ij")
 z_tst = hist_tst_r
 ax.plot_wireframe(x_tst, y_tst, z_tst, color='red', label='reasonable test')
 ax.legend()
-ax.add_title('All train vs reasonable test')
+ax.set_title('All train vs reasonable test')
 plt.savefig('./test_reason_vs_train.jpg')
 plt.close()
 
@@ -89,6 +89,6 @@ x_tst, y_tst = np.meshgrid(xedges_tst_o[:-1], yedges_tst_o[:-1], indexing="ij")
 z_tst = hist_tst_r
 ax.plot_wireframe(x_tst, y_tst, z_tst, color='red', label='occluded test')
 ax.legend()
-ax.add_title('All train vs occluded test')
+ax.set_title('All train vs occluded test')
 plt.savefig('./test_occ_vs_train.jpg')
 plt.close()
