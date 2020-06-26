@@ -27,7 +27,8 @@ hist_trn, xedges_trn, yedges_trn = np.histogram2d(train_heights, train_visibilit
 hist_tst, xedges_tst, yedges_tst = np.histogram2d(test_heights_all, test_visibilities_all, bins=[
     np.arange(50, max(max(train_heights), max(test_heights_all)), 10), np.arange(0, 1.0, 0.05)], density=True)
 
-# training positions
+'''
+#training positions
 xpos_trn, ypos_trn = np.meshgrid(xedges_trn[:-1] + 0.025, yedges_trn[:-1] + 0.025, indexing="ij")
 xpos_trn = xpos_trn.ravel()
 ypos_trn = ypos_trn.ravel()
@@ -48,3 +49,11 @@ dz_tst = hist_trn.ravel()
 ax.bar3d(xpos_trn, ypos_trn, zpos_trn, dx_trn, dy_trn, dz_trn, zsort='average', color='blue')
 ax.bar3d(xpos_tst, ypos_tst, zpos_tst, dx_tst, dy_tst, dz_tst, zsort='average', color='red')
 plt.savefig('./test_vs_train.jpg')
+'''
+
+x_trn, y_trn = np.meshgrid(xedges_trn[:-1], yedges_trn[:-1], indexing="ij")
+x_trn = x_trn.ravel()
+y_trn = y_trn.ravel()
+z_trn = hist_trn.ravel()
+ax.plot_wireframe(x_trn, y_trn, z_trn)
+plt.savefig('./train.jpg')
