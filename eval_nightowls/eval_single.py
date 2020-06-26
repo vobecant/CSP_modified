@@ -86,7 +86,7 @@ for id_setup in range(6):
     missed_visibilities = []
     for img_id, ms in misses.items():
         if len(ms):
-            image_name = img_lut[img_id]['im_name']
+            image_name = img_lut[img_id]['file_name']
             image_path = os.path.join(img_base, image_name)
             image = cv2.imread(image_path)
             bbs = [ann_lut[m]['bbox'] for m in ms]
