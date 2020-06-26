@@ -6,6 +6,7 @@ import shutil
 from coco import COCO
 from eval_MR_multisetup import COCOeval
 import cv2
+import matplotlib.pyplot as plt
 
 
 def eval_json_reasonable(annFile, resFile):
@@ -110,10 +111,13 @@ if os.path.isfile(main_path):
         imgIds = sorted(cocoGt.getImgIds())
         cocoEval = COCOeval(cocoGt, cocoDt, annType)
         setup_name = cocoEval.params.SetupLbl[id_setup]
+        setup_savedir = os.path.join(base_save_dir, setup_name)
         cocoEval.params.imgIds = imgIds
         cocoEval.evaluate(id_setup)
         misses = cocoEval.accumulate(plot=True, return_misses=True)
         mean_mr = cocoEval.summarize(id_setup, res_file)
+        missed_heights = []
+        missed_visibilities = []
         for img_id, ms in misses.items():
             if len(ms):
                 image_name = img_lut[img_id]['im_name']
@@ -122,9 +126,18 @@ if os.path.isfile(main_path):
                 image = cv2.imread(image_path)
                 bbs = [ann_lut[m]['bbox'] for m in ms]
                 vis = [ann_lut[m]['vis_ratio'] for m in ms]
+                missed_visibilities.extend(vis)
                 heights = [bb[-1] for bb in bbs]
-                plot_bbs(image, image_name.split('.')[0], bbs, vis, heights, os.path.join(base_save_dir, setup_name),
+                missed_heights.extend(heights)
+                plot_bbs(image, image_name.split('.')[0], bbs, vis, heights, setup_savedir,
                          color=(0, 0, 255))
+        # TODO: plot 2D histogram
+        fig, ax = plt.subplots(tight_layout=True)
+        hist = ax.hist2d(missed_heights, missed_visibilities, density=True)
+        plt.title('Visibility and height of missed {} ({}).'.format(setup_name, len(missed_heights)))
+        plt.colorbar(hist[3], ax=ax)
+        plt.savefig(os.path.join(setup_savedir, 'test_heightVis_hist_missed_{}.jpg'.format(setup_name)))
+        plt.close()
         if id_setup == 0:
             mr_reasonable = mean_mr
     print('')
