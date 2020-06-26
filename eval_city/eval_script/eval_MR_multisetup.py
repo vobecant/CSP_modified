@@ -371,9 +371,9 @@ class COCOeval:
             Nk = k0 * I0
             for m, maxDet in enumerate(m_list):
                 E = [self.evalImgs[Nk + i] for i in i_list]
+                E = [e for e in E if not e is None]
                 if return_misses:
                     misses = get_misses(E)
-                E = [e for e in E if not e is None]
                 if len(E) == 0:
                     continue
 
