@@ -1,8 +1,50 @@
+# This import registers the 3D projection, but is otherwise unused.
+from mpl_toolkits.mplot3d import Axes3D  # noqa: F401 unused import
+
+import matplotlib.pyplot as plt
+import numpy as np
 import pickle
 
-with open('test_statistics.pkl','rb') as f:
+with open('test_statistics.pkl', 'rb') as f:
     test_statistics = pickle.load(f)
 
 with open('train_statistics.pkl', 'rb') as f:
     train_statistics = pickle.load(f)
 
+train_heights = train_statistics['heights']
+train_visibilities = train_statistics['visibilities']
+test_heights_occluded = test_statistics['height_occluded']
+test_heights_reasonable = test_statistics['height_reasonable']
+test_heights_all = test_heights_occluded + test_heights_reasonable
+test_visibilities_occluded = test_statistics['visibility_occluded']
+test_visibilities_reasonable = test_statistics['visibility_reasonable']
+test_visibilities_all = test_heights_occluded + test_visibilities_reasonable
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+hist_trn, xedges_trn, yedges_trn = np.histogram2d(train_heights, train_visibilities, bins=[
+    np.arange(50, max(max(train_heights), max(test_heights_all)), 10), np.arange(0, 1.0, 0.05)], density=True)
+hist_tst, xedges_tst, yedges_tst = np.histogram2d(test_heights_all, test_visibilities_all, bins=[
+    np.arange(50, max(max(train_heights), max(test_heights_all)), 10), np.arange(0, 1.0, 0.05)], density=True)
+
+# training positions
+xpos_trn, ypos_trn = np.meshgrid(xedges_trn[:-1] + 0.25, yedges_trn[:-1] + 0.25, indexing="ij")
+xpos_trn = xpos_trn.ravel()
+ypos_trn = ypos_trn.ravel()
+zpos_trn = 0
+# Construct arrays with the dimensions for the bars.
+dx_trn = dy_trn = 0.5 * np.ones_like(zpos_trn)
+dz_trn = hist_trn.ravel()
+
+# test positions
+xpos_tst, ypos_tst = np.meshgrid(xedges_tst[:-1] - 0.25, yedges_tst[:-1] - 0.25, indexing="ij")
+xpos_tst = xpos_tst.ravel()
+ypos_tst = ypos_tst.ravel()
+zpos_tst = 0
+# Construct arrays with the dimensions for the bars.
+dx_tst = dy_tst = 0.5 * np.ones_like(zpos_tst)
+dz_tst = hist_trn.ravel()
+
+ax.bar3d(xpos_trn, ypos_trn, zpos_trn, dx_trn, dy_trn, dz_trn, zsort='average', color='blue')
+ax.bar3d(xpos_tst, ypos_tst, zpos_tst, dx_tst, dy_tst, dz_tst, zsort='average', color='red')
+plt.savefig('./test_vs_train.jpg')
