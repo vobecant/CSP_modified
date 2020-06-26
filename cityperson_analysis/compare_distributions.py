@@ -52,8 +52,6 @@ plt.savefig('./test_vs_train.jpg')
 '''
 
 x_trn, y_trn = np.meshgrid(xedges_trn[:-1], yedges_trn[:-1], indexing="ij")
-x_trn = x_trn.ravel()
-y_trn = y_trn.ravel()
-z_trn = hist_trn.ravel()
+z_trn = hist_trn
 ax.plot_wireframe(x_trn, y_trn, z_trn)
 plt.savefig('./train.jpg')
