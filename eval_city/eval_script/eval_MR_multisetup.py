@@ -12,7 +12,10 @@ def get_misses(E):
     misses = {}
     for img_stat in E:
         missed_ids = []
-        for gtId, gtMatch, gtIgnore in zip(img_stat['gtIds'], img_stat['gtMatches'][0], img_stat['gtIgnore']):
+        gtIds = img_stat['gtIds']
+        gtMatches = img_stat['gtMatches'][0]
+        gtIgnores = img_stat['gtIgnore']
+        for gtId, gtMatch, gtIgnore in zip(gtIds, gtMatches, gtIgnores):
             if gtIgnore == 1:
                 break
             elif gtMatch < 1:
