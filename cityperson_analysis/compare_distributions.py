@@ -28,7 +28,7 @@ hist_tst, xedges_tst, yedges_tst = np.histogram2d(test_heights_all, test_visibil
     np.arange(50, max(max(train_heights), max(test_heights_all)), 10), np.arange(0, 1.0, 0.05)], density=True)
 
 # training positions
-xpos_trn, ypos_trn = np.meshgrid(xedges_trn[:-1] + 0.25, yedges_trn[:-1] + 0.25, indexing="ij")
+xpos_trn, ypos_trn = np.meshgrid(xedges_trn[:-1] + 0.025, yedges_trn[:-1] + 0.025, indexing="ij")
 xpos_trn = xpos_trn.ravel()
 ypos_trn = ypos_trn.ravel()
 zpos_trn = 0
@@ -37,7 +37,7 @@ dx_trn = dy_trn = 0.5 * np.ones_like(zpos_trn)
 dz_trn = hist_trn.ravel()
 
 # test positions
-xpos_tst, ypos_tst = np.meshgrid(xedges_tst[:-1] - 0.25, yedges_tst[:-1] - 0.25, indexing="ij")
+xpos_tst, ypos_tst = np.meshgrid(xedges_tst[:-1] - 0.025, yedges_tst[:-1] - 0.025, indexing="ij")
 xpos_tst = xpos_tst.ravel()
 ypos_tst = ypos_tst.ravel()
 zpos_tst = 0
