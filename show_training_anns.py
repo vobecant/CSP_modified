@@ -136,18 +136,18 @@ print('Number of samples: {}\nreasonable: {}\noccluded:{}'.format(len(heights), 
 
 fig, axs = plt.subplots(1, 2, tight_layout=True)
 n_bins = 40
-axs[0].hist_trn(heights, bins=n_bins)
+axs[0].hist(heights, bins=n_bins)
 axs[0].set_title('training heights')
-axs[1].hist_trn(visibilities, bins=n_bins)
+axs[1].hist(visibilities, bins=n_bins)
 axs[1].set_title('training visibilities')
 plt.savefig(os.path.join(save_dir_plots, 'trn_hists_all.jpg'))
 plt.close()
 
 fig, axs = plt.subplots(1, 2, tight_layout=True)
 n_bins = 40
-axs[0].hist_trn(heights, bins=n_bins, cumulative=True, density=True)
+axs[0].hist(heights, bins=n_bins, cumulative=True, density=True)
 axs[0].set_title('training heights')
-axs[1].hist_trn(-np.asarray(visibilities), bins=n_bins, cumulative=True, density=True)
+axs[1].hist(-np.asarray(visibilities), bins=n_bins, cumulative=True, density=True)
 axs[1].set_title('training visibilities')
 plt.savefig(os.path.join(save_dir_plots, 'trn_hists_all_cumulative.jpg'))
 plt.close()
