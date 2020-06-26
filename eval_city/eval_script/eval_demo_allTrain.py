@@ -71,6 +71,8 @@ def save_crop(bb, image, save_file):
 
 
 def plot_bbs(image, image_name, bbs, vis, save_dir, color):
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
     # TODO: plot whole image
     for i, (bb, v) in enumerate(zip(bbs, vis)):
         bb_xyxy = xywh2xyxy(bb)
