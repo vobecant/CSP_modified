@@ -11,17 +11,20 @@ import scipy.io as sio
 def get_misses(E):
     misses = {}
     for img_stat in E:
+        img_id = img_stat['image_id']
         missed_ids = []
         gtIds = img_stat['gtIds']
         gtMatches = img_stat['gtMatches'][0]
         gtIgnores = img_stat['gtIgnore']
-        print('',end='')
+        n_misses = 0
         for gtId, gtMatch, gtIgnore in zip(gtIds, gtMatches, gtIgnores):
             if gtIgnore == 1:
                 continue
             elif gtMatch < 1:
                 missed_ids.append(gtId)
-        misses['image_id'] = missed_ids
+                n_misses += 1
+        misses[img_id] = missed_ids
+    print('{} misses'.format(n_misses))
     return misses
 
 
