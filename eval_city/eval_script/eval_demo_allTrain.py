@@ -107,7 +107,7 @@ if os.path.isfile(main_path):
         cocoDt = cocoGt.loadRes(resFile)
         imgIds = sorted(cocoGt.getImgIds())
         cocoEval = COCOeval(cocoGt, cocoDt, annType)
-        setup_name = cocoEval.eval.params.SetupLbl[id_setup]
+        setup_name = cocoEval.params.SetupLbl[id_setup]
         cocoEval.params.imgIds = imgIds
         cocoEval.evaluate(id_setup)
         misses = cocoEval.accumulate(plot=True, return_misses=True)
