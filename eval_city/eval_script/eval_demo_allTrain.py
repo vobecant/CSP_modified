@@ -61,7 +61,7 @@ if os.path.isfile(main_path):
         cocoEval.evaluate(id_setup)
         misses = cocoEval.accumulate(plot=True, return_misses=True)
         mean_mr = cocoEval.summarize(id_setup, res_file)
-        for img_id, ms in misses:
+        for img_id, ms in misses.items():
             if len(ms):
                 image_name = img_lut[img_id]
                 city = image_name.split('_')[0]
