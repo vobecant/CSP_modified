@@ -108,7 +108,7 @@ x_trn, y_trn = np.meshgrid(xedges_trn[:-1][keep_idx], yedges_trn[:-1], indexing=
 z_trn = hist_trn[keep_idx]
 ax.plot_wireframe(x_trn, y_trn, z_trn, color='blue', label='all train')
 
-x_tst, y_tst = np.meshgrid(xedges_tst[keep_idx], yedges_tst[:-1], indexing="ij")
+x_tst, y_tst = np.meshgrid(xedges_tst[:-1][keep_idx], yedges_tst[:-1], indexing="ij")
 z_tst = hist_tst[keep_idx]
 ax.plot_wireframe(x_tst, y_tst, z_tst, color='red', label='all test')
 ax.legend()
