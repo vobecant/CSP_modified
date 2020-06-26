@@ -86,7 +86,7 @@ hist_tst_o, xedges_tst_o, yedges_tst_o = np.histogram2d(test_heights_occluded, t
 ax.plot_wireframe(x_trn, y_trn, z_trn, color='blue', label='all train')
 
 x_tst, y_tst = np.meshgrid(xedges_tst_o[:-1], yedges_tst_o[:-1], indexing="ij")
-z_tst = hist_tst_r
+z_tst = hist_tst_o
 ax.plot_wireframe(x_tst, y_tst, z_tst, color='red', label='occluded test')
 ax.legend()
 ax.set_title('All train vs occluded test')
