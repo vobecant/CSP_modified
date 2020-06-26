@@ -16,8 +16,8 @@ train_visibilities = train_statistics['visibilities']
 test_heights_occluded = test_statistics['height_occluded']
 test_heights_reasonable = test_statistics['height_reasonable']
 test_heights_all = test_heights_occluded + test_heights_reasonable
-test_visibilities_occluded = test_statistics['visibility_occluded']
-test_visibilities_reasonable = test_statistics['visibility_reasonable']
+test_visibilities_occluded = test_statistics['vis_occluded']
+test_visibilities_reasonable = test_statistics['vis_reasonable']
 test_visibilities_all = test_heights_occluded + test_visibilities_reasonable
 
 fig = plt.figure()
