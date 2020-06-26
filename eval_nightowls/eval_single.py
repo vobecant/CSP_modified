@@ -69,7 +69,7 @@ annFile = '/home/vobecant/datasets/nightowls/nightowls_validation.json'
 base_save_dir = './missed_detections'
 img_base = '/home/vobecant/datasets/nightowls/nightowls_validation'
 
-for id_setup in range(6):
+for id_setup in range(4):
     cocoGt = COCO(annFile)
     img_lut = {img['id']: img for img in cocoGt.imgs.values()}
     ann_lut = {ann['id']: ann for ann in cocoGt.anns.values()}
