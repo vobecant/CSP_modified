@@ -52,8 +52,8 @@ if os.path.isfile(main_path):
     for id_setup in range(6):
         cocoGt = COCO(annFile)
         setup_name = ''
-        img_lut = {img['id']: img for img in cocoGt.imgs}
-        ann_lut = {ann['id']: ann for ann in cocoGt.anns}
+        img_lut = {img['id']: img for img in cocoGt.imgs.values()}
+        ann_lut = {ann['id']: ann for ann in cocoGt.anns.values()}
         cocoDt = cocoGt.loadRes(resFile)
         imgIds = sorted(cocoGt.getImgIds())
         cocoEval = COCOeval(cocoGt, cocoDt, annType)
