@@ -74,7 +74,7 @@ def plot_bbs(image, image_name, bbs, vis, save_dir, color):
     # TODO: plot whole image
     for i, (bb, v) in enumerate(zip(bbs, vis)):
         bb_xyxy = xywh2xyxy(bb)
-        plot_one_box(bb_xyxy, image, color, v)
+        plot_one_box(bb_xyxy, image, color, 'vis {:.3f}'.format(v))
         # TODO: save crop of the missed sample
         save_file_crop = os.path.join(save_dir, image_name + '_{}.png'.format(i))
         save_crop(bb, image, save_file_crop)
