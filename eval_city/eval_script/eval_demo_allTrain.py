@@ -86,7 +86,7 @@ def plot_bbs(image, image_name, bbs, vis, save_dir, color):
 
 def plot_one_box(bb, img, color, label=None, line_thickness=None):
     # Plots one bounding box on image img
-    tl = line_thickness or round(0.002 * (img.shape[0] + img.shape[1]) / 2) + 1  # line/font thickness
+    tl = line_thickness or 1  # line/font thickness
     c1, c2 = (int(bb[0]), int(bb[1])), (int(bb[2]), int(bb[3]))
     cv2.rectangle(img, c1, c2, color, thickness=tl)
     if label:
