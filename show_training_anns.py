@@ -177,3 +177,11 @@ plt.title('Visibility and height of training samples, heights [50,300].')
 plt.colorbar(hist[3], ax=ax)
 plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_training_cutout_norm.jpg'))
 plt.close()
+
+data = {
+    'heights': heights,
+    'visibilities': visibilities
+}
+
+with open('./cityperson_analysis/train_statistics.pkl', 'wb') as f:
+    pickle.dump(data, f)
