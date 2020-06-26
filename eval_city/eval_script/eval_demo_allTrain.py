@@ -5,6 +5,7 @@ import numpy as np
 import shutil
 from coco import COCO
 from eval_MR_multisetup import COCOeval
+import cv2
 
 
 def eval_json_reasonable(annFile, resFile):
@@ -40,6 +41,8 @@ annType = 'bbox'  # specify type here
 
 # initialize COCO ground truth api
 annFile = '/home/vobecant/PhD/CSP/eval_city/val_gt.json'
+img_base = '/home/vobecant/datasets/cityscapes/leftImg8bit/val'
+base_save_dir = './missed_detections'
 main_path = sys.argv[1]
 if os.path.isfile(main_path):
     print('Given file {} with detections'.format(main_path))
@@ -48,6 +51,9 @@ if os.path.isfile(main_path):
     resFile = os.path.join(main_path.replace('.txt', '.json'))
     for id_setup in range(6):
         cocoGt = COCO(annFile)
+        setup_name = ''
+        img_lut = {img['id']: img for img in cocoGt.imgs}
+        ann_lut = {ann['id']: ann for ann in cocoGt.anns}
         cocoDt = cocoGt.loadRes(resFile)
         imgIds = sorted(cocoGt.getImgIds())
         cocoEval = COCOeval(cocoGt, cocoDt, annType)
@@ -55,6 +61,15 @@ if os.path.isfile(main_path):
         cocoEval.evaluate(id_setup)
         misses = cocoEval.accumulate(plot=True, return_misses=True)
         mean_mr = cocoEval.summarize(id_setup, res_file)
+        for img_id, ms in misses:
+            if len(ms):
+                image_name = img_lut[img_id]
+                city = image_name.split('_')[0]
+                image_path = os.path.join(img_base, city, image_name)
+                image = cv2.imread(image_path)
+                bbs = [ann_lut[m]['bbox'] for m in ms]
+                vis = [ann_lut[m]['vis_ratio'] for m in ms]
+                plot_bbs(image,bbs,vis,os.path.join(base_save_dir,setup_name))
         if id_setup == 0:
             mr_reasonable = mean_mr
     print('')
