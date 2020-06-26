@@ -15,6 +15,7 @@ def get_misses(E):
         gtIds = img_stat['gtIds']
         gtMatches = img_stat['gtMatches'][0]
         gtIgnores = img_stat['gtIgnore']
+        print('',end='')
         for gtId, gtMatch, gtIgnore in zip(gtIds, gtMatches, gtIgnores):
             if gtIgnore == 1:
                 break
