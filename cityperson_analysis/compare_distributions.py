@@ -53,10 +53,42 @@ plt.savefig('./test_vs_train.jpg')
 
 x_trn, y_trn = np.meshgrid(xedges_trn[:-1], yedges_trn[:-1], indexing="ij")
 z_trn = hist_trn
-ax.plot_wireframe(x_trn, y_trn, z_trn, color='blue')
+ax.plot_wireframe(x_trn, y_trn, z_trn, color='blue', label='all train')
 
 x_tst, y_tst = np.meshgrid(xedges_tst[:-1], yedges_tst[:-1], indexing="ij")
 z_tst = hist_tst
-ax.plot_wireframe(x_tst, y_tst, z_tst, color='red')
+ax.plot_wireframe(x_tst, y_tst, z_tst, color='red', label='all test')
+ax.legend()
 
-plt.savefig('./test_vs_train.jpg')
+ax.add_title('All train vs all test')
+
+plt.savefig('./test_all_vs_train.jpg')
+plt.close()
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+hist_tst_r, xedges_tst_r, yedges_tst_r = np.histogram2d(test_heights_reasonable, test_visibilities_reasonable, bins=[
+    np.arange(50, max(max(train_heights), max(test_heights_reasonable)), 10), np.arange(0, 1.0, 0.05)], density=True)
+ax.plot_wireframe(x_trn, y_trn, z_trn, color='blue', label='all train')
+
+x_tst, y_tst = np.meshgrid(xedges_tst_r[:-1], yedges_tst_r[:-1], indexing="ij")
+z_tst = hist_tst_r
+ax.plot_wireframe(x_tst, y_tst, z_tst, color='red', label='reasonable test')
+ax.legend()
+ax.add_title('All train vs reasonable test')
+plt.savefig('./test_reason_vs_train.jpg')
+plt.close()
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+hist_tst_o, xedges_tst_o, yedges_tst_o = np.histogram2d(test_heights_occluded, test_visibilities_occluded, bins=[
+    np.arange(50, max(max(train_heights), max(test_heights_occluded)), 10), np.arange(0, 1.0, 0.05)], density=True)
+ax.plot_wireframe(x_trn, y_trn, z_trn, color='blue', label='all train')
+
+x_tst, y_tst = np.meshgrid(xedges_tst_o[:-1], yedges_tst_o[:-1], indexing="ij")
+z_tst = hist_tst_r
+ax.plot_wireframe(x_tst, y_tst, z_tst, color='red', label='occluded test')
+ax.legend()
+ax.add_title('All train vs occluded test')
+plt.savefig('./test_occ_vs_train.jpg')
+plt.close()
