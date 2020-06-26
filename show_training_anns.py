@@ -107,6 +107,7 @@ GT_TL = 1
 
 heights = []
 visibilities = []
+n_occluded = 0
 for i, ann in enumerate(anns):
     bbs_gt = ann['bboxes']
     image_name = ann['filepath']
@@ -118,6 +119,8 @@ for i, ann in enumerate(anns):
         hv = vbb[3] - vbb[1]
         visibility = (wv * hv) / (w * h)
         visibilities.append(visibility)
+        if visibility < 0.65:
+            n_occluded += 1
 
     if len(CHOOSEN_IDS) and i not in CHOOSEN_IDS:
         print('Skip {}'.format(i))
@@ -127,6 +130,9 @@ for i, ann in enumerate(anns):
     pth = os.path.join(save_dir, 'im{}_dets.png'.format(i + 1))
     print('Saved GTs to {}'.format(pth))
     plt.imsave(pth, img_gts)
+
+n_reasonable = len(heights) - n_occluded
+print('Number of samples: {}\nreasonable: {}\noccluded:{}'.format(len(heights), n_reasonable, n_occluded))
 
 fig, axs = plt.subplots(1, 2, tight_layout=True)
 n_bins = 40
