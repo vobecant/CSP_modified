@@ -133,7 +133,7 @@ if os.path.isfile(main_path):
                          color=(0, 0, 255))
         # TODO: plot 2D histogram
         fig, ax = plt.subplots(tight_layout=True)
-        hist = ax.hist2d(missed_heights, missed_visibilities, density=True)
+        hist = ax.hist2d(missed_heights, missed_visibilities)
         plt.title('Visibility and height of missed {} ({}).'.format(setup_name, len(missed_heights)))
         plt.colorbar(hist[3], ax=ax)
         plt.savefig(os.path.join(setup_savedir, 'test_heightVis_hist_missed_{}.jpg'.format(setup_name)))
