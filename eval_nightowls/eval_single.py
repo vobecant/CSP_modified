@@ -65,8 +65,8 @@ print('Given file {} with detections'.format(detections_file))
 res_file = None
 resFile_txt = os.path.join(detections_file)
 resFile = os.path.join(detections_file.replace('.txt', '.json'))
-annFile = '/home/vobecant/datasets/nightowls/nightowls_validation.json'
-#annFile = '/home/vobecant/datasets/nightowls/nightowls_validation_pedOnly.json'
+#annFile = '/home/vobecant/datasets/nightowls/nightowls_validation.json'
+annFile = '/home/vobecant/datasets/nightowls/nightowls_validation_pedOnly.json'
 base_save_dir = './missed_detections'
 img_base = '/home/vobecant/datasets/nightowls/nightowls_validation'
 
