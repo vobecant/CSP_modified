@@ -122,7 +122,7 @@ if os.path.isfile(main_path):
                 image = cv2.imread(image_path)
                 bbs = [ann_lut[m]['bbox'] for m in ms]
                 vis = [ann_lut[m]['vis_ratio'] for m in ms]
-                plot_bbs(image, image_name.split('.'), bbs, vis, os.path.join(base_save_dir, setup_name),
+                plot_bbs(image, image_name.split('.')[0], bbs, vis, os.path.join(base_save_dir, setup_name),
                          color=(255, 0, 0))
         if id_setup == 0:
             mr_reasonable = mean_mr
