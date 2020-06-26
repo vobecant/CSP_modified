@@ -70,13 +70,13 @@ def save_crop(bb, image, save_file):
     cv2.imwrite(save_file, crop)
 
 
-def plot_bbs(image, image_name, bbs, vis, save_dir, color):
+def plot_bbs(image, image_name, bbs, vis, heights, save_dir, color):
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
     # TODO: plot whole image
-    for i, (bb, v) in enumerate(zip(bbs, vis)):
+    for i, (bb, v, h) in enumerate(zip(bbs, vis, heights)):
         bb_xyxy = xywh2xyxy(bb)
-        plot_one_box(bb_xyxy, image, color, 'vis {:.3f}'.format(v))
+        plot_one_box(bb_xyxy, image, color, 'v{:.2f}|h{}'.format(v, h))
         # TODO: save crop of the missed sample
         save_file_crop = os.path.join(save_dir, image_name + '_{}.png'.format(i))
         save_crop(bb, image, save_file_crop)
@@ -122,7 +122,8 @@ if os.path.isfile(main_path):
                 image = cv2.imread(image_path)
                 bbs = [ann_lut[m]['bbox'] for m in ms]
                 vis = [ann_lut[m]['vis_ratio'] for m in ms]
-                plot_bbs(image, image_name.split('.')[0], bbs, vis, os.path.join(base_save_dir, setup_name),
+                heights = [bb[-1] for bb in bbs]
+                plot_bbs(image, image_name.split('.')[0], bbs, vis, heights, os.path.join(base_save_dir, setup_name),
                          color=(0, 0, 255))
         if id_setup == 0:
             mr_reasonable = mean_mr
