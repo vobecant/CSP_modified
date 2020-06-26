@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pickle
 
-with open('test_statistics.pkl', 'rb') as f:
+with open('/home/vobecant/PhD/CSP/cityperson_analysis/test_statistics.pkl', 'rb') as f:
     test_statistics = pickle.load(f)
 
-with open('train_statistics.pkl', 'rb') as f:
+with open('/home/vobecant/PhD/CSP/cityperson_analysis/train_statistics.pkl', 'rb') as f:
     train_statistics = pickle.load(f)
 
 train_heights = train_statistics['heights']
