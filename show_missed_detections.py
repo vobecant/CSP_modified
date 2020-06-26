@@ -437,7 +437,7 @@ plt.close()
 
 fig, ax = plt.subplots(tight_layout=True)
 hist = ax.hist2d(missed_occluded_height, missed_occluded_visibility,
-                 bins=[np.arange(50, max(missed_occluded_height) + 10, 10), np.arange(0, 0.65, 0.025)])
+                 bins=[np.arange(50, max(missed_occluded_height) + 10, 10), np.arange(0, 0.675, 0.025)])
 plt.title('Visibility and height of missed occluded ({}).'.format(len(missed_occluded_height)))
 plt.colorbar(hist[3], ax=ax)
 plt.savefig(os.path.join(save_dir_plots, 'test_heightVis_hist_missed_occluded.jpg'))
