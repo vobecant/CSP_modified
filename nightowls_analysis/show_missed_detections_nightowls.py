@@ -94,13 +94,13 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, labe
     return img
 
 
-dt_file1 = sys.argv[1]
-img_dir = sys.argv[2]  # /home/vobecant/datasets/DummyGAN_cityscapes_hard/1P/images
-save_dir = sys.argv[3]
+dt_file1 = sys.argv[1] # /home/vobecant//PhD/CSP/output/valresults/nightowls/h/off_orig_lr0.0008_baseline/117/val_dt_all.json
+img_dir = sys.argv[2]  # /home/vobecant/datasets/nightowls/nightowls_validation
+save_dir = sys.argv[3] # ./test_set
 save_dir_missed = os.path.join(save_dir, 'missed')
 save_dir_plots = os.path.join(save_dir, 'plots')
-dt_gt_file = sys.argv[4]  # /home/vobecant/PhD/CSP/data/cache/cityperson_trainValTest/train_h50_eccv_1P_hard_allTrain
-NO_PLOT = len(sys.argv) > 5
+dt_gt_file = sys.argv[4]  # /home/vobecant/datasets/nightowls/nightowls_validation.json
+NO_PLOT = True  # len(sys.argv) > 5
 
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
@@ -317,7 +317,7 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
         best_idx = None
         for i, (dt, conf) in enumerate(zip(bbs1, scores1)):
             iou = overlap(dt, gt[0])
-            if iou >= 0.5 and iou>max_iou:
+            if iou >= 0.5 and iou > max_iou:
                 max_iou = iou
                 best_idx = i
                 detected = True
@@ -379,8 +379,7 @@ for im_num, dt1 in enumerate(dets1_byImg.values()):
             idx += 1
 
     if NO_PLOT:
-        pass
-        # continue
+        continue
 
     image = image.copy()
 

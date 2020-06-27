@@ -123,7 +123,7 @@ for i, ann in enumerate(anns):
     print('Saved GTs to {}'.format(pth))
     plt.imsave(pth, img_gts)
 
-n_reasonable = len(heights) - n_occluded
+n_reasonable = len(heights) - n_occluded # should be 26348
 print('Number of samples: {}\nreasonable: {}\noccluded:{}'.format(len(heights), n_reasonable, n_occluded))
 
 fig, axs = plt.subplots(1, 1, tight_layout=True)
