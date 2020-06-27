@@ -300,9 +300,9 @@ missed_occluded_height, missed_occluded_visibility = [], []
 
 for im_num, dt1 in dets1_byImg.items():
     image_name = image_paths[im_num]
-    city = image_name.split('_')[0]
-    image_path = os.path.join(img_dir, city, image_name)
-    image = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB)
+    image_path = os.path.join(img_dir, image_name)
+    if not NO_PLOT:
+        image = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB)
 
     bbs1, scores1 = dt1['boxes'], dt1['scores']
     bbs_gt_reasonable, bbs_gt_occluded = bbs_gt_all[im_num ]
