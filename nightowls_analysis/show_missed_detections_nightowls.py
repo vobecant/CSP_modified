@@ -94,9 +94,10 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, labe
     return img
 
 
-dt_file1 = sys.argv[1] # /home/vobecant//PhD/CSP/output/valresults/nightowls/h/off_orig_lr0.0008_baseline/117/val_dt_all.json
+dt_file1 = sys.argv[
+    1]  # /home/vobecant//PhD/CSP/output/valresults/nightowls/h/off_orig_lr0.0008_baseline/117/val_dt_all.json
 img_dir = sys.argv[2]  # /home/vobecant/datasets/nightowls/nightowls_validation
-save_dir = sys.argv[3] # ./test_set
+save_dir = sys.argv[3]  # ./test_set
 save_dir_missed = os.path.join(save_dir, 'missed')
 save_dir_plots = os.path.join(save_dir, 'plots')
 dt_gt_file = sys.argv[4]  # /home/vobecant/datasets/nightowls/nightowls_validation.json
@@ -134,11 +135,11 @@ height_reasonable, height_occluded = [], []
 vis_reasonable, vis_occluded = [], []
 for ann in gts['annotations']:
     image_id = ann['image_id']
-    height = ann['height']
+    bbox = ann['bbox']
+    height = bbox[-1]
     if ann['category_id'] != 1 or ann['ignore'] or ann['iscrowd'] or height < 50:
         bbs_gt_all_ignore[image_id].append(ann['bbox'])
         continue
-    bbox = ann['bbox']
     vis_ratio = ann['vis_ratio']
     reasonable = vis_ratio >= 0.65
 
