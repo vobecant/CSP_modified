@@ -105,21 +105,14 @@ color_gt = (100, 149, 237)  # (44, 160, 44)
 GT_TL = 1
 
 heights = []
-visibilities = []
 n_occluded = 0
 for i, ann in enumerate(anns):
     bbs_gt = ann['bboxes']
     image_name = ann['filepath']
-    for bb, vbb in zip(ann['bboxes'], ann['vis_bboxes']):
+    for bb in ann['bboxes']:
         w = bb[2] - bb[0]
         h = bb[3] - bb[1]
         heights.append(h)
-        wv = vbb[2] - vbb[0]
-        hv = vbb[3] - vbb[1]
-        visibility = (wv * hv) / (w * h)
-        visibilities.append(visibility)
-        if visibility < 0.65:
-            n_occluded += 1
 
     if len(CHOOSEN_IDS) and i not in CHOOSEN_IDS:
         print('Skip {}'.format(i))
@@ -133,22 +126,18 @@ for i, ann in enumerate(anns):
 n_reasonable = len(heights) - n_occluded
 print('Number of samples: {}\nreasonable: {}\noccluded:{}'.format(len(heights), n_reasonable, n_occluded))
 
-fig, axs = plt.subplots(1, 2, tight_layout=True)
+fig, axs = plt.subplots(1, 1, tight_layout=True)
 n_bins = 40
 axs[0].hist(heights, bins=n_bins)
 axs[0].set_title('training heights')
-axs[1].hist(visibilities, bins=n_bins)
-axs[1].set_title('training visibilities')
-plt.savefig(os.path.join(save_dir_plots, 'trn_hists_all.jpg'))
+plt.savefig(os.path.join(save_dir_plots, 'trn_hists_heights.jpg'))
 plt.close()
 
-fig, axs = plt.subplots(1, 2, tight_layout=True)
+fig, axs = plt.subplots(1, 1, tight_layout=True)
 n_bins = 40
 axs[0].hist(heights, bins=n_bins, cumulative=True, density=True)
 axs[0].set_title('training heights')
-axs[1].hist(-np.asarray(visibilities), bins=n_bins, cumulative=True, density=True)
-axs[1].set_title('training visibilities')
-plt.savefig(os.path.join(save_dir_plots, 'trn_hists_all_cumulative.jpg'))
+plt.savefig(os.path.join(save_dir_plots, 'trn_hists_heights_cumulative.jpg'))
 plt.close()
 
 fig, ax = plt.subplots(tight_layout=True)
@@ -159,33 +148,9 @@ plt.colorbar(hist[3], ax=ax)
 plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_training.jpg'))
 plt.close()
 
-fig, ax = plt.subplots(tight_layout=True)
-hist = ax.hist2d(heights, visibilities, density=True,
-                 bins=[np.arange(50, max(heights), 10), np.arange(0, 1.0, 0.01)])
-plt.title('Visibility and height of training samples.')
-plt.colorbar(hist[3], ax=ax)
-plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_training_norm.jpg'))
-plt.close()
-
-fig, ax = plt.subplots(tight_layout=True)
-hist = ax.hist2d(heights, visibilities,
-                 bins=[np.arange(50, 300, 10), np.arange(0, 1.0, 0.04)])
-plt.title('Visibility and height of training samples, heights [50,300].')
-plt.colorbar(hist[3], ax=ax)
-plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_training_cutout.jpg'))
-plt.close()
-
-fig, ax = plt.subplots(tight_layout=True)
-hist = ax.hist2d(heights, visibilities, density=True,
-                 bins=[np.arange(50, 300, 10), np.arange(0, 1.0, 0.04)])
-plt.title('Visibility and height of training samples, heights [50,300].')
-plt.colorbar(hist[3], ax=ax)
-plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_training_cutout_norm.jpg'))
-plt.close()
-
 data = {
     'heights': heights,
-    'visibilities': visibilities
+    #'visibilities': visibilities
 }
 
 with open('./nightowls_analysis/train_statistics.pkl', 'wb') as f:
