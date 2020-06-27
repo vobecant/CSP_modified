@@ -145,5 +145,5 @@ data = {
     #'visibilities': visibilities
 }
 
-with open('./nightowls_analysis/train_statistics.pkl', 'wb') as f:
+with open('/home/vobecant/PhD/CSP/nightowls_analysis/train_statistics.pkl', 'wb') as f:
     pickle.dump(data, f)
