@@ -248,7 +248,7 @@ plt.colorbar(hist[3], ax=ax)
 plt.savefig(os.path.join(save_dir_plots, 'test_heightVis_hist_all_both_norm.jpg'))
 plt.close()
 
-image_paths = {im['id']: im['im_name'] for im in gts['images']}
+image_paths = {im['id']: im['file_name'] for im in gts['images']}
 
 start = time.time()
 
