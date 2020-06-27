@@ -115,7 +115,7 @@ with open(dt_file1, 'r') as f:
 with open(dt_gt_file, 'r') as f:
     gts = json.load(f)
 
-dets1_byImg = {i: {'boxes': [], 'scores': []} for i in range(1, 501)}
+dets1_byImg = {im['id']: {'boxes': [], 'scores': []} for im in gts['images']}
 bbs_gt_all = {i: [[], []] for i in range(1, 501)}
 bbs_gt_all_ignore = {i: [] for i in range(1, 501)}
 
