@@ -137,11 +137,11 @@ for ann in gts['annotations']:
     image_id = ann['image_id']
     bbox = ann['bbox']
     height = bbox[-1]
-    if ann['category_id'] != 1 or ann['ignore'] or ann['iscrowd'] or height < 50:
+    if ann['category_id'] != 1 or ann['ignore'] or height < 50:
         bbs_gt_all_ignore[image_id].append(ann['bbox'])
         continue
-    vis_ratio = ann['vis_ratio']
-    reasonable = vis_ratio >= 0.65
+    reasonable = not ann['occluded']
+    vis_ratio = 1.0 if reasonable else 0.5
 
     if reasonable:
         bbs_gt_all[image_id][0].append((bbox, vis_ratio))
