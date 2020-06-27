@@ -140,14 +140,6 @@ axs[0].set_title('training heights')
 plt.savefig(os.path.join(save_dir_plots, 'trn_hists_heights_cumulative.jpg'))
 plt.close()
 
-fig, ax = plt.subplots(tight_layout=True)
-hist = ax.hist2d(heights, visibilities,
-                 bins=[np.arange(50, max(heights), 10), np.arange(0, 1.0, 0.01)])
-plt.title('Visibility and height of training samples.')
-plt.colorbar(hist[3], ax=ax)
-plt.savefig(os.path.join(save_dir_plots, 'heightVis_hist_training.jpg'))
-plt.close()
-
 data = {
     'heights': heights,
     #'visibilities': visibilities
