@@ -117,8 +117,8 @@ with open(dt_gt_file, 'r') as f:
     gts = json.load(f)
 
 dets1_byImg = {im['id']: {'boxes': [], 'scores': []} for im in gts['images']}
-bbs_gt_all = {i: [[], []] for i in range(1, 501)}
-bbs_gt_all_ignore = {i: [] for i in range(1, 501)}
+bbs_gt_all = {im['id']: [[], []] for im in gts['images']}
+bbs_gt_all_ignore = {im['id']: [] for im in gts['images']}
 
 color_detected_reasonable = (0, 100, 0)
 color_detected_occluded = (0, 128, 0)
