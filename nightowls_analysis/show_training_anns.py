@@ -85,10 +85,9 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, labe
     return img
 
 
-trn_anns = sys.argv[1]  # original /home/vobecant/PhD/CSP/data/cache/cityperson/train_h50
-# /home/vobecant/datasets/DummyGAN_cityscapes_occluded_final/1P # /home/vobecant/PhD/CSP/data/cityperson/images/train
-trn_img_dir = sys.argv[2]
-save_dir = sys.argv[3]  # /home/vobecant/PhD/CSP/nightowls_analysis/training_set
+trn_anns = sys.argv[1]  # original /home/vobecant/PhD/CSP/data/cache/nightowls/train_h50_nonempty_xyxy
+# trn_img_dir = sys.argv[2] # '/home/vobecant/datasets/nightowls/nightowls_training'
+save_dir = sys.argv[2]  # /home/vobecant/PhD/CSP/nightowls_analysis/training_set
 
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
