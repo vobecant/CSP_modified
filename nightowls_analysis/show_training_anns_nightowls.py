@@ -11,7 +11,7 @@ import pickle
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
-CHOOSEN_IDS = [i for i in range(1000, 1001)]
+CHOOSEN_IDS = [i for i in range(1000, 1000)]
 
 
 def xywh2xyxy(x):
@@ -114,7 +114,7 @@ for i, ann in enumerate(anns):
         h = bb[3] - bb[1]
         heights.append(h)
 
-    if len(CHOOSEN_IDS) and i not in CHOOSEN_IDS:
+    if i not in CHOOSEN_IDS:
         print('Skip {}'.format(i))
         continue
     image = cv2.cvtColor(cv2.imread(image_name), cv2.COLOR_BGR2RGB)

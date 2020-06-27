@@ -12,7 +12,7 @@ with open('/home/vobecant/PhD/CSP/nightowls_analysis/train_statistics.pkl', 'rb'
     train_statistics = pickle.load(f)
 
 train_heights = train_statistics['heights']
-train_visibilities = train_statistics['visibilities']
+train_visibilities = np.ones(len(train_heights))  # we do not have this info
 test_heights_occluded = test_statistics['height_occluded']
 test_heights_reasonable = test_statistics['height_reasonable']
 test_heights_all = test_heights_occluded + test_heights_reasonable
@@ -96,8 +96,8 @@ plt.savefig('./test_occ_vs_train.jpg')
 plt.close()
 
 # TODO: cropped versions with limited max height to 300
-MAX_HEIGHT=300
-keep_idx = xedges_trn[:-1]<=MAX_HEIGHT
+MAX_HEIGHT = 300
+keep_idx = xedges_trn[:-1] <= MAX_HEIGHT
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
