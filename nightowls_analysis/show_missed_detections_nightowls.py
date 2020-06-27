@@ -298,15 +298,15 @@ def intersect1d(box1, box2):
 missed_reasonable_height, missed_reasonable_visibility = [], []
 missed_occluded_height, missed_occluded_visibility = [], []
 
-for im_num, dt1 in enumerate(dets1_byImg.values()):
-    image_name = image_paths[im_num + 1]
+for im_num, dt1 in dets1_byImg.items():
+    image_name = image_paths[im_num]
     city = image_name.split('_')[0]
     image_path = os.path.join(img_dir, city, image_name)
     image = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB)
 
     bbs1, scores1 = dt1['boxes'], dt1['scores']
-    bbs_gt_reasonable, bbs_gt_occluded = bbs_gt_all[im_num + 1]
-    bbs_ignore = bbs_gt_all_ignore[im_num + 1]
+    bbs_gt_reasonable, bbs_gt_occluded = bbs_gt_all[im_num ]
+    bbs_ignore = bbs_gt_all_ignore[im_num]
     bbs_gt_both = bbs_gt_reasonable + bbs_gt_occluded
 
     # TODO: missed/detected reasonable
