@@ -29,6 +29,24 @@ plt.title('Heights.')
 plt.legend()
 plt.savefig('./heights_trn_vs_test_all.png')
 
+# TODO: comparison of occluded test vs train
+plt.figure()
+bins = np.arange(50,600,10)
+plt.hist(train_heights, bins=bins, alpha=0.5, label='train', density=True)
+plt.hist(test_heights_occluded, bins=bins, alpha=0.5, label='occ test', density=True)
+plt.title('Heights.')
+plt.legend()
+plt.savefig('./heights_trn_vs_test_occ.png')
+
+# TODO: comparison of all test vs train
+plt.figure()
+bins = np.arange(50,600,10)
+plt.hist(train_heights, bins=bins, alpha=0.5, label='train', density=True)
+plt.hist(test_heights_reasonable, bins=bins, alpha=0.5, label='reason test', density=True)
+plt.title('Heights.')
+plt.legend()
+plt.savefig('./heights_trn_vs_test_reason.png')
+
 x_trn, y_trn = np.meshgrid(xedges_trn[:-1], yedges_trn[:-1], indexing="ij")
 z_trn = hist_trn
 ax.plot_wireframe(x_trn, y_trn, z_trn, color='blue', label='all train')
