@@ -466,5 +466,5 @@ data = {
     'height_reasonable': height_reasonable,
     'vis_reasonable': vis_reasonable,
 }
-with open('/home/vobecant/PhD/CSP/cityperson_analysis/test_statistics.pkl', 'wb') as f:
+with open('/home/vobecant/PhD/CSP/nightowls_analysis/test_statistics.pkl', 'wb') as f:
     pickle.dump(data, f)

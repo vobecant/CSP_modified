@@ -371,9 +371,9 @@ class COCOeval:
         I0 = len(_pe.imgIds)
 
         # retrieve E at each category, area range, and max number of detections
-        for k, k0 in enumerate(k_list):
+        for kidx, k0 in enumerate(k_list):
             Nk = k0 * I0
-            for m, maxDet in enumerate(m_list):
+            for midx, maxDet in enumerate(m_list):
                 E = [self.evalImgs[Nk + i] for i in i_list]
                 E = [e for e in E if not e is None]
                 if return_misses:
@@ -384,7 +384,7 @@ class COCOeval:
                 dtScores = np.concatenate([e['dtScores'][0:maxDet] for e in E])
 
                 # different sorting method generates slightly different results.
-                # mergesort is used to be consistent as Matlab implementation.
+                # mergesort is used to consistent as Matlab implementation.
 
                 inds = np.argsort(-dtScores, kind='mergesort')
 
@@ -402,7 +402,7 @@ class COCOeval:
 
                 tp_sum = np.cumsum(tps, axis=1).astype(dtype=np.float)
                 fp_sum = np.cumsum(fps, axis=1).astype(dtype=np.float)
-                for t, (tp, fp) in enumerate(zip(tp_sum, fp_sum)):
+                for tidx, (tp, fp) in enumerate(zip(tp_sum, fp_sum)):
                     tp = np.array(tp)
                     fppi = np.array(fp) / I0
                     nd = len(tp)
@@ -425,7 +425,8 @@ class COCOeval:
                             q[ri] = recall[pi]
                     except:
                         pass
-                    ys[t, :, k, m] = np.array(q)
+
+                    ys[tidx, :, kidx, midx] = np.array(q)
 
                     if plot:
                         mr = 1 - np.array(q)
