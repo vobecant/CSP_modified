@@ -40,7 +40,7 @@ def plot_bbs(image, image_name, bbs, vis, heights, save_dir, color):
         os.makedirs(save_dir)
     # TODO: plot whole image
     for i, (bb, v, h) in enumerate(zip(bbs, vis, heights)):
-        bb_xyxy = xywh2xyxy(bb)
+        bb_xyxy = bb #xywh2xyxy(bb)
         plot_one_box(bb_xyxy, image, color, 'v{:.2f}|h{}'.format(v, h))
         # TODO: save crop of the missed sample
         save_file_crop = os.path.join(save_dir, image_name + '_{}.png'.format(i))
