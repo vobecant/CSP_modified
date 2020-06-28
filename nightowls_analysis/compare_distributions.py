@@ -22,27 +22,30 @@ test_visibilities_all = test_heights_occluded + test_visibilities_reasonable
 
 # TODO: comparison of all test vs train
 plt.figure()
-bins = np.arange(50,600,10)
+bins = np.arange(50, 600, 10)
 plt.hist(train_heights, bins=bins, alpha=0.5, label='train', density=True)
 plt.hist(test_heights_all, bins=bins, alpha=0.5, label='all test', density=True)
 plt.title('Heights, all test.')
 plt.legend()
+plt.tight_layout()
 plt.savefig('./heights_trn_vs_test_all.png')
 
 # TODO: comparison of occluded test vs train
 plt.figure()
-bins = np.arange(50,600,10)
+bins = np.arange(50, 600, 10)
 plt.hist(train_heights, bins=bins, alpha=0.5, label='train', density=True)
 plt.hist(test_heights_occluded, bins=bins, alpha=0.5, label='occ test', density=True)
 plt.title('Heights, occluded test.')
 plt.legend()
+plt.tight_layout()
 plt.savefig('./heights_trn_vs_test_occ.png')
 
 # TODO: comparison of all test vs train
 plt.figure()
-bins = np.arange(50,600,10)
+bins = np.arange(50, 600, 10)
 plt.hist(train_heights, bins=bins, alpha=0.5, label='train', density=True)
 plt.hist(test_heights_reasonable, bins=bins, alpha=0.5, label='reason test', density=True)
 plt.title('Heights, reasonable test..')
 plt.legend()
+plt.tight_layout()
 plt.savefig('./heights_trn_vs_test_reason.png')

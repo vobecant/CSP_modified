@@ -10,8 +10,7 @@ import pickle
 
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-
-CHOOSEN_IDS = [i for i in range(1000, 1000)]
+from eval_nightowls.eval_single import plot_bbs
 
 
 def xywh2xyxy(x):
@@ -98,6 +97,9 @@ if not os.path.exists(save_dir_plots):
 with open(trn_anns, 'rb') as f:
     anns = pickle.load(f, encoding='latin1')
 
+N_CHOOSEN = 500
+CHOOSEN_IDS = np.random.randint(0, len(anns) - 1, N_CHOOSEN)
+
 # color_ours = (31, 119, 180)
 color_ours = (144, 238, 144)
 color_paper = (255, 127, 14)
@@ -108,6 +110,7 @@ heights = []
 n_occluded = 0
 for i, ann in enumerate(anns):
     bbs_gt = ann['bboxes']
+    vis = [0.5 if occ else 1 for occ in ann['occluded']]
     image_name = ann['filepath']
     for bb in ann['bboxes']:
         w = bb[2] - bb[0]
@@ -118,12 +121,13 @@ for i, ann in enumerate(anns):
         print('Skip {}'.format(i))
         continue
     image = cv2.cvtColor(cv2.imread(image_name), cv2.COLOR_BGR2RGB)
-    img_gts = plot_images(image, bbs_gt, None, image_name, label='GT', gt=True, color=color_gt, tlg=1)
-    pth = os.path.join(save_dir, 'im{}_dets.png'.format(i + 1))
-    print('Saved GTs to {}'.format(pth))
-    plt.imsave(pth, img_gts)
+    plot_bbs(image, None, bbs_gt, vis, heights, save_dir, color_gt)
+    # img_gts = plot_images(image, bbs_gt, None, image_name, label='GT', gt=True, color=color_gt, tlg=1)
+    # pth = os.path.join(save_dir, 'im{}_dets.png'.format(i + 1))
+    # print('Saved GTs to {}'.format(pth))
+    # plt.imsave(pth, img_gts)
 
-n_reasonable = len(heights) - n_occluded # should be 26348
+n_reasonable = len(heights) - n_occluded  # should be 26348
 print('Number of samples: {}\nreasonable: {}\noccluded:{}'.format(len(heights), n_reasonable, n_occluded))
 
 fig, axs = plt.subplots(1, 1, tight_layout=True)
@@ -142,7 +146,7 @@ plt.close()
 
 data = {
     'heights': heights,
-    #'visibilities': visibilities
+    # 'visibilities': visibilities
 }
 
 with open('/home/vobecant/PhD/CSP/nightowls_analysis/train_statistics.pkl', 'wb') as f:
