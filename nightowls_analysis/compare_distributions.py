@@ -12,7 +12,7 @@ with open('/home/vobecant/PhD/CSP/nightowls_analysis/train_statistics.pkl', 'rb'
     train_statistics = pickle.load(f)
 
 train_heights = train_statistics['heights']
-train_visibilities = np.ones(len(train_heights))  # we do not have this info
+train_visibilities = np.ones_like(train_heights)  # we do not have this info
 test_heights_occluded = test_statistics['height_occluded']
 test_heights_reasonable = test_statistics['height_reasonable']
 test_heights_all = test_heights_occluded + test_heights_reasonable
