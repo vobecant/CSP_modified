@@ -22,7 +22,7 @@ test_visibilities_all = test_heights_occluded + test_visibilities_reasonable
 
 # TODO: comparison of all test vs train
 plt.figure()
-bins = np.linspace(50, 600, 10)
+bins = np.arange(50,600,10)
 plt.hist(train_heights, bins=bins, alpha=0.5, label='train', density=True)
 plt.hist(test_heights_all, bins=bins, alpha=0.5, label='all test', density=True)
 plt.title('Heights.')
