@@ -10,7 +10,7 @@ import pickle
 
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from eval_nightowls.eval_single import plot_bbs
+from eval_single import plot_bbs
 
 
 def xywh2xyxy(x):
@@ -85,7 +85,7 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, labe
 
 
 trn_anns = sys.argv[1]  # original /home/vobecant/PhD/CSP/data/cache/nightowls/train_h50_nonempty_xyxy
-# trn_img_dir = sys.argv[2] # '/home/vobecant/datasets/nightowls/nightowls_training'
+# trn_img_dir = sys.argv[2] # /home/vobecant/datasets/nightowls/nightowls_training
 save_dir = sys.argv[2]  # /home/vobecant/PhD/CSP/nightowls_analysis/training_set
 
 if not os.path.exists(save_dir):
