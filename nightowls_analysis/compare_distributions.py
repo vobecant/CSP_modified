@@ -22,12 +22,12 @@ test_visibilities_all = test_heights_occluded + test_visibilities_reasonable
 
 # TODO: comparison of all test vs train
 plt.figure()
-plt.hist(train_heights,alpha=0.5,label='train')
-plt.hist(test_heights_all, alpha=0.5,label='all test')
+bins = np.linspace(50, 600, 10)
+plt.hist(train_heights, bins=bins, alpha=0.5, label='train', density=True)
+plt.hist(test_heights_all, bins=bins, alpha=0.5, label='all test', density=True)
 plt.title('Heights.')
 plt.legend()
 plt.savefig('./heights_trn_vs_test_all.png')
-
 
 x_trn, y_trn = np.meshgrid(xedges_trn[:-1], yedges_trn[:-1], indexing="ij")
 z_trn = hist_trn
