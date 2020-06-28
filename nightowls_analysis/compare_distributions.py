@@ -23,9 +23,9 @@ test_visibilities_all = test_heights_occluded + test_visibilities_reasonable
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 hist_trn, xedges_trn, yedges_trn = np.histogram2d(train_heights, train_visibilities, bins=[
-    np.arange(50, max(max(train_heights), max(test_heights_all)), 10), np.arange(0, 1.0, 0.05)], density=True)
+    np.arange(50, max(max(train_heights), max(test_heights_all)), 10), np.arange(0, 1.1, 0.05)], density=True)
 hist_tst, xedges_tst, yedges_tst = np.histogram2d(test_heights_all, test_visibilities_all, bins=[
-    np.arange(50, max(max(train_heights), max(test_heights_all)), 10), np.arange(0, 1.0, 0.05)], density=True)
+    np.arange(50, max(max(train_heights), max(test_heights_all)), 10), np.arange(0, 1.1, 0.05)], density=True)
 
 '''
 #training positions
