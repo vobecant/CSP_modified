@@ -160,7 +160,8 @@ n_occluded = 0
 for i, ann in enumerate(anns):
     bbs_gt = ann['bboxes']
     vis = [1 for _ in bbs_gt]
-    image_name = ann['filepath']
+    image_path = ann['filepath']
+    _, image_name = os.path.split(image_path)
     for bb in ann['bboxes']:
         w = bb[2] - bb[0]
         h = bb[3] - bb[1]
@@ -169,7 +170,7 @@ for i, ann in enumerate(anns):
     if i not in CHOOSEN_IDS:
         print('Skip {}'.format(i))
         continue
-    image = cv2.cvtColor(cv2.imread(image_name), cv2.COLOR_BGR2RGB)
+    image = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB)
     plot_bbs(image, image_name.split('.')[0], bbs_gt, vis, heights, save_dir, color_gt)
     # img_gts = plot_images(image, bbs_gt, None, image_name, label='GT', gt=True, color=color_gt, tlg=1)
     # pth = os.path.join(save_dir, 'im{}_dets.png'.format(i + 1))
