@@ -10,7 +10,7 @@ import pickle
 
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from eval_single import plot_bbs
+from ../eval_nightowls.eval_single import plot_bbs
 
 
 def xywh2xyxy(x):
