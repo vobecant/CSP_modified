@@ -159,7 +159,7 @@ heights = []
 n_occluded = 0
 for i, ann in enumerate(anns):
     bbs_gt = ann['bboxes']
-    vis = [0.5 if occ else 1 for occ in ann['occluded']]
+    vis = [1 for _ in bbs_gt]
     image_name = ann['filepath']
     for bb in ann['bboxes']:
         w = bb[2] - bb[0]
