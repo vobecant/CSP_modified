@@ -234,7 +234,7 @@ plt.close()
 
 fig, ax = plt.subplots(tight_layout=True)
 hist = ax.hist2d(height_occluded + height_reasonable, vis_occluded + vis_reasonable,
-                 bins=[np.arange(50, 500, 10), np.arange(0, 1.0, 0.025)])
+                 bins=[np.arange(50, 500, 10), np.arange(.45, 1.05, 0.025)])
 plt.title('Visibility and height of all test samples.')
 plt.colorbar(hist[3], ax=ax)
 plt.savefig(os.path.join(save_dir_plots, 'test_heightVis_hist_all_both.jpg'))
