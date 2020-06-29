@@ -50,7 +50,7 @@ def plot_bbs(image, image_name, bbs, vis, heights, save_dir, color):
         os.makedirs(save_dir)
     # TODO: plot whole image
     for i, (bb, v, h) in enumerate(zip(bbs, vis, heights)):
-        bb_xyxy = bb  # xywh2xyxy(bb)
+        bb_xyxy = xywh2xyxy(bb)
         plot_one_box(bb_xyxy, image, color, 'v{:.2f}|h{}'.format(v, h))
         # TODO: save crop of the missed sample
         save_file_crop = os.path.join(save_dir, image_name + '_{}.png'.format(i))
@@ -83,10 +83,9 @@ if not os.path.exists(save_dir_plots):
     os.makedirs(save_dir_plots)
 
 with open(gt_anns, 'r') as f:
-    anns = json.load(f)
+    gt_anns = json.load(f)
 
-N_CHOOSEN = 500
-CHOOSEN_IDS = np.random.randint(0, len(anns) - 1, N_CHOOSEN)
+images_lut = [im['id']:im['file_name'] for im in gt_anns['images']]
 
 # color_ours = (31, 119, 180)
 color_ours = (144, 238, 144)
@@ -98,19 +97,17 @@ heights = []
 n_occluded = 0
 
 ann_by_img = collections.defaultdict(list)
-for ann in anns['annotations']:
+for ann in gt_anns['annotations']:
     img_id = ann['image_id']
     ann_by_img[img_id].append(ann)
 
 for i, anns in ann_by_img.items():
-    bbs_gt = [ann['bboxes'] for ann in anns]
+    bbs_gt = [ann['bbox'] for ann in anns]
     vis = [1 for _ in bbs_gt]
     hs = []
-    image_path = anns[0]['filepath']
+    image_path = images_lut[i]
     _, image_name = os.path.split(image_path)
-    for bb in bbs_gt:
-        w = bb[2] - bb[0]
-        h = bb[3] - bb[1]
+    for x,y,w,h in bbs_gt:
         heights.append(h)
         hs.append(h)
 
