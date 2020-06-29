@@ -85,7 +85,7 @@ if not os.path.exists(save_dir_plots):
 with open(gt_anns, 'r') as f:
     gt_anns = json.load(f)
 
-images_lut = [im['id']:im['file_name'] for im in gt_anns['images']]
+images_lut = {im['id']: im['file_name'] for im in gt_anns['images']}
 
 # color_ours = (31, 119, 180)
 color_ours = (144, 238, 144)
@@ -107,7 +107,7 @@ for i, anns in ann_by_img.items():
     hs = []
     image_path = images_lut[i]
     _, image_name = os.path.split(image_path)
-    for x,y,w,h in bbs_gt:
+    for x, y, w, h in bbs_gt:
         heights.append(h)
         hs.append(h)
 
