@@ -456,6 +456,21 @@ plt.colorbar(hist[3], ax=ax)
 plt.savefig(os.path.join(save_dir_plots, 'test_heightVis_hist_missed_occluded.jpg'))
 plt.close()
 
+bins = np.arange(50, 600, 10)
+plt.figure()
+plt.hist(missed_occluded_height, bins=bins, density=True)
+plt.title('Heights of missed occluded test samples.')
+plt.tight_layout()
+plt.savefig(os.path.join(save_dir_plots, 'test_heights_missed_occluded.jpg'))
+plt.close()
+
+plt.figure()
+plt.hist(missed_reasonable_height, bins=bins, density=True)
+plt.title('Heights of missed reasonable test samples.')
+plt.tight_layout()
+plt.savefig(os.path.join(save_dir_plots, 'test_heights_missed_reasonable.jpg'))
+plt.close()
+
 data = {
     'missed_occluded_height': missed_occluded_height,
     'missed_occluded_visibility': missed_occluded_visibility,
