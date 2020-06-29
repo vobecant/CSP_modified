@@ -15,9 +15,10 @@ CHOOSEN_IMAGES = [
     '58c58332bc2601370015abd4',
     '58c58332bc2601370015abd2',
     '58c58332bc2601370015abe5',
-    '58c580adbc260137e0956f58', # O
-    '58c580b3bc260137e0957e91', # O
+    '58c580adbc260137e0956f58',  # O
+    '58c580b3bc260137e0957e91',  # O
 ]
+
 
 def xywh2xyxy(x):
     # Convert nx4 boxes from [x, y, w, h] to [x1, y1, x2, y2] where xy1=top-left, xy2=bottom-right
@@ -69,6 +70,7 @@ def plot_one_box(bb, img, color, label=None, line_thickness=None):
         cv2.rectangle(img, c1, c2, color, -1)  # filled
         cv2.putText(img, label, (c1[0], c1[1] - 2), 0, tl / 3, [225, 255, 255], thickness=tf, lineType=cv2.LINE_AA)
 
+
 gt_anns = sys.argv[1]  # original /home/vobecant/PhD/CSP/data/cache/nightowls/train_h50_nonempty_xyxy
 # trn_img_dir = sys.argv[2] # /home/vobecant/datasets/nightowls/nightowls_training
 save_dir = sys.argv[2]  # /home/vobecant/PhD/CSP/nightowls_analysis/training_set
@@ -105,15 +107,12 @@ for i, ann in enumerate(anns):
         heights.append(h)
         hs.append(h)
 
-    if i not in CHOOSEN_IDS:
+    img_name_noext = image_name.split('.')[0]
+    if img_name_noext not in CHOOSEN_IMAGES:
         print('Skip {}'.format(i))
         continue
     image = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB)
-    plot_bbs(image, image_name.split('.')[0], bbs_gt, vis, hs, save_dir, color_gt)
-    # img_gts = plot_images(image, bbs_gt, None, image_name, label='GT', gt=True, color=color_gt, tlg=1)
-    # pth = os.path.join(save_dir, 'im{}_dets.png'.format(i + 1))
-    # print('Saved GTs to {}'.format(pth))
-    # plt.imsave(pth, img_gts)
+    plot_bbs(image, img_name_noext, bbs_gt, vis, hs, save_dir, color_gt)
 
 n_reasonable = len(heights) - n_occluded  # should be 26348
 print('Number of samples: {}\nreasonable: {}\noccluded:{}'.format(len(heights), n_reasonable, n_occluded))
