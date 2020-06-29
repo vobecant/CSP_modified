@@ -123,7 +123,7 @@ if os.path.isfile(main_path):
         ann_lut = {ann['id']: ann for ann in cocoGt.anns.values()}
         ann_lut_by_img = collections.defaultdict(list)
         for ann in cocoGt.anns.values():
-            img_id = None
+            img_id = ann['image_id']
             ann_lut_by_img[img_id].append(ann)
         cocoDt = cocoGt.loadRes(resFile)
         imgIds = sorted(cocoGt.getImgIds())
