@@ -102,7 +102,7 @@ for ann in anns['annotations']:
     img_id = ann['image_id']
     ann_by_img[img_id].append(ann)
 
-for i, anns in ann_by_img:
+for i, anns in ann_by_img.items():
     bbs_gt = [ann['bboxes'] for ann in anns]
     vis = [1 for _ in bbs_gt]
     hs = []
