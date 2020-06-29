@@ -86,6 +86,7 @@ with open(gt_anns, 'r') as f:
     gt_anns = json.load(f)
 
 images_lut = {im['id']: im['file_name'] for im in gt_anns['images']}
+categories = {cat['id']: cat['name'] for cat in gt_anns['categories']}
 
 # color_ours = (31, 119, 180)
 color_ours = (144, 238, 144)
@@ -104,7 +105,7 @@ for ann in gt_anns['annotations']:
 for i, anns in ann_by_img.items():
     bbs_gt = [ann['bbox'] for ann in anns]
     vis = [1 if not ann['occluded'] else 0.5 for ann in anns]
-    labels = [gt_anns['categories'][ann['category_id']] for ann in anns]
+    labels = [categories[ann['category_id']] for ann in anns]
     hs = []
     image_path = os.path.join('/home/vobecant/datasets/nightowls/nightowls_validation', images_lut[i])
     _, image_name = os.path.split(image_path)
