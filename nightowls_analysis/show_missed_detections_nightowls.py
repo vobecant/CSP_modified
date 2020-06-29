@@ -495,6 +495,23 @@ plt.tight_layout()
 plt.savefig(os.path.join(save_dir_plots, 'test_heights_missed_reasonable_comp.jpg'))
 plt.close()
 
+plt.figure()
+plt.hist(missed_occluded_height + missed_reasonable_height, bins=bins,)
+plt.title('Heights of all missed test samples.')
+plt.tight_layout()
+plt.savefig(os.path.join(save_dir_plots, 'test_heights_missed_all.jpg'))
+plt.close()
+
+bins = np.arange(50, 600, 10)
+plt.figure()
+plt.hist(missed_occluded_height + missed_reasonable_height, bins=bins, density=True, alpha=0.5, label='all test')
+plt.hist(train_heights, bins=bins, density=True, alpha=0.5, label='training')
+plt.title('Heights of missed all test samples.')
+plt.legend()
+plt.tight_layout()
+plt.savefig(os.path.join(save_dir_plots, 'test_heights_missed_all_comp.jpg'))
+plt.close()
+
 data = {
     'missed_occluded_height': missed_occluded_height,
     'missed_occluded_visibility': missed_occluded_visibility,
