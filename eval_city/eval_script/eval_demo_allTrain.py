@@ -1,4 +1,6 @@
 from __future__ import print_function
+
+import collections
 import os, sys
 
 import numpy as np
@@ -71,17 +73,29 @@ def save_crop(bb, image, save_file):
     cv2.imwrite(save_file, crop)
 
 
-def plot_bbs(image, image_name, bbs, vis, heights, save_dir, color):
+def plot_bbs(image, image_name, bbs, vis, heights, save_dir, color, labels=None):
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
     # TODO: plot whole image
-    for i, (bb, v, h) in enumerate(zip(bbs, vis, heights)):
+    zipped = zip(bbs, vis, heights) if labels is None else zip(bbs, vis, heights, labels)
+    for i, vals in enumerate(zipped):
+        if labels is None:
+            bb, v, h = vals
+            l = None
+        else:
+            bb, v, h, l = vals
+
         bb_xyxy = xywh2xyxy(bb)
-        plot_one_box(bb_xyxy, image, color, 'v{:.2f}|h{}'.format(v, h))
+        to_write = 'v{:.2f}|h{}'.format(v, h) + ('|L{}'.format(l) if l is not None else '')
+        plot_one_box(bb_xyxy, image, color, to_write)
         # TODO: save crop of the missed sample
-        save_file_crop = os.path.join(save_dir, image_name + '_{}.png'.format(i))
-        save_crop(bb, image, save_file_crop)
-    save_file_scene = os.path.join(save_dir, image_name + '.jpg')
+        if l is None:
+            save_file_crop = os.path.join(save_dir, image_name + '_{}.png'.format(i))
+            save_crop(bb, image, save_file_crop)
+    if l is None:
+        save_file_scene = os.path.join(save_dir, image_name + '.jpg')
+    else:
+        save_file_scene = os.path.join(save_dir, image_name + '_GT.jpg')
     cv2.imwrite(save_file_scene, image)
 
 
@@ -107,6 +121,10 @@ if os.path.isfile(main_path):
         cocoGt = COCO(annFile)
         img_lut = {img['id']: img for img in cocoGt.imgs.values()}
         ann_lut = {ann['id']: ann for ann in cocoGt.anns.values()}
+        ann_lut_by_img = collections.defaultdict(list)
+        for ann in cocoGt.anns.values():
+            img_id = None
+            ann_lut_by_img[img_id].append(ann)
         cocoDt = cocoGt.loadRes(resFile)
         imgIds = sorted(cocoGt.getImgIds())
         cocoEval = COCOeval(cocoGt, cocoDt, annType)
@@ -124,13 +142,23 @@ if os.path.isfile(main_path):
                 city = image_name.split('_')[0]
                 image_path = os.path.join(img_base, city, image_name)
                 image = cv2.imread(image_path)
-                bbs = [ann_lut[m]['bbox'] for m in ms]
-                vis = [ann_lut[m]['vis_ratio'] for m in ms]
-                missed_visibilities.extend(vis)
-                heights = [bb[-1] for bb in bbs]
+                bbs_missed = [ann_lut[m]['bbox'] for m in ms]
+                vis_missed = [ann_lut[m]['vis_ratio'] for m in ms]
+                missed_visibilities.extend(vis_missed)
+                heights = [bb[-1] for bb in bbs_missed]
                 missed_heights.extend(heights)
-                plot_bbs(image, image_name.split('.')[0], bbs, vis, heights, setup_savedir,
-                         color=(0, 0, 255))
+
+                # ground truths
+                bbs_gt = [ann['bbox'] for ann in ann_lut_by_img[img_id]]
+                vis_gt = [ann['vis_ratio'] for ann in ann_lut_by_img[img_id]]
+                heights_gt = [ann['height'] for ann in ann_lut_by_img[img_id]]
+                labels = [ann['label'] for ann in ann_lut_by_img[img_id]]
+
+                # show missed detections and GT annontations
+                plot_bbs(image, image_name.split('.')[0], bbs_missed, vis_missed, heights, setup_savedir,
+                         color=(0, 0, 255), labels=None)
+                plot_bbs(image, image_name.split('.')[0], bbs_gt, vis_gt, heights_gt, setup_savedir,
+                         color=(0, 127, 0), labels=labels)
         # TODO: plot 2D histogram
         fig, ax = plt.subplots(tight_layout=True)
         hist = ax.hist2d(missed_heights, missed_visibilities)
