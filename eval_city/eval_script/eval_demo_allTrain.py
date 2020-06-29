@@ -152,7 +152,7 @@ if os.path.isfile(main_path):
                 bbs_gt = [ann['bbox'] for ann in ann_lut_by_img[img_id]]
                 vis_gt = [ann['vis_ratio'] for ann in ann_lut_by_img[img_id]]
                 heights_gt = [ann['height'] for ann in ann_lut_by_img[img_id]]
-                labels = [ann['label'] for ann in ann_lut_by_img[img_id]]
+                labels = [ann['category_id'] for ann in ann_lut_by_img[img_id]]
 
                 # show missed detections and GT annontations
                 plot_bbs(image, image_name.split('.')[0], bbs_missed, vis_missed, heights, setup_savedir,
