@@ -45,13 +45,13 @@ def save_crop(bb, image, save_file):
     cv2.imwrite(save_file, crop)
 
 
-def plot_bbs(image, image_name, bbs, vis, heights, save_dir, color):
+def plot_bbs(image, image_name, bbs, vis, heights, save_dir, color, labels):
     if not os.path.exists(save_dir):
         os.makedirs(save_dir)
     # TODO: plot whole image
-    for i, (bb, v, h) in enumerate(zip(bbs, vis, heights)):
+    for i, (bb, v, h, l) in enumerate(zip(bbs, vis, heights, labels)):
         bb_xyxy = xywh2xyxy(bb)
-        plot_one_box(bb_xyxy, image, color, 'v{:.2f}|h{}'.format(v, h))
+        plot_one_box(bb_xyxy, image, color, 'v{:.2f}\nh{}\n{}'.format(v, h, l))
         # TODO: save crop of the missed sample
         save_file_crop = os.path.join(save_dir, image_name + '_{}.png'.format(i))
         save_crop(bb, image, save_file_crop)
@@ -104,6 +104,7 @@ for ann in gt_anns['annotations']:
 for i, anns in ann_by_img.items():
     bbs_gt = [ann['bbox'] for ann in anns]
     vis = [1 if not ann['occluded'] else 0.5 for ann in anns]
+    labels = [gt_anns['categories'][ann['category_id']] for ann in anns]
     hs = []
     image_path = os.path.join('/home/vobecant/datasets/nightowls/nightowls_validation', images_lut[i])
     _, image_name = os.path.split(image_path)
@@ -116,7 +117,7 @@ for i, anns in ann_by_img.items():
         print('Skip {}'.format(i))
         continue
     image = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB)
-    plot_bbs(image, img_name_noext, bbs_gt, vis, hs, save_dir, color_gt)
+    plot_bbs(image, img_name_noext, bbs_gt, vis, hs, save_dir, color_gt, labels)
 
 n_reasonable = len(heights) - n_occluded  # should be 26348
 print('Number of samples: {}\nreasonable: {}\noccluded:{}'.format(len(heights), n_reasonable, n_occluded))
