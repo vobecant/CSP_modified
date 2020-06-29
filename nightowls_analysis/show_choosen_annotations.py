@@ -103,7 +103,7 @@ for ann in gt_anns['annotations']:
 
 for i, anns in ann_by_img.items():
     bbs_gt = [ann['bbox'] for ann in anns]
-    vis = [1 for ann in anns if not ann['occluded'] else 0.5]
+    vis = [1 if not ann['occluded'] else 0.5 for ann in anns]
     hs = []
     image_path = images_lut[i]
     _, image_name = os.path.split(image_path)
