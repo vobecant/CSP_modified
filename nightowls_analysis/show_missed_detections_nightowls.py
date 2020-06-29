@@ -103,6 +103,11 @@ save_dir_plots = os.path.join(save_dir, 'plots')
 dt_gt_file = sys.argv[4]  # /home/vobecant/datasets/nightowls/nightowls_validation.json
 NO_PLOT = True  # len(sys.argv) > 5
 
+with open('/home/vobecant/PhD/CSP/nightowls_analysis/train_statistics.pkl', 'rb') as f:
+    train_statistics = pickle.load(f)
+
+train_heights = train_statistics['heights']
+
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
 if not os.path.exists(save_dir_missed):
@@ -305,7 +310,7 @@ for im_num, dt1 in dets1_byImg.items():
         image = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB)
 
     bbs1, scores1 = dt1['boxes'], dt1['scores']
-    bbs_gt_reasonable, bbs_gt_occluded = bbs_gt_all[im_num ]
+    bbs_gt_reasonable, bbs_gt_occluded = bbs_gt_all[im_num]
     bbs_ignore = bbs_gt_all_ignore[im_num]
     bbs_gt_both = bbs_gt_reasonable + bbs_gt_occluded
 
@@ -469,6 +474,23 @@ plt.hist(missed_reasonable_height, bins=bins, density=True)
 plt.title('Heights of missed reasonable test samples.')
 plt.tight_layout()
 plt.savefig(os.path.join(save_dir_plots, 'test_heights_missed_reasonable.jpg'))
+plt.close()
+
+bins = np.arange(50, 600, 10)
+plt.figure()
+plt.hist(missed_occluded_height, bins=bins, density=True, alpha=0.5, label='occluded test')
+plt.hist(train_heights, bins=bins, density=True, alpha=0.5, label='training')
+plt.title('Heights of missed occluded test samples.')
+plt.tight_layout()
+plt.savefig(os.path.join(save_dir_plots, 'test_heights_missed_occluded_comp.jpg'))
+plt.close()
+
+plt.figure()
+plt.hist(missed_reasonable_height, bins=bins, density=True, alpha=0.5, label='reasonable test')
+plt.hist(train_heights, bins=bins, density=True, alpha=0.5, label='training')
+plt.title('Heights of missed reasonable test samples.')
+plt.tight_layout()
+plt.savefig(os.path.join(save_dir_plots, 'test_heights_missed_reasonable_comp.jpg'))
 plt.close()
 
 data = {
