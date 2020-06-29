@@ -1,3 +1,4 @@
+import collections
 import json
 import sys
 import os
@@ -95,13 +96,19 @@ GT_TL = 1
 
 heights = []
 n_occluded = 0
-for i, ann in enumerate(anns):
-    bbs_gt = ann['bboxes']
+
+ann_by_img = collections.defaultdict(list)
+for ann in anns['annotations']:
+    img_id = ann['image_id']
+    ann_by_img[img_id].append(ann)
+
+for i, anns in ann_by_img:
+    bbs_gt = [ann['bboxes'] for ann in anns]
     vis = [1 for _ in bbs_gt]
     hs = []
-    image_path = ann['filepath']
+    image_path = anns[0]['filepath']
     _, image_name = os.path.split(image_path)
-    for bb in ann['bboxes']:
+    for bb in bbs_gt:
         w = bb[2] - bb[0]
         h = bb[3] - bb[1]
         heights.append(h)
