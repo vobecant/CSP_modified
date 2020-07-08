@@ -42,14 +42,19 @@ with open(cache_path, 'rb') as fid:
     train_data = cPickle.load(fid)
 num_imgs_train = len(train_data)
 random.shuffle(train_data)
-print 'num of training samples: {}'.format(num_imgs_train)
+print('num of training samples: {}'.format(num_imgs_train))
 data_gen_train = data_generators.get_data(train_data, C, batchsize=batchsize)
 
 # define the base network (resnet here, can be MobileNet, etc)
 if C.network == 'resnet50':
     from keras_csp import resnet50 as nn
 
-    weight_path = 'data/models/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
+    if len(sys.argv) < 5:
+        weight_path = 'data/models/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
+        print('load basic ResNet50 weights from {}'.format(weight_path))
+    else:
+        weight_path = sys.argv[4]
+        print('Load pretrained weights from {}'.format(weight_path))
 
 input_shape_img = (C.size_train[0], C.size_train[1], 3)
 img_input = Input(shape=input_shape_img)
@@ -67,7 +72,6 @@ model_tea = Model(img_input, preds_tea)
 
 model.load_weights(weight_path, by_name=True)
 model_tea.load_weights(weight_path, by_name=True)
-print 'load weights from {}'.format(weight_path)
 
 if C.offset:
     out_path = 'output/valmodels/nightowls/{}/off_orig_lr{}{}'.format(C.scale, C.init_lr, '_{}'.format(specif))
