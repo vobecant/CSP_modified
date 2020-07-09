@@ -22,7 +22,7 @@ def xywh2xyxy(x):
     return y
 
 
-def save_crop(bb, image, save_file):
+def save_crop(bb_xywh, image, save_file):
     side = int(max(bb[-2:]) * 1.5)
     x_c = bb[0] + bb[2] // 2
     y_c = bb[1] + bb[3] // 2
@@ -45,7 +45,10 @@ def plot_bbs(image, image_name, bbs, vis, heights, save_dir, color):
         plot_one_box(bb_xyxy, image, color, 'v{:.2f}|h{}'.format(v, h))
         # TODO: save crop of the missed sample
         save_file_crop = os.path.join(save_dir, image_name + '_{}.png'.format(i))
-        save_crop(bb, image, save_file_crop)
+        bb_xywh = bb.copy()
+        bb_xywh[2] -= bb_xywh[0]
+        bb_xywh[3] -= bb_xywh[1]
+        save_crop(bb_xywh, image, save_file_crop)
     save_file_scene = os.path.join(save_dir, image_name + '.jpg')
     cv2.imwrite(save_file_scene, image)
 
