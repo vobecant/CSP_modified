@@ -22,7 +22,7 @@ def xywh2xyxy(x):
     return y
 
 
-def save_crop(bb_xywh, image, save_file):
+def save_crop(bb, image, save_file):
     side = int(max(bb[-2:]) * 1.5)
     x_c = bb[0] + bb[2] // 2
     y_c = bb[1] + bb[3] // 2
@@ -33,7 +33,7 @@ def save_crop(bb_xywh, image, save_file):
     bottom = min(1023, top + side)
 
     crop = image[top:bottom, left:right]
-    cv2.imwrite(save_file, crop)
+    cv2.imwrite(save_file, cv2.cvtColor(crop, cv2.COLOR_RGB2BGR))
 
 
 def plot_bbs(image, image_name, bbs, vis, heights, save_dir, color):
