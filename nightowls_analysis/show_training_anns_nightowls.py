@@ -50,7 +50,7 @@ def plot_bbs(image, image_name, bbs, vis, heights, save_dir, color):
         bb_xywh[3] -= bb_xywh[1]
         save_crop(bb_xywh, image, save_file_crop)
     save_file_scene = os.path.join(save_dir, image_name + '.jpg')
-    cv2.imwrite(save_file_scene, image)
+    cv2.imwrite(save_file_scene, cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
 
 
 def plot_one_box(bb, img, color, label=None, line_thickness=None):
