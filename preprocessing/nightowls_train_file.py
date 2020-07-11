@@ -39,6 +39,7 @@ Each dictionary has the following elements:
  - image_id
  - filepath
 '''
+ignore = set()
 
 for ann in annotations:
     if ann['category_id'] not in LABELS:
@@ -50,11 +51,14 @@ for ann in annotations:
     img_ann = choosen_anns[ann['image_id']]
     if ann['image_id'] in empty_images.keys(): del empty_images[ann['image_id']]
     img_ann['filepath'] = images_lut[ann['image_id']]
-    bbox_key = 'ignoreareas' if ann['ignore'] else 'bbox'
+    ig = ann['ignore']
+    ignore.add(ig)
+    bbox_key = 'ignoreareas' if ig else 'bbox'
     if bbox_key in img_ann.keys():
         img_ann[bbox_key].append(bbox_xyxy)
     else:
         img_ann[bbox_key] = [bbox_xyxy]
 
+print(ignore)
 with open(SAVE_FILE, 'wb') as f:
     pickle.dump(choosen_anns, f, protocol=2)
