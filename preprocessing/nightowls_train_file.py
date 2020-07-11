@@ -11,7 +11,7 @@ MIN_HEIGHT = 50
 LABELS = [1]
 
 with open(SAMPLE_TRAIN_FILE, 'rb') as f:
-    sample_anns = pickle.load(SAMPLE_TRAIN_FILE, encoding='latin1')
+    sample_anns = pickle.load(f, encoding='latin1')
 
 with open(TRAIN_ANNS, 'r') as f:
     train_anns = json.load(f)
