@@ -69,6 +69,14 @@ for ann in annotations:
     else:
         img_ann[bbox_key] = [bbox_xyxy]
 
-print(ignore)
+# keep only those images that have some annotated bounding box
+# It could have happened that some annotation would have only ignore areas.
+vals = choosen_anns.values()
+anns_list = []
+for v in vals:
+    if 'bbox' in v.keys():
+        anns_list.append(v)
+print('{} of images with some annotated peroson higher than {}'.format(len(anns_list), MIN_HEIGHT))
+
 with open(SAVE_FILE, 'wb') as f:
-    pickle.dump(choosen_anns, f, protocol=2)
+    pickle.dump(anns_list, f, protocol=2)
