@@ -17,7 +17,7 @@ with open(SAMPLE_TRAIN_FILE, 'rb') as f:
 with open(TRAIN_ANNS, 'r') as f:
     train_anns = json.load(f)
 
-images_lut = {ann['id']: ann['file_name'] for ann in train_anns['images']}
+images_lut = {ann['id']: os.path.join(IMAGES_DIR, ann['file_name']) for ann in train_anns['images']}
 annotations = train_anns['annotations']
 
 choosen_anns = collections.defaultdict(dict)
@@ -31,6 +31,15 @@ def xywh2xyxy(bbox_xywh):
     return xyxy
 
 
+'''
+Training annotations are list of dictionaries, one per image.
+Each dictionary has the following elements:
+ - ignoreareas
+ - bboxes
+ - image_id
+ - filepath
+'''
+
 for ann in annotations:
     if ann['category_id'] not in LABELS:
         continue
@@ -38,11 +47,13 @@ for ann in annotations:
     if bbox_xywh[-1] < MIN_HEIGHT:
         continue
     bbox_xyxy = xywh2xyxy(bbox_xywh)
-    img_ann = choosen_anns['image_id']
-    if 'bbox' in img_ann.keys() > 0:
-        img_ann['bbox'].append(bbox_xyxy)
+    img_ann = choosen_anns[ann['image_id']]
+    img_ann['filepath'] = images_lut[ann['image_id']]
+    bbox_key = 'ignoreareas' if ann['ignore'] else 'bbox'
+    if bbox_key in img_ann.keys():
+        img_ann[bbox_key].append(bbox_xyxy)
     else:
-        img_ann['bbox'] = [bbox_xyxy]
+        img_ann[bbox_key] = [bbox_xyxy]
 
 with open(SAVE_FILE, 'wb') as f:
     pickle.dump(choosen_anns, f, protocol=2)
