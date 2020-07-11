@@ -42,6 +42,16 @@ Each dictionary has the following elements:
 ignore = set()
 
 for ann in annotations:
+    if ann['ignore']:
+        bbox_xywh = ann['bbox']
+        bbox_xyxy = xywh2xyxy(bbox_xywh)
+        img_ann = choosen_anns[ann['image_id']]
+        if 'ignoreareas' in img_ann.keys():
+            img_ann['ignoreareas'].append(bbox_xyxy)
+        else:
+            img_ann['ignoreareas'] = [bbox_xyxy]
+        continue
+
     if ann['category_id'] not in LABELS:
         continue
     bbox_xywh = ann['bbox']
