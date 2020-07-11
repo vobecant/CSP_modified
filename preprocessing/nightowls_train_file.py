@@ -1,3 +1,4 @@
+import collections
 import sys
 import os
 import json
@@ -19,7 +20,7 @@ with open(TRAIN_ANNS, 'r') as f:
 images_lut = {ann['id']: ann['file_name'] for ann in train_anns['images']}
 annotations = train_anns['annotations']
 
-choosen_anns = []
+choosen_anns = collections.defaultdict({'ignoreareas': [], 'bboxes': [], 'image_id': None, 'filepath': None})
 empty_images = images_lut.copy()
 
 
