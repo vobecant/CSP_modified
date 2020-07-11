@@ -48,6 +48,7 @@ for ann in annotations:
         continue
     bbox_xyxy = xywh2xyxy(bbox_xywh)
     img_ann = choosen_anns[ann['image_id']]
+    del empty_images[ann['image_id']]
     img_ann['filepath'] = images_lut[ann['image_id']]
     bbox_key = 'ignoreareas' if ann['ignore'] else 'bbox'
     if bbox_key in img_ann.keys():
