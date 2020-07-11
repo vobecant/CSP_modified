@@ -3,7 +3,7 @@ import os
 import json
 import pickle
 
-TRAIN_ANNS = '/home/vobecant/datasets/nightowls/nightwols_training.json'
+TRAIN_ANNS = '/home/vobecant/datasets/nightowls/nightowls_training.json'
 SAVE_FILE = '/home/vobecant/PhD/CSP/data/cache/nightowls/train_h50_allAnns_xyxy_baseline'
 MIN_HEIGHT = 50
 LABELS = [0]
