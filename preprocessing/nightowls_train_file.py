@@ -73,10 +73,14 @@ for ann in annotations:
 # It could have happened that some annotation would have only ignore areas.
 vals = choosen_anns.values()
 anns_list = []
+skipped = 0
 for v in vals:
     if 'bbox' in v.keys():
         anns_list.append(v)
-print('{} of images with some annotated peroson higher than {}'.format(len(anns_list), MIN_HEIGHT))
+    else:
+        skipped += 1
+print(
+    '{} of images ({} skipped) with some annotated peroson higher than {}'.format(len(anns_list), skipped, MIN_HEIGHT))
 
 with open(SAVE_FILE, 'wb') as f:
     pickle.dump(anns_list, f, protocol=2)
