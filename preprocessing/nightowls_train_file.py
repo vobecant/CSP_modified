@@ -20,7 +20,7 @@ with open(TRAIN_ANNS, 'r') as f:
 images_lut = {ann['id']: ann['file_name'] for ann in train_anns['images']}
 annotations = train_anns['annotations']
 
-choosen_anns = collections.defaultdict({'ignoreareas': [], 'bboxes': [], 'image_id': None, 'filepath': None})
+choosen_anns = collections.defaultdict(dict)
 empty_images = images_lut.copy()
 
 
@@ -38,6 +38,11 @@ for ann in annotations:
     if bbox_xywh[-1] < MIN_HEIGHT:
         continue
     bbox_xyxy = xywh2xyxy(bbox_xywh)
+    img_ann = choosen_anns['image_id']
+    if len(img_ann['bbox']) > 0:
+        img_ann['bbox'].append(bbox_xyxy)
+    else:
+        img_ann['bbox'] = [bbox_xyxy]
 
 with open(SAVE_FILE, 'wb') as f:
     pickle.dump(choosen_anns, f, protocol=2)
