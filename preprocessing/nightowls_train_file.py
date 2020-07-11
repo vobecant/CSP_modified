@@ -39,7 +39,7 @@ for ann in annotations:
         continue
     bbox_xyxy = xywh2xyxy(bbox_xywh)
     img_ann = choosen_anns['image_id']
-    if len(img_ann['bbox']) > 0:
+    if 'bbox' in img_ann.keys() > 0:
         img_ann['bbox'].append(bbox_xyxy)
     else:
         img_ann['bbox'] = [bbox_xyxy]
