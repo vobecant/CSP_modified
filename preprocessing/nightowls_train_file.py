@@ -3,6 +3,7 @@ import sys
 import os
 import json
 import pickle
+import numpy as np
 
 TRAIN_ANNS = '/home/vobecant/datasets/nightowls/nightowls_training.json'
 IMAGES_DIR = '/home/vobecant/datasets/nightowls/nightowls_training'
@@ -63,7 +64,7 @@ for ann in annotations:
     img_ann['filepath'] = images_lut[ann['image_id']]
     ig = ann['ignore']
     ignore.add(ig)
-    bbox_key = 'ignoreareas' if ig else 'bbox'
+    bbox_key = 'ignoreareas' if ig else 'bboxes'
     if bbox_key in img_ann.keys():
         img_ann[bbox_key].append(bbox_xyxy)
     else:
@@ -75,7 +76,12 @@ vals = choosen_anns.values()
 anns_list = []
 skipped = 0
 for v in vals:
-    if 'bbox' in v.keys():
+    if 'bboxes' in v.keys():
+        v['bboxes'] = np.asarray(v['bboxes'])
+        if 'ignoreareas' in v.keys():
+            v['ignoreareas'] = np.asarray(v['ignoreareas'])
+        else:
+            v['ignoreareas'] = np.asarray([])
         anns_list.append(v)
     else:
         skipped += 1
