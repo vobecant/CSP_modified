@@ -11,6 +11,7 @@ SAVE_FILE = '/home/vobecant/PhD/CSP/data/cache/nightowls/train_h50_allAnns_xyxy_
 SAMPLE_TRAIN_FILE = '/home/vobecant/PhD/CSP/data/cache/nightowls/train_h50_nonempty_xyxy'
 MIN_HEIGHT = 50
 LABELS = [1]
+IMH, IMW = 640, 1024
 
 with open(SAMPLE_TRAIN_FILE, 'rb') as f:
     sample_anns = pickle.load(f, encoding='latin1')
@@ -29,6 +30,12 @@ def xywh2xyxy(bbox_xywh):
     xyxy = bbox_xywh.copy()
     xyxy[2] += bbox_xywh[0]
     xyxy[3] += bbox_xywh[1]
+
+    # apply image boundaries
+    xyxy[0] = min(IMW - 1, max(0, xyxy[0]))
+    xyxy[1] = min(IMH - 1, max(0, xyxy[1]))
+    xyxy[2] = min(IMW - 1, max(0, xyxy[2]))
+    xyxy[3] = min(IMH - 1, max(0, xyxy[3]))
     return xyxy
 
 
