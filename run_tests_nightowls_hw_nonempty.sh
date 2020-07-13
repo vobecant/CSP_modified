@@ -3,7 +3,7 @@
 MINEP=${1}
 MAXEP=${2}
 SPECIF=${3} # off_orig_lr0.0006_baseline_nonempty
-EXPNAME="test_nightowls_hw_ep${MINEP}-${MAXEP}_${SPECIF}"
+EXPNAME="test_nonemptyVal_nightowls_hw_ep${MINEP}-${MAXEP}_${SPECIF}"
 JOB_FILE="./jobs/${EXPNAME}.job"
 RESDIR="/home/vobecant/PhD/CSP/output/valresults/nightowls/hw/${SPECIF}"
 
