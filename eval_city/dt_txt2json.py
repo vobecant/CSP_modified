@@ -35,7 +35,7 @@ def txt2jsonFile(res, test_imgs):
 def convert_file(dt_path, test_imgs):
     with open(dt_path, 'r') as f:
         res = f.readlines()
-    out_path = dt_path.replace('.txt','.json')
+    out_path = dt_path.replace('.txt', '.json')
     res_json = txt2jsonFile(res, test_imgs)
     with open(out_path, 'w') as f:
         json.dump(res_json, f)
@@ -66,6 +66,7 @@ if __name__ == '__main__':
 
     dirs = [os.path.join(main_path, d) for d in os.listdir(main_path)]
     print('Found {} directories with detections.\n'.format(len(dirs)))
+    print(sorted(dirs))
 
     for d in dirs:
         if 'best' in d:
