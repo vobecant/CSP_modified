@@ -45,6 +45,7 @@ def find_txt_det_file(d):
         if 'det' in tmp and 'txt' in tmp:
             return os.path.join(d, tmp)
 
+
 best_ordered = []
 
 for f in sorted(os.listdir(main_path)):
@@ -65,20 +66,23 @@ for f in sorted(os.listdir(main_path)):
         print("The file is empty: {}. No detections. Skipping".format(resFile_txt))
         continue
     if os.path.exists(respath):
-        with open(respath) as fl:
-            configs = ['Reasonable', 'Reasonable_small', 'heavy', 'All']
-            for ci, config in enumerate(configs):
-                line = fl.readline()
-                perc = line.split(' ')[-1][:-2]
-                res = float(perc)
-                if ci == 0:
-                    mr_reasonable = res / 100
-                    heapq.heappush(best_ordered, (mr_reasonable, f))
-                print('\t{}: {:.4f}%'.format(config, res))
-        if mr_reasonable < best_mr_reasonable:
-            print('New best test MR with model {} : {} -> {}'.format(f, best_mr_reasonable, mr_reasonable))
-            best_mr_reasonable = mr_reasonable
-            best_mr_name = f
+        try:
+            with open(respath) as fl:
+                configs = ['Reasonable', 'Reasonable_small', 'heavy', 'All']
+                for ci, config in enumerate(configs):
+                    line = fl.readline()
+                    perc = line.split(' ')[-1][:-2]
+                    res = float(perc)
+                    if ci == 0:
+                        mr_reasonable = res / 100
+                        heapq.heappush(best_ordered, (mr_reasonable, f))
+                    print('\t{}: {:.4f}%'.format(config, res))
+            if mr_reasonable < best_mr_reasonable:
+                print('New best test MR with model {} : {} -> {}'.format(f, best_mr_reasonable, mr_reasonable))
+                best_mr_reasonable = mr_reasonable
+                best_mr_name = f
+        except:
+            print('Error with {}'.format(respath))
         continue
 
     ## running evaluation
