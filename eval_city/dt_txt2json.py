@@ -66,7 +66,7 @@ if __name__ == '__main__':
 
     dirs = [os.path.join(main_path, d) for d in os.listdir(main_path)]
     print('Found {} directories with detections.\n'.format(len(dirs)))
-    print(sorted(dirs))
+    dirs = sorted(dirs)
 
     for d in dirs:
         if 'best' in d:
