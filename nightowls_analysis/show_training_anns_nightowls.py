@@ -150,7 +150,7 @@ if not os.path.exists(save_dir_plots):
 with open(trn_anns, 'rb') as f:
     anns = pickle.load(f, encoding='latin1')
 
-N_CHOOSEN = 500
+N_CHOOSEN = min(500, len(anns))
 CHOOSEN_IDS = np.random.randint(0, len(anns) - 1, N_CHOOSEN)
 
 # color_ours = (31, 119, 180)
