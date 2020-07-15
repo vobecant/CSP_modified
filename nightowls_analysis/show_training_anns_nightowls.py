@@ -152,6 +152,7 @@ with open(trn_anns, 'rb') as f:
 
 N_CHOOSEN = min(500, len(anns))
 CHOOSEN_IDS = np.random.randint(0, len(anns) - 1, N_CHOOSEN)
+print(CHOOSEN_IDS)
 
 # color_ours = (31, 119, 180)
 color_ours = (144, 238, 144)
@@ -162,6 +163,7 @@ GT_TL = 1
 heights = []
 n_occluded = 0
 for i, ann in enumerate(anns):
+    print(ann)
     bbs_gt = ann['bboxes']
     vis = [1 for _ in bbs_gt]
     hs = []
