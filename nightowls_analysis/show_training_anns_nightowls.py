@@ -151,7 +151,7 @@ with open(trn_anns, 'rb') as f:
     anns = pickle.load(f, encoding='latin1')
 
 N_CHOOSEN = min(500, len(anns))
-CHOOSEN_IDS = np.random.randint(0, len(anns) - 1, N_CHOOSEN)
+CHOOSEN_IDS = np.random.randint(0, len(anns) - 1, N_CHOOSEN, replace=False)
 print(CHOOSEN_IDS)
 
 # color_ours = (31, 119, 180)
