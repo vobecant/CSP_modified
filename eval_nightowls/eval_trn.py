@@ -8,7 +8,7 @@ import heapq
 
 # Ground truth
 # annFile = '/home/vobecant/datasets/nightowls/nightowls_validation.json'
-annFile = '/home/vobecant/datasets/nightowls/nightowls_training_ins2empty.json'
+annFile = '/home/vobecant/datasets/nightowls/nightowls_training_extendedEmpty.json'
 main_path = sys.argv[1]
 print('Looking for detections in {}'.format(main_path))
 best_mr_reasonable = np.inf
