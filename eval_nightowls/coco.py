@@ -316,7 +316,8 @@ class COCO:
         assert type(anns) == list, 'results in not an array of objects'
         annsImgIds = [ann['image_id'] for ann in anns]
         assert set(annsImgIds) == (set(annsImgIds) & set(self.getImgIds())), \
-            'Results do not correspond to current coco set'
+            'Results do not correspond to current coco set, set(annsImgIds) {}, set(self.getImgIds()) {}'.format(
+                list(set(annsImgIds))[:10], list(set(self.getImgIds()))[:10])
         if 'caption' in anns[0]:
             imgIds = set([img['id'] for img in res.dataset['images']]) & set([ann['image_id'] for ann in anns])
             res.dataset['images'] = [img for img in res.dataset['images'] if img['id'] in imgIds]
