@@ -41,6 +41,9 @@ os.environ["CUDA_VISIBLE_DEVICES"] = C.gpu_ids
 with open(cache_path, 'rb') as fid:
     train_data = cPickle.load(fid)
 num_imgs_train = len(train_data)
+# set all images seen in a single epoch
+C.iter_per_epoch = num_imgs_train
+
 random.shuffle(train_data)
 print('num of training samples: {}'.format(num_imgs_train))
 data_gen_train = data_generators.get_data(train_data, C, batchsize=batchsize)
@@ -90,7 +93,8 @@ else:
     else:
         model.compile(optimizer=optimizer, loss=[losses.cls_center, losses.regr_h])
 
-epoch_length = int(C.iter_per_epoch / batchsize)
+epoch_length = int(C.iter_per_epoch // batchsize)
+print('Each epoch has {} iterations/updates.'.format(epoch_length))
 iter_num = 0
 add_epoch = 0
 losses = np.zeros((epoch_length, 3))
