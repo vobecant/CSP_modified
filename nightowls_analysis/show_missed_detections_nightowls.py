@@ -390,6 +390,7 @@ for im_num, dt1 in dets1_byImg.items():
     image = image.copy()
 
     # TODO: plot correct detections
+    print('detected reasonable: {}\ndetected occluded: {}'.format(len(detected_reasonable), len(detected_occluded)))
     image = plot_images(image, detected_reasonable, detected_reasonable_scores, image_name, label='det R', gt=False,
                         color=color_detected_reasonable)
     image = plot_images(image, detected_occluded, detected_occluded_scores, image_name, label='det O', gt=False,
@@ -496,7 +497,7 @@ plt.savefig(os.path.join(save_dir_plots, 'test_heights_missed_reasonable_comp.jp
 plt.close()
 
 plt.figure()
-plt.hist(missed_occluded_height + missed_reasonable_height, bins=bins,)
+plt.hist(missed_occluded_height + missed_reasonable_height, bins=bins, )
 plt.title('Heights of missed all test samples ({}).'.format(len(missed_occluded_height + missed_reasonable_height)))
 plt.tight_layout()
 plt.savefig(os.path.join(save_dir_plots, 'test_heights_missed_all.jpg'))

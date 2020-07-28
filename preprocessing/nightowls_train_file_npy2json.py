@@ -5,22 +5,24 @@ import json
 import pickle
 import numpy as np
 
-TRAIN_ANNS = '/home/vobecant/datasets/nightowls/nightowls_training.json'
-IMAGES_DIR = '/home/vobecant/datasets/nightowls/nightowls_training'
-SAVE_FILE = '/home/vobecant/PhD/CSP/data/cache/nightowls/train_h50_allAnns_xyxy_baseline'
-SAMPLE_TRAIN_FILE = '/home/vobecant/PhD/CSP/data/cache/nightowls/train_h50_nonempty_xyxy'
+TRAIN_ANNS = sys.argv[0]
+IMAGES_DIR = sys.argv[1]
+SAVE_FILE = sys.argv[2]
+SAMPLE_TRAIN_FILE = '/home/vobecant/datasets/nightowls/nightowls_training.json'
 MIN_HEIGHT = 50
 LABELS = [1]
 IMH, IMW = 640, 1024
 
-with open(SAMPLE_TRAIN_FILE, 'rb') as f:
-    sample_anns = pickle.load(f, encoding='latin1')
+with open(TRAIN_ANNS, 'rb') as f:
+    train_anns = pickle.load(f, encoding='latin1')
 
-with open(TRAIN_ANNS, 'r') as f:
-    train_anns = json.load(f)
+with open(SAMPLE_TRAIN_FILE, 'r') as f:
+    sample_anns = json.load(f)
 
-images_lut = {ann['id']: os.path.join(IMAGES_DIR, ann['file_name']) for ann in train_anns['images']}
-annotations = train_anns['annotations']
+# images_lut = {ann['id']: os.path.join(IMAGES_DIR, ann['file_name']) for ann in train_anns['images']}
+images_lut = {ann['file_name']: ann['id'] for ann in train_anns['images']}
+
+annotations = []
 
 choosen_anns = collections.defaultdict(dict)
 empty_images = images_lut.copy()
@@ -39,6 +41,14 @@ def xywh2xyxy(bbox_xywh):
     return xyxy
 
 
+def xyxy2xywh(bbox_xyxy):
+    xywh = bbox_xyxy.copy()
+    xywh[2] = bbox_xyxy[2] - bbox_xyxy[0]
+    xywh[3] = bbox_xyxy[3] - bbox_xyxy[1]
+
+    return xywh
+
+
 '''
 Training annotations are list of dictionaries, one per image.
 Each dictionary has the following elements:
@@ -49,7 +59,27 @@ Each dictionary has the following elements:
 '''
 ignore = set()
 
-for ann in annotations:
+ann_id = 0
+for ann in train_anns:
+
+    # TODO: process ignore areas
+    for ig in ann['ignoreareas']:
+        json_ann = {
+
+        }
+        # TODO: modify json_ann
+        ann_id += 1
+        pass
+    # TODO: process bboxes
+    for xyxy in ann['bboxes']:
+        xywh = xyxy2xywh(xyxy)
+        json_ann = {
+
+        }
+        # TODO: modify json_ann
+        ann_id += 1
+        pass
+
     if ann['ignore']:
         bbox_xywh = ann['bbox']
         bbox_xyxy = xywh2xyxy(bbox_xywh)
@@ -95,5 +125,5 @@ for v in vals:
 print(
     '{} of images ({} skipped) with some annotated peroson higher than {}'.format(len(anns_list), skipped, MIN_HEIGHT))
 
-with open(SAVE_FILE, 'wb') as f:
-    pickle.dump(anns_list, f, protocol=2)
+with open(SAVE_FILE, 'w') as f:
+    json.dump(anns_list, f)
