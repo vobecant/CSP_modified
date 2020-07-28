@@ -101,7 +101,7 @@ save_dir = sys.argv[3]  # ./test_set
 save_dir_missed = os.path.join(save_dir, 'missed')
 save_dir_plots = os.path.join(save_dir, 'plots')
 dt_gt_file = sys.argv[4]  # /home/vobecant/datasets/nightowls/nightowls_validation.json
-NO_PLOT = True  # len(sys.argv) > 5
+NO_PLOT = False  # len(sys.argv) > 5
 
 with open('/home/vobecant/PhD/CSP/nightowls_analysis/train_statistics.pkl', 'rb') as f:
     train_statistics = pickle.load(f)
