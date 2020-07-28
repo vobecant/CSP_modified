@@ -117,11 +117,12 @@ if not os.path.exists(save_dir_plots):
 
 with open(dt_file1, 'r') as f:
     dets1 = json.load(f)
+imgs_with_dets = set([ann['image_id'] for ann in dets1])
 
 with open(dt_gt_file, 'r') as f:
     gts = json.load(f)
 
-dets1_byImg = {im['id']: {'boxes': [], 'scores': []} for im in gts['images']}
+dets1_byImg = {im: {'boxes': [], 'scores': []} for im in imgs_with_dets}
 bbs_gt_all = {im['id']: [[], []] for im in gts['images']}
 bbs_gt_all_ignore = {im['id']: [] for im in gts['images']}
 
