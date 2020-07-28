@@ -135,6 +135,8 @@ for dt in dets1:
     dets1_byImg[dt['image_id']]['boxes'].append(dt['bbox'])
     dets1_byImg[dt['image_id']]['scores'].append(dt['score'])
 
+print('Number of images with detections: {}'.format(len(dets1_byImg)))
+
 n_peds_reasonable, n_peds_occluded = 0, 0
 height_reasonable, height_occluded = [], []
 vis_reasonable, vis_occluded = [], []
@@ -390,7 +392,6 @@ for im_num, dt1 in dets1_byImg.items():
     image = image.copy()
 
     # TODO: plot correct detections
-    print('detected reasonable: {}\ndetected occluded: {}'.format(len(detected_reasonable), len(detected_occluded)))
     image = plot_images(image, detected_reasonable, detected_reasonable_scores, image_name, label='det R', gt=False,
                         color=color_detected_reasonable)
     image = plot_images(image, detected_occluded, detected_occluded_scores, image_name, label='det O', gt=False,
