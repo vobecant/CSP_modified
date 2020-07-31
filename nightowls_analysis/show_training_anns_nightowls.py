@@ -185,7 +185,6 @@ for i, ann in enumerate(anns):
     # print('Saved GTs to {}'.format(pth))
     # plt.imsave(pth, img_gts)
 
-'''
 n_reasonable = len(heights) - n_occluded  # should be 26348
 print('Number of samples: {}\nreasonable: {}\noccluded:{}'.format(len(heights), n_reasonable, n_occluded))
 
@@ -208,6 +207,5 @@ data = {
     # 'visibilities': visibilities
 }
 
-with open('/home/vobecant/PhD/CSP/nightowls_analysis/train_statistics.pkl', 'wb') as f:
+with open(os.path.join(save_dir, 'train_statistics.pkl'), 'wb') as f:
     pickle.dump(data, f)
-'''
