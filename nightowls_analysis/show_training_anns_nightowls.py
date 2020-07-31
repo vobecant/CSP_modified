@@ -176,7 +176,7 @@ for i, ann in enumerate(anns):
         hs.append(h)
 
     if i not in CHOOSEN_IDS:
-        print('Skip {}'.format(i))
+        #print('Skip {}'.format(i))
         continue
     image = cv2.cvtColor(cv2.imread(image_path), cv2.COLOR_BGR2RGB)
     plot_bbs(image, image_name.split('.')[0], bbs_gt, vis, hs, save_dir, color_gt)
