@@ -42,7 +42,7 @@ with open(cache_path, 'rb') as fid:
     train_data = cPickle.load(fid)
 num_imgs_train = len(train_data)
 # set all images seen in a single epoch
-C.iter_per_epoch = num_imgs_train
+# C.iter_per_epoch = num_imgs_train
 
 random.shuffle(train_data)
 print('num of training samples: {}'.format(num_imgs_train))
