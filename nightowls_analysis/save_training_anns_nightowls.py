@@ -140,7 +140,9 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, labe
     return img
 
 
-trn_anns = sys.argv[1]  # original /home/vobecant/PhD/CSP/data/cache/nightowls/extended_emptyImages_final
+# cluster /home/vobecant/PhD/CSP/data/cache/nightowls/extended_emptyImages_final
+# local /Users/vobecant/ciirc_cluster/PhD/CSP/data/cache/nightowls/extended_emptyImages_final
+trn_anns = sys.argv[1]
 # trn_img_dir = sys.argv[2] # /home/vobecant/datasets/nightowls/nightowls_training
 save_dir = sys.argv[2]  # /home/vobecant/PhD/CSP/nightowls_analysis/training_set_extendedEmpty_final
 
