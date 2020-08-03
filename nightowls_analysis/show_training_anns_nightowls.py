@@ -42,13 +42,13 @@ def plot_bbs(image, image_name, bbs, vis, heights, save_dir, color):
     # TODO: plot whole image
     for i, (bb, v, h) in enumerate(zip(bbs, vis, heights)):
         bb_xyxy = bb  # xywh2xyxy(bb)
-        plot_one_box(bb_xyxy, image, color, 'v{:.2f}|h{}'.format(v, h))
         # TODO: save crop of the missed sample
         save_file_crop = os.path.join(save_dir, image_name + '_{}.png'.format(i))
         bb_xywh = bb.copy()
         bb_xywh[2] -= bb_xywh[0]
         bb_xywh[3] -= bb_xywh[1]
         save_crop(bb_xywh, image, save_file_crop)
+        plot_one_box(bb_xyxy, image, color, 'v{:.2f}|h{}'.format(v, h))
     save_file_scene = os.path.join(save_dir, image_name + '.jpg')
     cv2.imwrite(save_file_scene, cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
 
