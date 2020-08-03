@@ -1,7 +1,6 @@
 import os
 import sys
 import cv2
-from PIL import Image
 
 DIR = sys.argv[1]
 
@@ -12,7 +11,8 @@ for im in imgs:
     crop_fname, ext = im.split('.')
     crop_fname = crop_fname + '_0.png'
     crop_fname = os.path.join(DIR, crop_fname)
-    full = Image.open(full_fname)
-    crop = Image.open(crop_fname)
-    full.show()
-    crop.show()
+    full = cv2.imread(full_fname)
+    crop = cv2.imread(crop_fname)
+    cv2.imshow('crop', crop)
+    cv2.imshow('full', full)
+    cv2.waitKey()
