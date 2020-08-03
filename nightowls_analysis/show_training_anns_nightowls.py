@@ -139,7 +139,7 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, labe
 
 trn_anns = sys.argv[1]  # original /home/vobecant/PhD/CSP/data/cache/nightowls/train_h50_nonempty_xyxy
 # trn_img_dir = sys.argv[2] # /home/vobecant/datasets/nightowls/nightowls_training
-save_dir = sys.argv[2]  # /home/vobecant/PhD/CSP/nightowls_analysis/training_set
+save_dir = sys.argv[2]  # /home/vobecant/PhD/CSP/nightowls_analysis/training_set_extendedEmpty_final
 
 if not os.path.exists(save_dir):
     os.makedirs(save_dir)
@@ -150,7 +150,8 @@ if not os.path.exists(save_dir_plots):
 with open(trn_anns, 'rb') as f:
     anns = pickle.load(f, encoding='latin1')
 
-N_CHOOSEN = min(500, len(anns))
+MAX_CHOOSEN = 1000
+N_CHOOSEN = min(MAX_CHOOSEN, len(anns))
 CHOOSEN_IDS = np.random.choice([i for i in range(len(anns))], N_CHOOSEN, replace=False)
 print(CHOOSEN_IDS)
 

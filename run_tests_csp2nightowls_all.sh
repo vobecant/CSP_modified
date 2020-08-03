@@ -18,7 +18,7 @@ echo "#!/bin/bash -l
 
 python -u test_csp2nightowls_all.py ${WDIR} > ${EXPNAME}.out
 python -u /home/vobecant/PhD/CSP/eval_city/dt_txt2json.py ${RESDIR}
-python -u /home/vobecant/PhD/CSP/eval_nightowls/eval.py ${RESDIR}" >${JOB_FILE}
+python -u /home/vobecant/PhD/CSP/eval_nightowls/eval_all.py ${RESDIR}" >${JOB_FILE}
 echo "run job ${JOB_FILE}"
 sbatch ${JOB_FILE}
 echo ""
