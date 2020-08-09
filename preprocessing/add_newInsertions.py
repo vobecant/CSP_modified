@@ -24,7 +24,7 @@ for pth in json_anns:
     img_name = os.path.split(ann['bg_path'])[-1]
     orig_ann = img2orig[img_name]
     new_bbox = np.asarray(ann['xyxy']).reshape((-1,4))
-    assert new_bbox[-1]-new_bbox[1]>=50
+    assert new_bbox[0,-1]-new_bbox[0,1]>=50
     if len(orig_ann['bboxes']):
         orig_ann['bboxes'] = np.concatenate((orig_ann['bboxes'], new_bbox),axis=0)
     else:
