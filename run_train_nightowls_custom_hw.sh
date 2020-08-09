@@ -3,6 +3,7 @@
 SPECIF=${1}
 CACHE=${2}
 LR=${3}
+WEIGHTS=${4}
 EXPNAME="train_nightowls_${SPECIF}"
 JOB_FILE="./jobs/${EXPNAME}.job"
 
@@ -18,7 +19,7 @@ echo "#!/bin/bash
 #SBATCH --mail-user=a.vobecky@gmail.com
 
 # train the detector on Nightowls
-python -u train_nightowls_custom_hw.py ${SPECIF} ${CACHE} ${LR} > csp_hw_nightowls_${SPECIF}.out" >${JOB_FILE}
+python -u train_nightowls_custom_hw.py ${SPECIF} ${CACHE} ${LR} ${WEIGHTS} > csp_hw_nightowls_${SPECIF}.out" >${JOB_FILE}
 echo "run job ${JOB_FILE}"
 sbatch ${JOB_FILE}
 echo ""

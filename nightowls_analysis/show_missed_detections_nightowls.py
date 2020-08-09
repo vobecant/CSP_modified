@@ -15,7 +15,7 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 
-def xywh2xyxy(x):
+def xywh2z(x):
     # Convert nx4 boxes from [x, y, w, h] to [x1, y1, x2, y2] where xy1=top-left, xy2=bottom-right
     y = np.zeros_like(x)
     y[:, 0] = x[:, 0] - x[:, 2] / 2  # top left x
