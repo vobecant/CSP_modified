@@ -19,9 +19,9 @@ C = config.Config()
 C.gpu_ids = '0,1,2,3,4,5,6,7'
 num_gpu = len(C.gpu_ids.split(','))
 C.onegpu = 4
-C.size_train = (640, 1200)  # original size (1024, 1920)
+C.size_train = (640, 1024)
 # image channel-wise mean to subtract, the order is BGR!!!
-C.img_channel_mean = [62.22632229, 76.71838384, 78.05682094]  # [103.939, 116.779, 123.68]
+C.img_channel_mean = [103.939, 116.779, 123.68]  # ImageNet?
 # we need to increase the learning rate as we use more GPUs (was 4) and bigger batch size (was 2 per GPU)
 ngpu_mult = int(num_gpu / 4)
 bs_mult = int(C.onegpu / 2)
@@ -38,7 +38,6 @@ print('Batch size: {}'.format(batchsize))
 os.environ["CUDA_VISIBLE_DEVICES"] = C.gpu_ids
 
 # get the training data
-print('Load training annotations from {}'.format(cache_path))
 with open(cache_path, 'rb') as fid:
     train_data = cPickle.load(fid)
 num_imgs_train = len(train_data)
@@ -78,9 +77,9 @@ model.load_weights(weight_path, by_name=True)
 model_tea.load_weights(weight_path, by_name=True)
 
 if C.offset:
-    out_path = 'output/valmodels/nightowls/{}/off_orig_lr{}{}'.format(C.scale, C.init_lr, '_{}'.format(specif))
+    out_path = 'output/valmodels/ecp/{}/off_orig_lr{}{}'.format(C.scale, C.init_lr, '_{}'.format(specif))
 else:
-    out_path = 'output/valmodels/city/%s/nooff' % (C.scale)
+    out_path = 'output/valmodels/ecp/%s/nooff' % (C.scale)
 if not os.path.exists(out_path):
     os.makedirs(out_path)
 res_file = os.path.join(out_path, 'records.txt')
