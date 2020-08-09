@@ -26,6 +26,9 @@ for trnf in trn_files:
     with open(trnf, 'r') as f:
         trn = json.load(f)
 
+    img_path = trnf.replace('.json','.png').replace('/labels/','/img/')
+    assert os.path.exists(img_path)
+
     ann = {'ignoreareas': [],
            'vis_bboxes': [],
            'bboxes': [],
