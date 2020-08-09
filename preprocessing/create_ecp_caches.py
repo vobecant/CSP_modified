@@ -53,7 +53,7 @@ for trnf in trn_files:
 
     anns_list.append(ann)
 
-with open(save_file_trn, 'rb') as f:
+with open(save_file_trn, 'wb') as f:
     pickle.dump(anns_list, f)
 
 # TODO: validation files
@@ -83,5 +83,5 @@ for trnf in val_files:
 
     anns_list.append(ann)
 
-with open(save_file_val, 'rb') as f:
+with open(save_file_val, 'wb') as f:
     pickle.dump(anns_list, f)
