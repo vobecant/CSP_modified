@@ -21,4 +21,4 @@ for pth in json_anns:
         ann = json.load(f)
     img_name = os.path.split(ann['bg_path'])[-1]
     orig_ann = img2orig[img_name]
-    orig_ann = np.concatenate()
+    orig_ann['bboxes'] = np.concatenate((orig_ann['bboxes'], ann['xyxy']),axis=0)
