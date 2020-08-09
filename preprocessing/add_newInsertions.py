@@ -7,12 +7,12 @@ import numpy as np
 # /home/vobecant/PhD/cut_paste_learn__data_generator/cpl_ins2cityscapes_final2_random/annotations
 JSON_ANNS_DIR = sys.argv[1]
 IMG_DIR = sys.argv[2]  # /home/vobecant/PhD/cut_paste_learn__data_generator/cpl_ins2cityscapes_final2_random/images
-ORIG_ANNS = sys.argv[3] # /home/vobecant/PhD/CSP/data/cache/cityperson/train_h50
+ORIG_ANNS = sys.argv[3]  # /home/vobecant/PhD/CSP/data/cache/cityperson/train_h50
 
 json_anns = [os.path.join(JSON_ANNS_DIR, a) for a in os.listdir(JSON_ANNS_DIR) if a.endswith('.json')]
 
 with open(ORIG_ANNS, 'rb') as f:
-    orig_anns = pickle.load(f)
+    orig_anns = pickle.load(f, encoding='latin1')
 
 img2orig = {os.path.split(ann['filepath'])[-1]: ann for ann in orig_anns}
 
