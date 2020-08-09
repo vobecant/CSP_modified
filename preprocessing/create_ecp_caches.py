@@ -40,10 +40,10 @@ for trnf in trn_files:
            'bboxes': [],
            'filepath': img_path}
 
-    for ann in trn['children']:
-        bbox = [ann['x0'], ann['y0'], ann['x1'], ann['y1']]
+    for ch in trn['children']:
+        bbox = [ch['x0'], ch['y0'], ch['x1'], ch['y1']]
         height = bbox[-1] - bbox[1]
-        if ann['identity'] == 'pedestrian' and height >= 50:
+        if ch['identity'] == 'pedestrian' and height >= 50:
             ann['bboxes'].append(bbox)
         else:
             ann['ignoreareas'].append(bbox)
@@ -70,9 +70,10 @@ for trnf in val_files:
            'bboxes': [],
            'filepath': img_path}
 
-    for ann in trn['children']:
-        bbox = [ann['x0'], ann['y0'], ann['x1'], ann['y1']]
-        if ann['identity'] == 'pedestrian':
+    for ch in trn['children']:
+        bbox = [ch['x0'], ch['y0'], ch['x1'], ch['y1']]
+        height = bbox[-1] - bbox[1]
+        if ch['identity'] == 'pedestrian' and height >= 50:
             ann['bboxes'].append(bbox)
         else:
             ann['ignoreareas'].append(bbox)
