@@ -53,7 +53,7 @@ data_gen_train = data_generators.get_data(train_data, C, batchsize=batchsize)
 if C.network == 'resnet50':
     from keras_csp import resnet50 as nn
 
-    if len(sys.argv) < 5:
+    if len(sys.argv) < 5 or not os.path.exists(sys.argv[4]):
         weight_path = 'data/models/resnet50_weights_tf_dim_ordering_tf_kernels.h5'
         print('load basic ResNet50 weights from {}'.format(weight_path))
     else:
