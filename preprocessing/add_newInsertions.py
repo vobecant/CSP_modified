@@ -23,7 +23,11 @@ for pth in json_anns:
         ann = json.load(f)
     img_name = os.path.split(ann['bg_path'])[-1]
     orig_ann = img2orig[img_name]
-    orig_ann['bboxes'] = np.concatenate((orig_ann['bboxes'], np.asarray(ann['xyxy']).reshape((-1,4))),axis=0)
+    new_bbox = np.asarray(ann['xyxy']).reshape((-1,4))
+    if len(orig_ann['bboxes']):
+        orig_ann['bboxes'] = np.concatenate((orig_ann['bboxes'], new_bbox),axis=0)
+    else:
+        orig_ann['bboxes'] = new_bbox
 
 with open(SAVE_PATH, 'wb') as f:
     pickle.dump(orig_anns,f)
