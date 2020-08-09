@@ -12,7 +12,7 @@ from keras_csp import config, data_generators
 from keras_csp import losses as losses
 
 specif = sys.argv[1]
-cache_path = sys.argv[2]  # data/cache/nightowls/train_h50_nonempty_xyxy_extended
+cache_path = sys.argv[2]  # /home/vobecant/datasets/ecp/ECP/train_h50
 
 # get the config parameters
 C = config.Config()
