@@ -17,4 +17,4 @@
 CACHEPATH="/home/vobecant/PhD/CSP/data/cache/cityperson/train_h50_adgan_newMasks"
 SPECIF=cp_adgan_newMasks
 LR=0.0006
-python -u train_city_custom.py ${CACHEPATH} ${SPECIF} ${LR} >csp_${SPECIF}.out
+python -u train_city_custom.py ${CACHEPATH} ${SPECIF} ${LR} >${SPECIF}.out
