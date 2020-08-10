@@ -429,7 +429,7 @@ class COCOeval:
                     except:
                         pass
                     try:
-                        ys[t, :, k, m] = np.array(q)
+                        ys[int(t), :, int(k), int(m)] = np.array(q)
                     except:
                         print('t {}, k {}, m {}, q {}'.format(t,k,m,q))
                         assert False
