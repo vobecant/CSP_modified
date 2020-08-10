@@ -428,7 +428,11 @@ class COCOeval:
                             q[ri] = recall[pi]
                     except:
                         pass
-                    ys[t, :, k, m] = np.array(q)
+                    try:
+                        ys[t, :, k, m] = np.array(q)
+                    except:
+                        print('t {}, k {}, m {}, q {}'.format(t,k,m,q))
+                        assert False
 
                     if plot:
                         mr = 1 - np.array(q)
