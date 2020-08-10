@@ -73,7 +73,10 @@ for trnf in val_files:
     for ch in trn['children']:
         bbox = [ch['x0'], ch['y0'], ch['x1'], ch['y1']]
         height = bbox[-1] - bbox[1]
-        if ch['identity'] == 'pedestrian' and height >= 50:
+        width = bbox[2] - bbox[0]
+        if width<=5:
+            print(ch)
+        if ch['identity'] == 'pedestrian' and height >= 50 and width>5:
             ann['bboxes'].append(bbox)
         else:
             ann['ignoreareas'].append(bbox)
