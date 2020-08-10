@@ -19,7 +19,7 @@ C = config.Config()
 C.gpu_ids = '0,1,2,3,4,5,6,7'
 num_gpu = len(C.gpu_ids.split(','))
 C.onegpu = 4
-C.size_train = (640, 1200)  # original size (1024, 1920)
+C.size_train = (640, 1024)  # original size of Nightowls
 # image channel-wise mean to subtract, the order is BGR!!!
 C.img_channel_mean = [62.22632229, 76.71838384, 78.05682094]  # [103.939, 116.779, 123.68]
 # we need to increase the learning rate as we use more GPUs (was 4) and bigger batch size (was 2 per GPU)
