@@ -431,7 +431,7 @@ class COCOeval:
                     try:
                         ys[int(t), :, int(k), int(m)] = np.array(q)
                     except:
-                        print('t {}, k {}, m {}, q {}'.format(t,k,m,q))
+                        print('t {}, k {}, m {}, q {}'.format(int(t),int(k),int(m),q))
                         assert False
 
                     if plot:
