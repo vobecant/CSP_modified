@@ -13,7 +13,7 @@ echo "#!/bin/bash -l
 #SBATCH --output=${EXPNAME}.out
 #SBATCH --cpus-per-task=10
 #SBATCH --gres=gpu:1
-#SBATCH --partition gpu
+#SBATCH --partition deadline
 #SBATCH --exclude=node-10,node-12
 #SBATCH --mem=20GB
 #SBATCH --time=2-00:00:00
