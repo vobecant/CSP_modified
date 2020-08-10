@@ -199,7 +199,12 @@ def get_data(ped_data, C, batchsize=8, exp_name=''):
             y_height_batch.append(np.expand_dims(y_height, axis=0))
             if C.offset:
                 y_offset_batch.append(np.expand_dims(y_offset, axis=0))
-        x_img_batch = np.concatenate(x_img_batch, axis=0)
+        try:
+            x_img_batch = np.concatenate(x_img_batch, axis=0)
+        except:
+            for im, img_data in zip(x_img_batch,ped_data[current_ped:current_ped + batchsize]):
+                print(im.shape,img_data['filepath'])
+            assert False
         y_seman_batch = np.concatenate(y_seman_batch, axis=0)
         y_height_batch = np.concatenate(y_height_batch, axis=0)
         if C.offset:
