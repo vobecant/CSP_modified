@@ -87,4 +87,4 @@ for trnf in val_files:
     anns_list.append(ann)
 
 with open(save_file_val, 'wb') as f:
-    pickle.dump(anns_list, f)
+    pickle.dump(anns_list, f, protocol=2)
