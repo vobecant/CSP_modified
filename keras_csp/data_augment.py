@@ -122,6 +122,7 @@ def augment(img_data, c):
     assert 'bboxes' in img_data
     img_data_aug = copy.deepcopy(img_data)
     img = cv2.imread(img_data_aug['filepath'])
+    assert img is not None, 'image is None! {}'.format(img_data_aug['filepath'])
     img_height, img_width = img.shape[:2]
 
     # random brightness
