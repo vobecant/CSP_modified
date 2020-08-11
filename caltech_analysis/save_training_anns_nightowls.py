@@ -8,7 +8,10 @@ import matplotlib
 import random
 import pickle
 
+matplotlib.use('agg')
 import matplotlib.pyplot as plt
+
+SHOW = False
 
 
 def xywh2xyxy(x):
@@ -32,8 +35,9 @@ def save_crop(bb, image, save_file):
     bottom = min(1023, top + side)
 
     crop = image[top:bottom, left:right]
-    cv2.imshow('crop', crop)
-    cv2.waitKey(500)
+    if SHOW:
+        cv2.imshow('crop', crop)
+        cv2.waitKey(500)
     cv2.imwrite(save_file, cv2.cvtColor(crop, cv2.COLOR_RGB2BGR))
 
 
@@ -51,8 +55,9 @@ def plot_bbs(image, image_name, bbs, vis, heights, save_dir, color):
         save_crop(bb_xywh, image, save_file_crop)
         plot_one_box(bb_xyxy, image, color, 'v{:.2f}|h{}'.format(v, h))
     save_file_scene = os.path.join(save_dir, image_name + '.jpg')
-    cv2.imshow('full', image)
-    cv2.waitKey(2000)
+    if SHOW:
+        cv2.imshow('full', image)
+        cv2.waitKey(2000)
     cv2.imwrite(save_file_scene, cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
 
 
@@ -130,10 +135,7 @@ def plot_images(img, boxes, confs, path=None, fname='images.jpg', gt=False, labe
     return img
 
 
-# cluster /home/vobecant/PhD/CSP/data/cache/nightowls/extended_emptyImages_final
-# local /Users/vobecant/ciirc_cluster/PhD/CSP/data/cache/nightowls/extended_emptyImages_final
-trn_anns = sys.argv[1]
-# trn_img_dir = sys.argv[2] # /home/vobecant/datasets/nightowls/nightowls_training
+trn_anns = sys.argv[1]  # /home/vobecant/PhD/CSP/data/cache/caltech/train_gt_ext
 save_dir = sys.argv[2]  # /home/vobecant/PhD/CSP/caltech_analysis/training_set_extended_examples
 
 if not os.path.exists(save_dir):
