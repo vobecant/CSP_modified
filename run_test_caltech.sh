@@ -10,4 +10,4 @@
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=a.vobecky@gmail.com
 
-python -u test_caltech >csp_tst_caltech.out
+python -u test_caltech.py >csp_tst_caltech.out
