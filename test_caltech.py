@@ -58,10 +58,9 @@ for w_ind in range(51, 201):
     for f in range(num_imgs):
         filepath = val_data[f]['filepath']
         filepath_next = val_data[f + 1]['filepath'] if f < num_imgs - 1 else val_data[f]['filepath']
-        set = filepath.split('/')[-1].split('_')[0]
-        video = filepath.split('/')[-1].split('_')[1]
-        frame_number = int(filepath.split('/')[-1].split('_')[2][1:6]) + 1
-        frame_number_next = int(filepath_next.split('/')[-1].split('_')[2][1:6]) + 1
+        set, video, image_name = filepath.split('/')[-3:]
+        frame_number = int(image_name.split('.')[0][1:]) + 1
+        frame_number_next = int(filepath_next.split('/')[-1].split('.')[0][1:]) + 1
         set_path = os.path.join(res_path, set)
         video_path = os.path.join(set_path, video + '.txt')
         if os.path.exists(video_path):
