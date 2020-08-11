@@ -79,9 +79,9 @@ model_tea.load_weights(weight_path, by_name=True)
 print('load weights from {}'.format(weight_path))
 
 if C.offset:
-    out_path = 'output/valmodels/caltech/%s/off2_{}' % (C.scale, specif)
+    out_path = 'output/valmodels/caltech/{}/off2_{}'.format(C.scale, specif)
 else:
-    out_path = 'output/valmodels/caltech/%s/nooff_{}' % (C.scale, specif)
+    out_path = 'output/valmodels/caltech/{}/nooff_{}'.format(C.scale, specif)
 
 if not os.path.exists(out_path):
     os.makedirs(out_path)
