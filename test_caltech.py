@@ -11,7 +11,7 @@ from keras_csp import resnet50 as nn
 os.environ["CUDA_VISIBLE_DEVICES"] = '1'
 C = config.Config()
 C.offset = True
-cache_path = 'data/cache/caltech/test'
+cache_path = 'data/cache/caltech/test_my'
 with open(cache_path, 'rb') as fid:
     val_data = cPickle.load(fid)
 num_imgs = len(val_data)
