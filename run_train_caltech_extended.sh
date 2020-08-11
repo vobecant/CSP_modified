@@ -16,4 +16,4 @@
 CACHEPATH="data/cache/caltech/train_gt_ext"
 SPECIF=caltech_extended
 LR=0.0004
-python -u train_city_custom.py ${CACHEPATH} ${SPECIF} ${LR} >csp_${SPECIF}.out
+python -u train_caltech_extended.py ${CACHEPATH} ${SPECIF} ${LR} >csp_${SPECIF}.out
