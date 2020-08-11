@@ -183,6 +183,8 @@ else:
         # initialize COCO detections api
         dt_path = os.path.join(main_path, f)
         resFile_txt = os.path.join(dt_path, 'val_det.txt')
+        if not os.path.exists(resFile_txt):
+            continue
         resFile = os.path.join(dt_path, 'val_dt.json')
         if not os.path.isfile(resFile):
             resFile = os.path.join(dt_path, 'val_det.json')
