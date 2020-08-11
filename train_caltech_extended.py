@@ -38,7 +38,7 @@ os.environ["CUDA_VISIBLE_DEVICES"] = C.gpu_ids
 
 # get the training data
 cache_ped = 'data/cache/caltech/train_gt_ext'
-cache_emp = 'data/cache/caltech/train_nogt'
+cache_emp = 'data/cache/caltech/train_nogt_my'
 with open(cache_ped, 'rb') as fid:
     ped_data = cPickle.load(fid)
 with open(cache_emp, 'rb') as fid:
