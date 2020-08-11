@@ -22,7 +22,7 @@ bbsType = 'fp';           % type of bbs to display (fp/tp/fn/dt)
 % -------------------------------------------------------------------------
 % paths
 pth.rootDir='./';
-pth.resDir='../output/valresults/caltech/h/off';
+pth.resDir='../output/valresults/caltech/h/off2_caltech_extended';
 pth.evalDir=[pth.rootDir 'ResultsEval/eval-' annVer];
 pth.dtDir=[pth.rootDir 'ResultsEval/dt-'];
 pth.gtDir=[pth.rootDir 'ResultsEval/gt-' annVer];
