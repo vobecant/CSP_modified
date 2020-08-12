@@ -5,6 +5,7 @@ END=${2}
 TIME=${3}
 EXPNAME="test_caltech_run2_${START}-${END}"
 JOB="./jobs/${EXPNAME}.job"
+echo "Start testing epochs ${START}-${END} at ${TIME}"
 
 echo "#!/bin/bash
 #SBATCH --job-name=tst_${START}-${END}
