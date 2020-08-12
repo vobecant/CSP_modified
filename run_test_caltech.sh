@@ -1,5 +1,5 @@
 #!/bin/bash
-STEP=10
+STEP=${1}
 
 for i in $(seq 1 ${STEP} 249); do
   START=${i}
@@ -11,7 +11,7 @@ for i in $(seq 1 ${STEP} 249); do
 #SBATCH --job-name=tst_${START}-${END}
 #SBATCH --output=${EXPNAME}.err
 #SBATCH --time=3-00:00:00
-#SBATCH --mem=190GB
+#SBATCH --mem=20GB
 #SBATCH --gres=gpu:1
 #SBATCH --exclude=node-16,node-12
 #SBATCH --cpus-per-task=16
@@ -22,5 +22,5 @@ for i in $(seq 1 ${STEP} 249); do
 python -u test_caltech.py ${START} ${END} >${EXPNAME}.out" >${JOB}
   sbatch ${JOB}
   echo "Run job ${JOB}\n"
-  wait 2
+  sleep 2
 done
