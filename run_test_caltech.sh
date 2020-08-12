@@ -5,8 +5,8 @@ EXPNAME="test_caltech_${START}-${END}"
 JOB="${EXPNAME}.job"
 
 echo "#!/bin/bash
-#SBATCH --job-name=csp_tst_caltech
-#SBATCH --output=csp_tst_caltech.err
+#SBATCH --job-name=tst_${START}-${END}
+#SBATCH --output=${EXPNAME}.err
 #SBATCH --time=3-00:00:00
 #SBATCH --mem=190GB
 #SBATCH --gres=gpu:1
