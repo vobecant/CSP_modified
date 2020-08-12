@@ -12,7 +12,6 @@ from keras_csp import resnet50 as nn
 START = int(sys.argv[1])
 END = int(sys.argv[2])
 
-os.environ["CUDA_VISIBLE_DEVICES"] = '1'
 C = config.Config()
 C.offset = True
 cache_path = 'data/cache/caltech/test_my'
