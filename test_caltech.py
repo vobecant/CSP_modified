@@ -1,5 +1,6 @@
 from __future__ import division
 import os
+import sys
 import time
 import cPickle
 from keras.layers import Input
@@ -7,6 +8,9 @@ from keras.models import Model
 from keras_csp import config, bbox_process
 from keras_csp.utilsfunc import *
 from keras_csp import resnet50 as nn
+
+START = sys.argv[1]
+END = sys.argv[2]
 
 os.environ["CUDA_VISIBLE_DEVICES"] = '1'
 C = config.Config()
@@ -36,7 +40,7 @@ else:
 if not os.path.exists(out_path):
     os.makedirs(out_path)
 files = sorted(os.listdir(w_path))
-for w_ind in range(51, 201):
+for w_ind in range(START, END):
     for f in files:
         if f.split('_')[0] == 'net' and int(f.split('_')[1][1:]) == w_ind:
             cur_file = f
