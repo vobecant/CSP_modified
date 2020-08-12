@@ -1,10 +1,13 @@
 #!/bin/bash
-START=${1}
-END=${2}
-EXPNAME="test_caltech_${START}-${END}"
-JOB="${EXPNAME}.job"
+STEP=10
 
-echo "#!/bin/bash
+for i in $(seq 1 ${STEP} 249); do
+  START=${i}
+  END=$(expr ${i} + ${STEP})
+  EXPNAME="test_caltech_${START}-${END}"
+  JOB="./jobs/${EXPNAME}.job"
+
+  echo "#!/bin/bash
 #SBATCH --job-name=tst_${START}-${END}
 #SBATCH --output=${EXPNAME}.err
 #SBATCH --time=3-00:00:00
@@ -16,5 +19,8 @@ echo "#!/bin/bash
 #SBATCH --mail-type=BEGIN,END,FAIL
 #SBATCH --mail-user=a.vobecky@gmail.com
 
-python -u test_caltech.py ${START} ${END} >${EXPNAME}.out">${JOB}
-sbatch ${JOB}
+python -u test_caltech.py ${START} ${END} >${EXPNAME}.out" >${JOB}
+  sbatch ${JOB}
+  echo "Run job ${JOB}\n"
+  wait 2
+done
