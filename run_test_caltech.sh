@@ -4,7 +4,7 @@ STEP=${1}
 for i in $(seq 1 ${STEP} 249); do
   START=${i}
   END=$(expr ${i} + ${STEP})
-  EXPNAME="test_caltech_${START}-${END}"
+  EXPNAME="test_caltech_run2_${START}-${END}"
   JOB="./jobs/${EXPNAME}.job"
 
   echo "#!/bin/bash
@@ -12,7 +12,7 @@ for i in $(seq 1 ${STEP} 249); do
 #SBATCH --output=${EXPNAME}.err
 #SBATCH --time=3-00:00:00
 #SBATCH --mem=20GB
-#SBATCH --gres=gpu:1
+#SBATCH --gres=Volta100:1
 #SBATCH --exclude=node-16,node-12
 #SBATCH --cpus-per-task=16
 #SBATCH --partition=deadline
