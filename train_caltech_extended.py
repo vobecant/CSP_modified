@@ -20,7 +20,7 @@ C.gpu_ids = '0'
 C.onegpu = 16
 C.size_train = (336, 448)
 C.init_lr = 1e-4
-C.num_epochs = 120
+C.num_epochs = 150
 C.offset = True
 # we need to increase the learning rate as we use more GPUs (was 4) and bigger batch size (was 2 per GPU)
 # ngpu_mult = int(num_gpu / 4)
