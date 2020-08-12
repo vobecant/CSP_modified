@@ -12,7 +12,7 @@ echo "#!/bin/bash
 #SBATCH --output=${EXPNAME}.err
 #SBATCH --begin=${TIME}
 #SBATCH --mem=20GB
-#SBATCH --gres=Volta100:1
+#SBATCH --gres=gpu:Volta100:1
 #SBATCH --exclude=node-16,node-12
 #SBATCH --cpus-per-task=16
 #SBATCH --partition=deadline
