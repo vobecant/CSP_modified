@@ -3,7 +3,7 @@
 #SBATCH --output=csp_tst_caltech.err
 #SBATCH --time=3-00:00:00
 #SBATCH --mem=190GB
-##SBATCH --gres=gpu:Volta100:8
+#SBATCH --gres=gpu:1
 #SBATCH --exclude=node-16,node-12
 #SBATCH --cpus-per-task=16
 #SBATCH --partition=deadline
