@@ -10,7 +10,6 @@ echo "Start testing epochs ${START}-${END} at ${TIME}"
 echo "#!/bin/bash
 #SBATCH --job-name=tst_${START}-${END}
 #SBATCH --output=${EXPNAME}.err
-#SBATCH --time=3-00:00:00
 #SBATCH --begin=${TIME}
 #SBATCH --mem=20GB
 #SBATCH --gres=Volta100:1
