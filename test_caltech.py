@@ -30,11 +30,11 @@ preds = nn.nn_p3p4p5(img_input, offset=C.offset, num_scale=C.num_scale, trainabl
 model = Model(img_input, preds)
 
 if C.offset:
-    w_path = 'output/valmodels/caltech/%s/off2_caltech_extended' % (C.scale)
-    out_path = 'output/valresults/caltech/%s/off2_caltech_extended' % (C.scale)
+    w_path = 'output/valmodels/caltech/%s/off2_caltech_extended_run2' % (C.scale)
+    out_path = 'output/valresults/caltech/%s/off2_caltech_extended_run2' % (C.scale)
 else:
-    w_path = 'output/valmodels/caltech/%s/nooff2_caltech_extended' % (C.scale)
-    out_path = 'output/valresults/caltech/%s/nooff2_caltech_extended' % (C.scale)
+    w_path = 'output/valmodels/caltech/%s/nooff2_caltech_extended_run2' % (C.scale)
+    out_path = 'output/valresults/caltech/%s/nooff2_caltech_extended_run2' % (C.scale)
 
 if not os.path.exists(out_path):
     os.makedirs(out_path)
