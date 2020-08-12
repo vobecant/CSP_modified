@@ -16,23 +16,22 @@ specif = sys.argv[2]
 
 # get the config parameters
 C = config.Config()
-C.gpu_ids = '0,1,2,3,4,5,6,7'
-num_gpu = len(C.gpu_ids.split(','))
-C.onegpu = 32
+C.gpu_ids = '0'
+C.onegpu = 16
 C.size_train = (336, 448)
 C.init_lr = 1e-4
 C.num_epochs = 120
 C.offset = True
 # we need to increase the learning rate as we use more GPUs (was 4) and bigger batch size (was 2 per GPU)
-ngpu_mult = int(num_gpu / 4)
-bs_mult = int(C.onegpu / 2)
-lr_mult = ngpu_mult * bs_mult
-C.init_lr = C.init_lr * lr_mult if len(sys.argv) < 3 else float(sys.argv[3])
-print('ngpu_mult: {}, bs_mult: {}, lr_mult: {}, C.init_lr: {}, C.num_epochs: {}'.format(ngpu_mult, bs_mult, lr_mult,
-                                                                                        C.init_lr, C.num_epochs))
+# ngpu_mult = int(num_gpu / 4)
+# bs_mult = int(C.onegpu / 2)
+# lr_mult = ngpu_mult * bs_mult
+# C.init_lr = C.init_lr * lr_mult if len(sys.argv) < 3 else float(sys.argv[3])
+# print('ngpu_mult: {}, bs_mult: {}, lr_mult: {}, C.init_lr: {}, C.num_epochs: {}'.format(ngpu_mult, bs_mult, lr_mult,
+#                                                                                        C.init_lr, C.num_epochs))
 
 num_gpu = len(C.gpu_ids.split(','))
-batchsize = C.onegpu * num_gpu
+batchsize = C.onegpu  # * num_gpu
 os.environ["CUDA_VISIBLE_DEVICES"] = C.gpu_ids
 
 # get the training data
