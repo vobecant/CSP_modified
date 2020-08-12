@@ -9,8 +9,8 @@ from keras_csp import config, bbox_process
 from keras_csp.utilsfunc import *
 from keras_csp import resnet50 as nn
 
-START = sys.argv[1]
-END = sys.argv[2]
+START = int(sys.argv[1])
+END = int(sys.argv[2])
 
 os.environ["CUDA_VISIBLE_DEVICES"] = '1'
 C = config.Config()
