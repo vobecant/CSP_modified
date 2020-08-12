@@ -38,8 +38,8 @@ else:
 
 if not os.path.exists(out_path):
     os.makedirs(out_path)
-files = sorted(os.listdir(w_path))
 for w_ind in range(START, END):
+    files = sorted(os.listdir(w_path))
     for f in files:
         if f.split('_')[0] == 'net' and int(f.split('_')[1][1:]) == w_ind:
             cur_file = f
