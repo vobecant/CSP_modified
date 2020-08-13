@@ -36,6 +36,8 @@ else:
     w_path = 'output/valmodels/caltech/%s/nooff2_caltech_extended_run2' % (C.scale)
     out_path = 'output/valresults/caltech/%s/nooff2_caltech_extended_run2' % (C.scale)
 
+print('Look for weigths in {}'.format(w_path))
+
 if not os.path.exists(out_path):
     os.makedirs(out_path)
 for w_ind in range(START, END):
