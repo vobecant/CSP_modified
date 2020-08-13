@@ -1,7 +1,7 @@
 #!/bin/bash
-STEP=${1}
+STEP=${3}
 
-for i in $(seq 1 ${STEP} 249); do
+for i in $(seq ${1} ${STEP} ${2}); do
   START=${i}
   END=$(expr ${i} + ${STEP})
   EXPNAME="test_caltech_run2_${START}-${END}"
